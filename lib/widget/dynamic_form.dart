@@ -77,6 +77,10 @@ class DynamicFormState extends State<DynamicForm> {
   @override
   void initState() {
     super.initState();
+    validators = DynamicFormValidators(
+      widget.validationOptions,
+      allowFullZip: _allowFullZip,
+    );
     _allowFullZip = widget.allowFullZip ?? false;
     _initFieldData();
   }
@@ -90,12 +94,6 @@ class DynamicFormState extends State<DynamicForm> {
   @override
   Widget build(BuildContext context) {
     locale.LocaleSettings.useDeviceLocale();
-
-    validators ??= DynamicFormValidators.of(
-      context,
-      validationOptions: widget.validationOptions,
-      allowFullZip: _allowFullZip,
-    );
 
     if (widget.fields.length < MediaQuery.of(context).size.height / averageFieldHeight) {
       _pinButton = widget.allowPinnedButton;

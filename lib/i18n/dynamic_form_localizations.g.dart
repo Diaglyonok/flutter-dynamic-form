@@ -3,9 +3,9 @@
  * Generated file. Do not edit.
  *
  * Locales: 2
- * Strings: 532 (266.0 per locale)
+ * Strings: 476 (238.0 per locale)
  *
- * Built on 2022-05-12 at 10:45 UTC
+ * Built on 2022-05-12 at 11:37 UTC
  */
 
 import 'package:flutter/widgets.dart';
@@ -538,46 +538,18 @@ class _DynamicFormLocalizationsEn {
 		'ZM': 'Zambia',
 		'ZW': 'Zimbabwe',
 	};
-	String get submitButtonCaption => 'Submit';
-	String get resetViaEmailButtonCaption => 'Reset via Email';
-	String get emailSent => 'Email sent!';
-	String get emailSentHint => 'Instructions have been sent to the email associated with your username.';
-	String get backToSignIn => 'Back to Sign In';
-	String get updateButtonCaption => 'Update';
-	String get passwordErrorText => 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter';
-	String get passwordTooShortErrorText => 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter';
-	String get passwordTooLongErrorText => 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter';
-	String get useridTooShortErrorText => 'Login length should be greater than %MIN% characters';
-	String get useridTooLongErrorText => 'Login length should be shorter than %MAX% characters';
-	String get invalidPhoneNumber => 'Phone number is not valid';
-	String get invalidTime => 'Time is not valid';
-	String get emailIsEmptyErrorText => 'Enter email address';
-	String get emailIsNotValidErrorText => 'Email is not valid';
-	String get dateIsNotValidErrorText => 'Please enter a valid date (mm/dd/yyyy)';
-	String get answerIsNotValidErrorText => 'Answers must contain at least 3 characters';
-	String get fieldIsRequiredErrorText => 'This field is required';
-	String get wrongFormatText => 'Something wrong with the format';
-	String get passwordsAreNotEqualErrorText => 'Passwords do not match';
-	String get close => 'Close';
-	String get youReReadyToGo => 'You’re ready to go! Please login using the credentials you just setup.';
-	String get addButtonCaption => 'Add';
-	String get addAttachment => 'Add attachment';
-	String get fieldDoesNotMatch => 'The value entered does not match';
-	String get strictZipcodeError => 'Zip code requires the 4-digit extension';
-	String get invalidZipcode => 'Zip code: invalid format';
-	String get amountIsZero => 'Amount must be greater than \$0.00';
-	String get attachmentAdded => 'ATTACHMENT ADDED';
-	String get atLeast8Chars => 'At least 8 characters';
-	String get oneSpecChar => 'One special character ';
-	String get oneNumber => 'One number';
-	String get oneLowercaseLetter => 'One lowercase letter';
-	String get oneUppercaseLetter => 'One uppercase letter';
-	String get mainPasswordHint => 'Password must be between 8 and 32 characters long. They must contain four of the five criteria:';
-	String get returnDateWarning => 'Can\'t be earlier than departure date';
-	String get weak => 'WEAK';
-	String get strong => 'STRONG';
-	String get selectUate => 'Select date';
-	String get selectUime => 'Select time';
+	String passwordErrorText({required Object MIN, required Object MAX}) => 'Пароль должен быть в пределах от $MIN до $MAX символов и содержать как минимум одну букву и одну цифру';
+	String useridErrorText({required Object MIN}) => 'Логин должен содержать более $MIN символов';
+	String get invalidPhoneNumber => 'Введите корректный номер телефона';
+	String get invalidTime => 'Введите корректное время';
+	String get emailIsNotValidErrorText => 'Введите корректный e-mail';
+	String dateIsNotValidErrorText({required Object format}) => 'Введите дату в формате: $format';
+	String get fieldIsRequiredErrorText => 'Поле не должно быть пустым';
+	String get wrongFormatText => 'Неверный формат данных';
+	String get fieldDoesNotMatch => 'Значения не совпадают';
+	String get returnDateWarning => 'Не может быть раньше первой даты';
+	String get selectDate => 'Выберите дату';
+	String get selectTime => 'Выберите время';
 }
 
 // Path: <root>
@@ -824,46 +796,18 @@ class _DynamicFormLocalizationsRu implements _DynamicFormLocalizationsEn {
 		'ZM': 'Замбия',
 		'ZW': 'Зимбабве',
 	};
-	@override String get submitButtonCaption => 'Submit';
-	@override String get resetViaEmailButtonCaption => 'Reset via Email';
-	@override String get emailSent => 'Email sent!';
-	@override String get emailSentHint => 'Instructions have been sent to the email associated with your username.';
-	@override String get backToSignIn => 'Back to Sign In';
-	@override String get updateButtonCaption => 'Update';
-	@override String get passwordErrorText => 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter';
-	@override String get passwordTooShortErrorText => 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter';
-	@override String get passwordTooLongErrorText => 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter';
-	@override String get useridTooShortErrorText => 'Login length should be greater than %MIN% characters';
-	@override String get useridTooLongErrorText => 'Login length should be shorter than %MAX% characters';
+	@override String passwordErrorText({required Object MIN, required Object MAX}) => 'Your password must be between $MIN and $MAX characters and contain at least one number and one letter';
+	@override String useridErrorText({required Object MIN}) => 'Login length should be greater than $MIN characters';
 	@override String get invalidPhoneNumber => 'Phone number is not valid';
 	@override String get invalidTime => 'Time is not valid';
-	@override String get emailIsEmptyErrorText => 'Enter email address';
 	@override String get emailIsNotValidErrorText => 'Email is not valid';
-	@override String get dateIsNotValidErrorText => 'Please enter a valid date (mm/dd/yyyy)';
-	@override String get answerIsNotValidErrorText => 'Answers must contain at least 3 characters';
+	@override String dateIsNotValidErrorText({required Object format}) => 'Please enter a valid date $format';
 	@override String get fieldIsRequiredErrorText => 'This field is required';
 	@override String get wrongFormatText => 'Something wrong with the format';
-	@override String get passwordsAreNotEqualErrorText => 'Passwords do not match';
-	@override String get close => 'Close';
-	@override String get youReReadyToGo => 'You’re ready to go! Please login using the credentials you just setup.';
-	@override String get addButtonCaption => 'Add';
-	@override String get addAttachment => 'Add attachment';
 	@override String get fieldDoesNotMatch => 'The value entered does not match';
-	@override String get strictZipcodeError => 'Zip code requires the 4-digit extension';
-	@override String get invalidZipcode => 'Zip code: invalid format';
-	@override String get amountIsZero => 'Amount must be greater than \$0.00';
-	@override String get attachmentAdded => 'ATTACHMENT ADDED';
-	@override String get atLeast8Chars => 'At least 8 characters';
-	@override String get oneSpecChar => 'One special character ';
-	@override String get oneNumber => 'One number';
-	@override String get oneLowercaseLetter => 'One lowercase letter';
-	@override String get oneUppercaseLetter => 'One uppercase letter';
-	@override String get mainPasswordHint => 'Password must be between 8 and 32 characters long. They must contain four of the five criteria:';
-	@override String get returnDateWarning => 'Can\'t be earlier than departure date';
-	@override String get weak => 'WEAK';
-	@override String get strong => 'STRONG';
-	@override String get selectUate => 'Select date';
-	@override String get selectUime => 'Select time';
+	@override String get returnDateWarning => 'Can\'t be earlier than first date';
+	@override String get selectDate => 'Select date';
+	@override String get selectTime => 'Select time';
 }
 
 /// Flat map(s) containing all translations.
@@ -1098,46 +1042,18 @@ extension on _DynamicFormLocalizationsEn {
 			'countries.CD': 'Zaire',
 			'countries.ZM': 'Zambia',
 			'countries.ZW': 'Zimbabwe',
-			'submitButtonCaption': 'Submit',
-			'resetViaEmailButtonCaption': 'Reset via Email',
-			'emailSent': 'Email sent!',
-			'emailSentHint': 'Instructions have been sent to the email associated with your username.',
-			'backToSignIn': 'Back to Sign In',
-			'updateButtonCaption': 'Update',
-			'passwordErrorText': 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter',
-			'passwordTooShortErrorText': 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter',
-			'passwordTooLongErrorText': 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter',
-			'useridTooShortErrorText': 'Login length should be greater than %MIN% characters',
-			'useridTooLongErrorText': 'Login length should be shorter than %MAX% characters',
-			'invalidPhoneNumber': 'Phone number is not valid',
-			'invalidTime': 'Time is not valid',
-			'emailIsEmptyErrorText': 'Enter email address',
-			'emailIsNotValidErrorText': 'Email is not valid',
-			'dateIsNotValidErrorText': 'Please enter a valid date (mm/dd/yyyy)',
-			'answerIsNotValidErrorText': 'Answers must contain at least 3 characters',
-			'fieldIsRequiredErrorText': 'This field is required',
-			'wrongFormatText': 'Something wrong with the format',
-			'passwordsAreNotEqualErrorText': 'Passwords do not match',
-			'close': 'Close',
-			'youReReadyToGo': 'You’re ready to go! Please login using the credentials you just setup.',
-			'addButtonCaption': 'Add',
-			'addAttachment': 'Add attachment',
-			'fieldDoesNotMatch': 'The value entered does not match',
-			'strictZipcodeError': 'Zip code requires the 4-digit extension',
-			'invalidZipcode': 'Zip code: invalid format',
-			'amountIsZero': 'Amount must be greater than \$0.00',
-			'attachmentAdded': 'ATTACHMENT ADDED',
-			'atLeast8Chars': 'At least 8 characters',
-			'oneSpecChar': 'One special character ',
-			'oneNumber': 'One number',
-			'oneLowercaseLetter': 'One lowercase letter',
-			'oneUppercaseLetter': 'One uppercase letter',
-			'mainPasswordHint': 'Password must be between 8 and 32 characters long. They must contain four of the five criteria:',
-			'returnDateWarning': 'Can\'t be earlier than departure date',
-			'weak': 'WEAK',
-			'strong': 'STRONG',
-			'selectUate': 'Select date',
-			'selectUime': 'Select time',
+			'passwordErrorText': ({required Object MIN, required Object MAX}) => 'Пароль должен быть в пределах от $MIN до $MAX символов и содержать как минимум одну букву и одну цифру',
+			'useridErrorText': ({required Object MIN}) => 'Логин должен содержать более $MIN символов',
+			'invalidPhoneNumber': 'Введите корректный номер телефона',
+			'invalidTime': 'Введите корректное время',
+			'emailIsNotValidErrorText': 'Введите корректный e-mail',
+			'dateIsNotValidErrorText': ({required Object format}) => 'Введите дату в формате: $format',
+			'fieldIsRequiredErrorText': 'Поле не должно быть пустым',
+			'wrongFormatText': 'Неверный формат данных',
+			'fieldDoesNotMatch': 'Значения не совпадают',
+			'returnDateWarning': 'Не может быть раньше первой даты',
+			'selectDate': 'Выберите дату',
+			'selectTime': 'Выберите время',
 		};
 	}
 }
@@ -1371,46 +1287,18 @@ extension on _DynamicFormLocalizationsRu {
 			'countries.CD': 'Заир',
 			'countries.ZM': 'Замбия',
 			'countries.ZW': 'Зимбабве',
-			'submitButtonCaption': 'Submit',
-			'resetViaEmailButtonCaption': 'Reset via Email',
-			'emailSent': 'Email sent!',
-			'emailSentHint': 'Instructions have been sent to the email associated with your username.',
-			'backToSignIn': 'Back to Sign In',
-			'updateButtonCaption': 'Update',
-			'passwordErrorText': 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter',
-			'passwordTooShortErrorText': 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter',
-			'passwordTooLongErrorText': 'Your password must be between %MIN% and %MAX% characters and contain at least one number and one letter',
-			'useridTooShortErrorText': 'Login length should be greater than %MIN% characters',
-			'useridTooLongErrorText': 'Login length should be shorter than %MAX% characters',
+			'passwordErrorText': ({required Object MIN, required Object MAX}) => 'Your password must be between $MIN and $MAX characters and contain at least one number and one letter',
+			'useridErrorText': ({required Object MIN}) => 'Login length should be greater than $MIN characters',
 			'invalidPhoneNumber': 'Phone number is not valid',
 			'invalidTime': 'Time is not valid',
-			'emailIsEmptyErrorText': 'Enter email address',
 			'emailIsNotValidErrorText': 'Email is not valid',
-			'dateIsNotValidErrorText': 'Please enter a valid date (mm/dd/yyyy)',
-			'answerIsNotValidErrorText': 'Answers must contain at least 3 characters',
+			'dateIsNotValidErrorText': ({required Object format}) => 'Please enter a valid date $format',
 			'fieldIsRequiredErrorText': 'This field is required',
 			'wrongFormatText': 'Something wrong with the format',
-			'passwordsAreNotEqualErrorText': 'Passwords do not match',
-			'close': 'Close',
-			'youReReadyToGo': 'You’re ready to go! Please login using the credentials you just setup.',
-			'addButtonCaption': 'Add',
-			'addAttachment': 'Add attachment',
 			'fieldDoesNotMatch': 'The value entered does not match',
-			'strictZipcodeError': 'Zip code requires the 4-digit extension',
-			'invalidZipcode': 'Zip code: invalid format',
-			'amountIsZero': 'Amount must be greater than \$0.00',
-			'attachmentAdded': 'ATTACHMENT ADDED',
-			'atLeast8Chars': 'At least 8 characters',
-			'oneSpecChar': 'One special character ',
-			'oneNumber': 'One number',
-			'oneLowercaseLetter': 'One lowercase letter',
-			'oneUppercaseLetter': 'One uppercase letter',
-			'mainPasswordHint': 'Password must be between 8 and 32 characters long. They must contain four of the five criteria:',
-			'returnDateWarning': 'Can\'t be earlier than departure date',
-			'weak': 'WEAK',
-			'strong': 'STRONG',
-			'selectUate': 'Select date',
-			'selectUime': 'Select time',
+			'returnDateWarning': 'Can\'t be earlier than first date',
+			'selectDate': 'Select date',
+			'selectTime': 'Select time',
 		};
 	}
 }

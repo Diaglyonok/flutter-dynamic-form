@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../localization/dynamic_form_localization.dart';
+import '../../i18n/dynamic_form_localizations.g.dart' as locale;
 import '../../logic/dynamic_form_validators.dart';
 import '../../model/dynamic_form_models.dart';
 import 'text_field.dart';
@@ -115,12 +115,8 @@ class DateField extends StatelessWidget {
                   child: Text(
                     type == CupertinoDatePickerMode.date ||
                             type == CupertinoDatePickerMode.dateAndTime
-                        ? (DFormLocalizations.of(context)
-                                .localized(DFormLocalizationsId.select_date) ??
-                            '')
-                        : (DFormLocalizations.of(context)
-                                .localized(DFormLocalizationsId.select_time) ??
-                            ''),
+                        ? locale.dynamicFormTranslation.selectDate
+                        : locale.dynamicFormTranslation.selectTime,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6?.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
