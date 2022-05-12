@@ -43,11 +43,11 @@ class DynamicFormValidators {
   }
 
   String? dateValidator(String? inputDate, CompareDate? compare) {
-    if (inputDate != null && inputDate.isNotEmpty) {
+    if (inputDate == null || inputDate.isEmpty) {
       return null;
     }
     try {
-      final date = DateFormat(datePattern).parseLoose(inputDate!);
+      final date = DateFormat(datePattern).parseLoose(inputDate);
       var compareDate = DateTime.now();
       compareDate = DateTime(compareDate.year, compareDate.month, compareDate.day);
       switch (compare ?? CompareDate.AllDates) {
