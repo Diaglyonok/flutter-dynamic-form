@@ -29,12 +29,12 @@ class DynamicFormValidators {
   }
 
   String? timeValidator(String? input) {
-    if (input != null && input.isNotEmpty) {
+    if (input == null || input.isEmpty) {
       return null;
     }
 
     try {
-      final date = DateFormat(timePattern).parseStrict(input!);
+      final date = DateFormat(timePattern).parseStrict(input);
 
       return null;
     } catch (e) {
@@ -100,15 +100,11 @@ class DynamicFormValidators {
     }
   }
 
-  String? phoneValidator(String? field, bool isRequired) {
+  String? phoneValidator(String? field) {
     var value = field;
 
     //if the text is optional, then check only non-empty
-    if (value != null && value.isNotEmpty) {
-      if (isRequired) {
-        return locale.dynamicFormTranslation.fieldIsRequiredErrorText;
-        //localization.localized(DFormLocalizationsId.field_is_required_error_text);
-      }
+    if (value == null || value.isEmpty) {
       return null;
     }
 
@@ -116,7 +112,7 @@ class DynamicFormValidators {
         ? DynamicFormsConstants.defaultPhoneVO
         : validationOptions?['Phone'] ?? DynamicFormsConstants.defaultPhoneVO;
 
-    value = value!.replaceAll(RegExp(r'[-+()\.\s]'), '');
+    value = value.replaceAll(RegExp(r'[-+()\.\s]'), '');
 
     if (value.length != options.minLength) {
       return locale.dynamicFormTranslation.invalidPhoneNumber;

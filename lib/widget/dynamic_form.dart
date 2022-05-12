@@ -484,16 +484,9 @@ class DynamicFormState extends State<DynamicForm> {
                   CompositeValue(startController!.text, extra: endController?.text);
               setState(() {});
             },
-            validators: DynamicFormUtils.getMultivalidator<String?>(
-              [
-                //add your validator here
-                if (field.required && !field.readOnly)
-                  (String? value) => validators?.requiredValidator(value),
-                (String? value) => validators?.dateValidator(value, field.compareDate),
-                (String? value) =>
-                    validators?.confirmValidator(value, field.confirmField ?? '', values),
-              ],
-            ),
+            validators: _commonTextValidators(field, additionals: [
+              (String? value) => validators?.dateValidator(value, field.compareDate),
+            ]),
             controller: startController!,
             endDate: endDate,
           ),
@@ -538,16 +531,10 @@ class DynamicFormState extends State<DynamicForm> {
                   CompositeValue(startController.text, extra: endController?.text);
               setState(() {});
             },
-            validators: DynamicFormUtils.getMultivalidator<String?>(
-              [
-                //add your validator here
-                if (field.required && !field.readOnly)
-                  (String? value) => validators?.requiredValidator(value),
-                (String? value) => validators?.dateValidator(value, field.compareDate),
-                (String? value) =>
-                    validators?.confirmValidator(value, field.confirmField ?? '', values),
-              ],
-            ),
+            validators: _commonTextValidators(field, additionals: [
+              (String? value) => validators?.dateValidator(value, field.compareDate),
+              //TODO: add validator for data not earlier
+            ]),
             controller: endController!,
             startDate: startDate,
           ),
@@ -628,15 +615,9 @@ class DynamicFormState extends State<DynamicForm> {
         values[field.fieldId] = CompositeValue(controller!.text);
         setState(() {});
       },
-      validators: DynamicFormUtils.getMultivalidator<String?>(
-        [
-          //add your validator here
-          if (field.required && !field.readOnly)
-            (String? value) => validators?.requiredValidator(value),
-          (String? value) => validators?.dateValidator(value, field.compareDate),
-          (String? value) => validators?.confirmValidator(value, field.confirmField ?? '', values),
-        ],
-      ),
+      validators: _commonTextValidators(field, additionals: [
+        (String? value) => validators?.dateValidator(value, field.compareDate),
+      ]),
       controller: controller!,
     );
   }
@@ -662,12 +643,9 @@ class DynamicFormState extends State<DynamicForm> {
         setState(() {});
       },
       controller: controllers[field.fieldId]!,
-      validators: DynamicFormUtils.getMultivalidator<String?>([
-        if (field.required && !field.readOnly)
-          (String? value) => validators?.requiredValidator(value),
-        (String? value) => validators?.passwordValidator,
-        if (field.confirmField != null)
-          (String? value) => validators?.confirmValidator(value, field.confirmField ?? '', values)
+      validators: _commonTextValidators(field, additionals: [
+        (String? value) => validators?.dateValidator(value, field.compareDate),
+        (String? value) => validators?.passwordValidator(CompositeValue(value ?? '')),
       ]),
     );
   }
@@ -836,11 +814,8 @@ class DynamicFormState extends State<DynamicForm> {
       style: widget.commonStyle,
       required: field.required,
       inputType: TextInputType.phone,
-      validators: DynamicFormUtils.getMultivalidator<String?>([
-        //add your validator here
-        (value) =>
-            validators?.phoneValidator(controllers[field.fieldId]?.text ?? value, field.required),
-        (String? value) => validators?.confirmValidator(value, field.confirmField ?? '', values),
+      validators: _commonTextValidators(field, additionals: [
+        (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
       ]),
       onChanged: (value) {
         final result = controllers[field.fieldId]?.text ?? value;
@@ -922,15 +897,9 @@ class DynamicFormState extends State<DynamicForm> {
         values[field.fieldId] = CompositeValue(controller!.text);
         setState(() {});
       },
-      validators: DynamicFormUtils.getMultivalidator<String?>(
-        [
-          //add your validator here
-          if (field.required && !field.readOnly)
-            (String? value) => validators?.requiredValidator(value),
-          (String? value) => validators?.timeValidator(value),
-          (String? value) => validators?.confirmValidator(value, field.confirmField ?? '', values),
-        ],
-      ),
+      validators: _commonTextValidators(field, additionals: [
+        (String? value) => validators?.timeValidator(value),
+      ]),
       controller: controller!,
     );
   }
