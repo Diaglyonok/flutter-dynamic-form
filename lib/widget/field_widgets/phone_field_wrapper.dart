@@ -1,7 +1,10 @@
-import 'package:dglk_flutter_dev_kit/bottom_sheet/src/bottom_sheet_route.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_dynamic_form/flutter_dynamic_form.dart';
+import 'dart:async';
 
+import 'package:dglk_flutter_dev_kit/bottom_sheet/src/bottom_sheet_route.dart';
+import 'package:dglk_flutter_dev_kit/simple_button/simple_button.dart';
+import 'package:flutter/material.dart';
+
+import '../../flutter_dynamic_form.dart';
 import '../../i18n/dynamic_form_localizations.g.dart' as locale;
 
 const countryPhoneCodes = <String, String>{
@@ -236,8 +239,11 @@ const countryPhoneCodes = <String, String>{
 class PhoneFieldWrapper extends StatefulWidget {
   final PhoneField? field;
   final Widget child;
-
-  const PhoneFieldWrapper({Key? key, this.field, required this.child}) : super(key: key);
+  final Function(String extra)? onExtraChanged;
+  final TextStyle style;
+  const PhoneFieldWrapper(
+      {Key? key, this.field, required this.child, this.onExtraChanged, required this.style})
+      : super(key: key);
 
   @override
   State<PhoneFieldWrapper> createState() => _PhoneFieldWrapperState();
@@ -260,47 +266,280 @@ class _PhoneFieldWrapperState extends State<PhoneFieldWrapper> {
 
     return Row(
       children: [
-        MaterialButton(
-          child: Text(current!),
-          onPressed: () {
-            Navigator.of(context).push(
-              BottomSheetRoute(
-                child: Material(
-                  child: Container(
-                    color: Theme.of(context).colorScheme.background,
-                    height: 320,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Выберите код страны',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headline6?.copyWith(
-                                  color: Theme.of(context).colorScheme.onBackground,
-                                ),
-                          ),
-                          for (var key in countryPhoneCodes.keys)
-                            if (countryPhoneCodes[key] != null &&
-                                locale.dynamicFormTranslation.countries[key] != null)
-                              MaterialButton(
-                                onPressed: () {},
-                                child: Text(
-                                  '${countryPhoneCodes[key]!}: ${locale.dynamicFormTranslation.countries[key]!}',
-                                ),
-                              )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 64),
+            child: MaterialButton(
+              padding: const EdgeInsets.only(),
+              child: Text(
+                current!,
+                style: widget.style,
               ),
-            );
-          },
+              onPressed: () {
+                Navigator.of(context).push(
+                  BottomSheetRoute(child: SearchCountryBottomView(
+                    onChanged: (code) {
+                      current = code;
+                      setState(() {});
+                      widget.onExtraChanged?.call(code);
+                    },
+                  )),
+                );
+              },
+            ),
+          ),
         ),
         Expanded(
           child: widget.child,
         )
       ],
+    );
+  }
+}
+
+class SearchCountryBottomView extends StatefulWidget {
+  final Function(String extra) onChanged;
+  const SearchCountryBottomView({Key? key, required this.onChanged}) : super(key: key);
+
+  @override
+  State<SearchCountryBottomView> createState() => _SearchCountryBottomViewState();
+}
+
+class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
+  final controller = TextEditingController();
+  final textStreamController = StreamController<String>.broadcast();
+  final focusNode = FocusNode();
+  final GlobalKey<FormState> key = GlobalKey<FormState>();
+  String? codeError;
+
+  bool checkCode(String? value) {
+    if (value == null) {
+      return true;
+    }
+
+    if (!value.startsWith('+')) {
+      return false;
+    }
+
+    if (int.tryParse(value.replaceAll('+', '')) == null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @override
+  void dispose() {
+    focusNode.unfocus();
+    textStreamController.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Padding(
+        padding: MediaQuery.of(context).viewInsets,
+        child: Container(
+          color: Theme.of(context).colorScheme.background,
+          constraints: const BoxConstraints(maxHeight: 420),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 40,
+                        child: Center(
+                          child: Icon(
+                            Icons.search,
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: TextField(
+                          focusNode: focusNode,
+                          keyboardType: TextInputType.phone,
+                          cursorColor: Theme.of(context).colorScheme.secondary,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: locale.dynamicFormTranslation.chooseCountryCode,
+                          ),
+                          onChanged: (text) {
+                            textStreamController.add(text);
+                            setState(() {
+                              codeError = null;
+                            });
+                          },
+                          controller: controller,
+                        ),
+                      ),
+                      StreamBuilder<String>(
+                        stream: textStreamController.stream,
+                        builder: (context, snapshot) {
+                          return Visibility(
+                            visible: snapshot.data != null && snapshot.data != '',
+                            child: SizedBox(
+                              width: 40,
+                              child: IconButton(
+                                onPressed: () {
+                                  controller.text = '';
+                                },
+                                padding: const EdgeInsets.only(),
+                                icon: Icon(
+                                  Icons.close,
+                                  color: Theme.of(context).colorScheme.onBackground,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: StreamBuilder<String>(
+                    stream: textStreamController.stream,
+                    builder: (context, snapshot) {
+                      if (snapshot.data != null &&
+                          snapshot.data!.isNotEmpty &&
+                          checkCode(snapshot.data!)) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (codeError != null) const SizedBox(height: 17),
+                              SimpleButton(
+                                callback: () {
+                                  widget.onChanged(snapshot.data!);
+                                  Navigator.of(context).pop();
+                                },
+                                title: 'Использовать введенный код',
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              if (codeError != null)
+                                Text(
+                                  codeError!,
+                                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                        color: Theme.of(context).colorScheme.error,
+                                      ),
+                                ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      if (snapshot.data != null &&
+                          countryPhoneCodes.keys
+                              .where((key) =>
+                                  locale.dynamicFormTranslation.countries[key] != null &&
+                                  locale.dynamicFormTranslation.countries[key]!
+                                      .toLowerCase()
+                                      .contains(snapshot.data!.toLowerCase()))
+                              .isEmpty) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(40.0),
+                            child: Text(
+                              'Ничего не найдено, попробуйте изменить запрос или ввести код страны вручную',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    color: Theme.of(context).colorScheme.onBackground,
+                                  ),
+                            ),
+                          ),
+                        );
+                      }
+
+                      return ListView(
+                        padding: const EdgeInsets.only(),
+                        children: [
+                          for (var key in countryPhoneCodes.keys)
+                            if (countryPhoneCodes[key] != null &&
+                                locale.dynamicFormTranslation.countries[key] != null &&
+                                (snapshot.data == null ||
+                                    locale.dynamicFormTranslation.countries[key]!
+                                        .toLowerCase()
+                                        .contains(snapshot.data!.toLowerCase())))
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: MaterialButton(
+                                          height: 48,
+                                          onPressed: () {
+                                            widget.onChanged(countryPhoneCodes[key]!);
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    constraints: const BoxConstraints(minWidth: 48),
+                                                    child: Text(
+                                                      '${countryPhoneCodes[key]!}:',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyText2!
+                                                          .copyWith(
+                                                              color: Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onBackground,
+                                                              fontWeight: FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    locale.dynamicFormTranslation.countries[key]!,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1!
+                                                        .copyWith(
+                                                          color: Theme.of(context)
+                                                              .colorScheme
+                                                              .onBackground,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    width: 240,
+                                    height: 0.5,
+                                    color:
+                                        Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                                  ),
+                                ],
+                              )
+                        ],
+                      );
+                    }),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -3,15 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../flutter_dynamic_form.dart';
 import '../../i18n/dynamic_form_localizations.g.dart' as locale;
 import '../../logic/dynamic_form_validators.dart';
-import '../../model/dynamic_form_models.dart';
 import 'text_field.dart';
 
 const String DATE_LEAVING = 'date_date_leaving';
 const String DATE_RETURNING = 'date_date_returning';
-
-enum PickType { SuffixGetter, FieldTap }
 
 class DateField extends StatelessWidget {
   final Field field;

@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dynamic_form/flutter_dynamic_form.dart';
 import 'package:intl/intl.dart';
 
+import '../flutter_dynamic_form.dart';
 import '../i18n/dynamic_form_localizations.g.dart' as locale;
 import '../logic/dynamic_form_validators.dart';
 import '../utils/form_utils.dart';
@@ -802,8 +802,15 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? current,
     FocusNode? next,
   ) {
+    final style = widget.commonStyle ??
+        Theme.of(context).textTheme.headline6!.copyWith(
+            height: 1.1,
+            color: field.readOnly
+                ? Theme.of(context).colorScheme.onBackground.withOpacity(0.44)
+                : Theme.of(context).colorScheme.onBackground);
     return PhoneFieldWrapper(
       field: field is PhoneField ? field : null,
+      style: style,
       child: DynamicTextField(
         context: context,
         field: field,
@@ -811,7 +818,7 @@ class DynamicFormState extends State<DynamicForm> {
         next: next,
         current: current,
         scrollPadding: _pinButton ? 100 : null,
-        style: widget.commonStyle,
+        style: style,
         required: field.required,
         inputType: TextInputType.phone,
         validators: _commonTextValidators(field, additionals: [

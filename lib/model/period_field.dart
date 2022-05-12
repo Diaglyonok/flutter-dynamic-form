@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 import '../model/dynamic_form_models.dart';
-import '../widget/field_widgets/date.dart';
+import 'date_constants.dart';
 
 class PeriodExtra {
   final String? secondLabel;

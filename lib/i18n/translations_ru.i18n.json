@@ -239,5 +239,7 @@
     "returnDateWarning": "Не может быть раньше первой даты",
     "selectDate": "Выберите дату",
     "selectTime": "Выберите время",
-    "chooseCountryCode": "Выберите код страны"
+    "chooseCountryCode": "Выберите или введите код страны",
+    "useInputtedCode": "Использовать введенный код",
+    "nothingFoundCountryCode": "Ничего не найдено, попробуйте изменить запрос или ввести код страны вручную"
 }
