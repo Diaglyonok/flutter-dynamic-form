@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:dglk_flutter_dev_kit/bottom_sheet/src/bottom_sheet_route.dart';
 import 'package:dglk_flutter_dev_kit/simple_button/simple_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../flutter_dynamic_form.dart';
 import '../../i18n/dynamic_form_localizations.g.dart' as locale;
+import '../field_widgets/bottom_pick_button.dart';
 
 const countryPhoneCodes = <String, String>{
   'AF': '+93',
@@ -266,28 +266,15 @@ class _PhoneFieldWrapperState extends State<PhoneFieldWrapper> {
 
     return Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 64),
-            child: MaterialButton(
-              padding: const EdgeInsets.only(),
-              child: Text(
-                current!,
-                style: widget.style,
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  BottomSheetRoute(child: SearchCountryBottomView(
-                    onChanged: (code) {
-                      current = code;
-                      setState(() {});
-                      widget.onExtraChanged?.call(code);
-                    },
-                  )),
-                );
-              },
-            ),
+        BottomPickButton(
+          text: current!,
+          style: widget.style,
+          child: SearchCountryBottomView(
+            onChanged: (code) {
+              current = code;
+              setState(() {});
+              widget.onExtraChanged?.call(code);
+            },
           ),
         ),
         Expanded(
@@ -425,7 +412,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                   widget.onChanged(snapshot.data!);
                                   Navigator.of(context).pop();
                                 },
-                                title: 'Использовать введенный код',
+                                title: locale.dynamicFormTranslation.useInputtedCode,
                               ),
                               const SizedBox(
                                 height: 8,
@@ -454,7 +441,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                           child: Padding(
                             padding: const EdgeInsets.all(40.0),
                             child: Text(
-                              'Ничего не найдено, попробуйте изменить запрос или ввести код страны вручную',
+                              locale.dynamicFormTranslation.nothingFoundCountryCode,
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyText2!.copyWith(
                                     color: Theme.of(context).colorScheme.onBackground,

@@ -458,9 +458,9 @@ class DynamicFormState extends State<DynamicForm> {
             customLabel: field.label,
             pickType: extra.pickType ?? PickType.SuffixGetter,
             scrollPadding: _pinButton ? 100 : null,
-            onChanged: (String? value) {
+            onChanged: (CompositeValue value) {
               values[field.fieldId] =
-                  CompositeValue(startController?.text ?? value ?? '', extra: endController?.text);
+                  CompositeValue(startController?.text ?? value.value, extra: endController?.text);
               setState(() {});
             },
             onDateTimeChanged: (DateTime dateTime) {
@@ -505,9 +505,9 @@ class DynamicFormState extends State<DynamicForm> {
             scrollPadding: _pinButton ? 100 : null,
             onChanged: extra.pickType == PickType.FieldTap
                 ? null
-                : (String? value) {
-                    values[field.fieldId] =
-                        CompositeValue(startController.text, extra: endController?.text ?? value);
+                : (CompositeValue value) {
+                    values[field.fieldId] = CompositeValue(startController.text,
+                        extra: endController?.text ?? value.value);
                     setState(() {});
                   },
             onDateTimeChanged: (DateTime dateTime) {
@@ -591,9 +591,8 @@ class DynamicFormState extends State<DynamicForm> {
       next: next,
       style: widget.commonStyle,
       scrollPadding: _pinButton ? 100 : null,
-      onChanged: (String? value) {
-        final result = controller?.text ?? value;
-        values[field.fieldId] = CompositeValue(result ?? '');
+      onChanged: (CompositeValue value) {
+        values[field.fieldId] = value;
         setState(() {});
       },
       onDateTimeChanged: (DateTime dateTime) {
@@ -636,8 +635,7 @@ class DynamicFormState extends State<DynamicForm> {
       maskText: true,
       scrollPadding: _pinButton ? 100 : null,
       onChanged: (value) {
-        final result = controllers[field.fieldId]?.text ?? value;
-        values[field.fieldId] = CompositeValue(result);
+        values[field.fieldId] = value;
         setState(() {});
       },
       controller: controllers[field.fieldId]!,
@@ -666,8 +664,7 @@ class DynamicFormState extends State<DynamicForm> {
       required: field.required,
       validators: _commonTextValidators(field),
       onChanged: (value) {
-        final result = controllers[field.fieldId]?.text ?? value;
-        values[field.fieldId] = CompositeValue(result);
+        values[field.fieldId] = value;
         setState(() {});
       },
       controller: controllers[field.fieldId]!,
@@ -734,8 +731,7 @@ class DynamicFormState extends State<DynamicForm> {
       multiline: true,
       validators: _commonTextValidators(field),
       onChanged: (value) {
-        final result = controllers[field.fieldId]?.text ?? value;
-        values[field.fieldId] = CompositeValue(result);
+        values[field.fieldId] = value;
         setState(() {});
       },
       controller: controllers[field.fieldId]!,
@@ -760,8 +756,7 @@ class DynamicFormState extends State<DynamicForm> {
       inputType: TextInputType.text,
       validators: _commonTextValidators(field),
       onChanged: (value) {
-        final result = controllers[field.fieldId]?.text ?? value;
-        values[field.fieldId] = CompositeValue(result);
+        values[field.fieldId] = value;
         setState(() {});
       },
       controller: controllers[field.fieldId]!,
@@ -788,8 +783,7 @@ class DynamicFormState extends State<DynamicForm> {
           (String? email) => validators?.emailValidator(email),
         ]),
         onChanged: (value) {
-          final result = controllers[field.fieldId]?.text ?? value;
-          values[field.fieldId] = CompositeValue(result);
+          values[field.fieldId] = value;
           setState(() {});
         },
         controller: controllers[field.fieldId]!,
@@ -811,6 +805,11 @@ class DynamicFormState extends State<DynamicForm> {
     return PhoneFieldWrapper(
       field: field is PhoneField ? field : null,
       style: style,
+      onExtraChanged: (extra) {
+        final result = values[field.fieldId];
+        values[field.fieldId] = CompositeValue(result?.value ?? '', extra: extra);
+        setState(() {});
+      },
       child: DynamicTextField(
         context: context,
         field: field,
@@ -825,8 +824,7 @@ class DynamicFormState extends State<DynamicForm> {
           (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
         ]),
         onChanged: (value) {
-          final result = controllers[field.fieldId]?.text ?? value;
-          values[field.fieldId] = CompositeValue(result);
+          values[field.fieldId] = value;
           setState(() {});
         },
         controller: controllers[field.fieldId]!,
@@ -867,8 +865,7 @@ class DynamicFormState extends State<DynamicForm> {
       inputType: TextInputType.number,
       validators: _commonTextValidators(field),
       onChanged: (value) {
-        final result = controllers[field.fieldId]?.text ?? value;
-        values[field.fieldId] = CompositeValue(result);
+        values[field.fieldId] = value;
         setState(() {});
       },
       controller: controllers[field.fieldId]!,
@@ -883,9 +880,8 @@ class DynamicFormState extends State<DynamicForm> {
       next: next,
       type: CupertinoDatePickerMode.time,
       scrollPadding: _pinButton ? 100 : null,
-      onChanged: (String? value) {
-        final result = controller?.text ?? value;
-        values[field.fieldId] = CompositeValue(result ?? '');
+      onChanged: (CompositeValue value) {
+        values[field.fieldId] = value;
         setState(() {});
       },
       onDateTimeChanged: (DateTime dateTime) {

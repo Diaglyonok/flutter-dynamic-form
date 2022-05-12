@@ -17,7 +17,7 @@ class _FieldWrapperState extends State<FieldWrapper> with AutomaticKeepAliveClie
       return const SizedBox();
     }
     return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 32),
+      margin: const EdgeInsets.fromLTRB(20, 0, 20, 16),
       child: widget.child,
     );
   }
