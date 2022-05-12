@@ -3,9 +3,9 @@
  * Generated file. Do not edit.
  *
  * Locales: 2
- * Strings: 476 (238.0 per locale)
+ * Strings: 478 (239.0 per locale)
  *
- * Built on 2022-05-12 at 11:54 UTC
+ * Built on 2022-05-12 at 12:41 UTC
  */
 
 import 'package:flutter/widgets.dart';
@@ -550,6 +550,7 @@ class _DynamicFormLocalizationsEn {
 	String get returnDateWarning => 'Can\'t be earlier than first date';
 	String get selectDate => 'Select date';
 	String get selectTime => 'Select time';
+	String get chooseCountryCode => 'Choose country code';
 }
 
 // Path: <root>
@@ -808,6 +809,7 @@ class _DynamicFormLocalizationsRu implements _DynamicFormLocalizationsEn {
 	@override String get returnDateWarning => 'Не может быть раньше первой даты';
 	@override String get selectDate => 'Выберите дату';
 	@override String get selectTime => 'Выберите время';
+	@override String get chooseCountryCode => 'Выберите код страны';
 }
 
 /// Flat map(s) containing all translations.
@@ -1054,6 +1056,7 @@ extension on _DynamicFormLocalizationsEn {
 			'returnDateWarning': 'Can\'t be earlier than first date',
 			'selectDate': 'Select date',
 			'selectTime': 'Select time',
+			'chooseCountryCode': 'Choose country code',
 		};
 	}
 }
@@ -1299,6 +1302,7 @@ extension on _DynamicFormLocalizationsRu {
 			'returnDateWarning': 'Не может быть раньше первой даты',
 			'selectDate': 'Выберите дату',
 			'selectTime': 'Выберите время',
+			'chooseCountryCode': 'Выберите код страны',
 		};
 	}
 }

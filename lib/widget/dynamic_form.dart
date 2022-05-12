@@ -2,13 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dynamic_form/flutter_dynamic_form.dart';
 import 'package:intl/intl.dart';
 
 import '../i18n/dynamic_form_localizations.g.dart' as locale;
 import '../logic/dynamic_form_validators.dart';
-import '../model/dynamic_form_models.dart';
-import '../model/period_field.dart';
-import '../model/screen_result_field.dart';
 import '../utils/form_utils.dart';
 import '../utils/masked_text_controller.dart';
 import '../widget/field_widgets/checkbox_field.dart';
@@ -16,6 +14,7 @@ import '../widget/field_widgets/radio_button.dart';
 import '../widget/field_widgets/string_result_field.dart';
 import 'field_widgets/date.dart';
 import 'field_widgets/field_wrapper.dart';
+import 'field_widgets/phone_field_wrapper.dart';
 import 'field_widgets/text_field.dart';
 
 ///Counted by screen height divided by [maxFieldsForPinnedButton]
@@ -354,7 +353,6 @@ class DynamicFormState extends State<DynamicForm> {
       case FieldTypes.ScreenResult:
         return _generateScreenResultField(context, field as ScreenResultField, current, next);
     }
-    return null;
   }
 
   String? Function(String?)? _commonTextValidators(
@@ -804,26 +802,29 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? current,
     FocusNode? next,
   ) {
-    return DynamicTextField(
-      context: context,
-      field: field,
-      label: field.label,
-      next: next,
-      current: current,
-      scrollPadding: _pinButton ? 100 : null,
-      style: widget.commonStyle,
-      required: field.required,
-      inputType: TextInputType.phone,
-      validators: _commonTextValidators(field, additionals: [
-        (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
-      ]),
-      onChanged: (value) {
-        final result = controllers[field.fieldId]?.text ?? value;
-        values[field.fieldId] = CompositeValue(result);
-        setState(() {});
-      },
-      controller: controllers[field.fieldId]!,
-      maskText: field.maskText,
+    return PhoneFieldWrapper(
+      field: field is PhoneField ? field : null,
+      child: DynamicTextField(
+        context: context,
+        field: field,
+        label: field.label,
+        next: next,
+        current: current,
+        scrollPadding: _pinButton ? 100 : null,
+        style: widget.commonStyle,
+        required: field.required,
+        inputType: TextInputType.phone,
+        validators: _commonTextValidators(field, additionals: [
+          (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
+        ]),
+        onChanged: (value) {
+          final result = controllers[field.fieldId]?.text ?? value;
+          values[field.fieldId] = CompositeValue(result);
+          setState(() {});
+        },
+        controller: controllers[field.fieldId]!,
+        maskText: field.maskText,
+      ),
     );
   }
 

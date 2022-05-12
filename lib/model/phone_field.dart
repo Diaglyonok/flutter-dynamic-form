@@ -1,7 +1,7 @@
 import '../model/dynamic_form_models.dart';
 
 class PhoneField extends Field {
-  final String prefix;
+  final String initialPrefix;
 
   PhoneField({
     required String fieldId,
@@ -25,7 +25,7 @@ class PhoneField extends Field {
     String? validationErrorMessage,
     CompareDate? compareDate,
     int? parentId,
-    required this.prefix,
+    required this.initialPrefix,
   }) : super(
           fieldName: fieldName,
           versionId: versionId,

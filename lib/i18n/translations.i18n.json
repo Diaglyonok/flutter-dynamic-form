@@ -238,5 +238,6 @@
     "fieldDoesNotMatch": "The value entered does not match",
     "returnDateWarning": "Can't be earlier than first date",
     "selectDate": "Select date",
-    "selectTime": "Select time"
+    "selectTime": "Select time",
+    "chooseCountryCode": "Choose country code"
 }

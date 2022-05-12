@@ -238,5 +238,6 @@
     "fieldDoesNotMatch": "Значения не совпадают",
     "returnDateWarning": "Не может быть раньше первой даты",
     "selectDate": "Выберите дату",
-    "selectTime": "Выберите время"
+    "selectTime": "Выберите время",
+    "chooseCountryCode": "Выберите код страны"
 }
