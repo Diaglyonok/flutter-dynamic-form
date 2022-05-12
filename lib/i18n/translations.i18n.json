@@ -227,16 +227,16 @@
         "ZM": "Zambia",
         "ZW": "Zimbabwe"
     },
-    "passwordErrorText": "Пароль должен быть в пределах от {MIN} до {MAX} символов и содержать как минимум одну букву и одну цифру",
-    "useridErrorText": "Логин должен содержать более {MIN} символов",
-    "invalidPhoneNumber": "Введите корректный номер телефона",
-    "invalidTime": "Введите корректное время",
-    "emailIsNotValidErrorText": "Введите корректный e-mail",
-    "dateIsNotValidErrorText": "Введите дату в формате: {format}",
-    "fieldIsRequiredErrorText": "Поле не должно быть пустым",
-    "wrongFormatText": "Неверный формат данных",
-    "fieldDoesNotMatch": "Значения не совпадают",
-    "returnDateWarning": "Не может быть раньше первой даты",
-    "selectDate": "Выберите дату",
-    "selectTime": "Выберите время"
+    "passwordErrorText": "Your password must be between {MIN} and {MAX} characters and contain at least one number and one letter",
+    "useridErrorText": "Login length should be greater than {MIN} characters",
+    "invalidPhoneNumber": "Phone number is not valid",
+    "invalidTime": "Time is not valid",
+    "emailIsNotValidErrorText": "Email is not valid",
+    "dateIsNotValidErrorText": "Please enter a valid date {format}",
+    "fieldIsRequiredErrorText": "This field is required",
+    "wrongFormatText": "Something wrong with the format",
+    "fieldDoesNotMatch": "The value entered does not match",
+    "returnDateWarning": "Can't be earlier than first date",
+    "selectDate": "Select date",
+    "selectTime": "Select time"
 }

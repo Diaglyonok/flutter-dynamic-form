@@ -5,7 +5,7 @@
  * Locales: 2
  * Strings: 476 (238.0 per locale)
  *
- * Built on 2022-05-12 at 11:37 UTC
+ * Built on 2022-05-12 at 11:54 UTC
  */
 
 import 'package:flutter/widgets.dart';
@@ -538,18 +538,18 @@ class _DynamicFormLocalizationsEn {
 		'ZM': 'Zambia',
 		'ZW': 'Zimbabwe',
 	};
-	String passwordErrorText({required Object MIN, required Object MAX}) => 'Пароль должен быть в пределах от $MIN до $MAX символов и содержать как минимум одну букву и одну цифру';
-	String useridErrorText({required Object MIN}) => 'Логин должен содержать более $MIN символов';
-	String get invalidPhoneNumber => 'Введите корректный номер телефона';
-	String get invalidTime => 'Введите корректное время';
-	String get emailIsNotValidErrorText => 'Введите корректный e-mail';
-	String dateIsNotValidErrorText({required Object format}) => 'Введите дату в формате: $format';
-	String get fieldIsRequiredErrorText => 'Поле не должно быть пустым';
-	String get wrongFormatText => 'Неверный формат данных';
-	String get fieldDoesNotMatch => 'Значения не совпадают';
-	String get returnDateWarning => 'Не может быть раньше первой даты';
-	String get selectDate => 'Выберите дату';
-	String get selectTime => 'Выберите время';
+	String passwordErrorText({required Object MIN, required Object MAX}) => 'Your password must be between $MIN and $MAX characters and contain at least one number and one letter';
+	String useridErrorText({required Object MIN}) => 'Login length should be greater than $MIN characters';
+	String get invalidPhoneNumber => 'Phone number is not valid';
+	String get invalidTime => 'Time is not valid';
+	String get emailIsNotValidErrorText => 'Email is not valid';
+	String dateIsNotValidErrorText({required Object format}) => 'Please enter a valid date $format';
+	String get fieldIsRequiredErrorText => 'This field is required';
+	String get wrongFormatText => 'Something wrong with the format';
+	String get fieldDoesNotMatch => 'The value entered does not match';
+	String get returnDateWarning => 'Can\'t be earlier than first date';
+	String get selectDate => 'Select date';
+	String get selectTime => 'Select time';
 }
 
 // Path: <root>
@@ -796,18 +796,18 @@ class _DynamicFormLocalizationsRu implements _DynamicFormLocalizationsEn {
 		'ZM': 'Замбия',
 		'ZW': 'Зимбабве',
 	};
-	@override String passwordErrorText({required Object MIN, required Object MAX}) => 'Your password must be between $MIN and $MAX characters and contain at least one number and one letter';
-	@override String useridErrorText({required Object MIN}) => 'Login length should be greater than $MIN characters';
-	@override String get invalidPhoneNumber => 'Phone number is not valid';
-	@override String get invalidTime => 'Time is not valid';
-	@override String get emailIsNotValidErrorText => 'Email is not valid';
-	@override String dateIsNotValidErrorText({required Object format}) => 'Please enter a valid date $format';
-	@override String get fieldIsRequiredErrorText => 'This field is required';
-	@override String get wrongFormatText => 'Something wrong with the format';
-	@override String get fieldDoesNotMatch => 'The value entered does not match';
-	@override String get returnDateWarning => 'Can\'t be earlier than first date';
-	@override String get selectDate => 'Select date';
-	@override String get selectTime => 'Select time';
+	@override String passwordErrorText({required Object MIN, required Object MAX}) => 'Пароль должен быть в пределах от $MIN до $MAX символов и содержать как минимум одну букву и одну цифру';
+	@override String useridErrorText({required Object MIN}) => 'Логин должен содержать более $MIN символов';
+	@override String get invalidPhoneNumber => 'Введите корректный номер телефона';
+	@override String get invalidTime => 'Введите корректное время';
+	@override String get emailIsNotValidErrorText => 'Введите корректный e-mail';
+	@override String dateIsNotValidErrorText({required Object format}) => 'Введите дату в формате: $format';
+	@override String get fieldIsRequiredErrorText => 'Поле не должно быть пустым';
+	@override String get wrongFormatText => 'Неверный формат данных';
+	@override String get fieldDoesNotMatch => 'Значения не совпадают';
+	@override String get returnDateWarning => 'Не может быть раньше первой даты';
+	@override String get selectDate => 'Выберите дату';
+	@override String get selectTime => 'Выберите время';
 }
 
 /// Flat map(s) containing all translations.
@@ -1042,18 +1042,18 @@ extension on _DynamicFormLocalizationsEn {
 			'countries.CD': 'Zaire',
 			'countries.ZM': 'Zambia',
 			'countries.ZW': 'Zimbabwe',
-			'passwordErrorText': ({required Object MIN, required Object MAX}) => 'Пароль должен быть в пределах от $MIN до $MAX символов и содержать как минимум одну букву и одну цифру',
-			'useridErrorText': ({required Object MIN}) => 'Логин должен содержать более $MIN символов',
-			'invalidPhoneNumber': 'Введите корректный номер телефона',
-			'invalidTime': 'Введите корректное время',
-			'emailIsNotValidErrorText': 'Введите корректный e-mail',
-			'dateIsNotValidErrorText': ({required Object format}) => 'Введите дату в формате: $format',
-			'fieldIsRequiredErrorText': 'Поле не должно быть пустым',
-			'wrongFormatText': 'Неверный формат данных',
-			'fieldDoesNotMatch': 'Значения не совпадают',
-			'returnDateWarning': 'Не может быть раньше первой даты',
-			'selectDate': 'Выберите дату',
-			'selectTime': 'Выберите время',
+			'passwordErrorText': ({required Object MIN, required Object MAX}) => 'Your password must be between $MIN and $MAX characters and contain at least one number and one letter',
+			'useridErrorText': ({required Object MIN}) => 'Login length should be greater than $MIN characters',
+			'invalidPhoneNumber': 'Phone number is not valid',
+			'invalidTime': 'Time is not valid',
+			'emailIsNotValidErrorText': 'Email is not valid',
+			'dateIsNotValidErrorText': ({required Object format}) => 'Please enter a valid date $format',
+			'fieldIsRequiredErrorText': 'This field is required',
+			'wrongFormatText': 'Something wrong with the format',
+			'fieldDoesNotMatch': 'The value entered does not match',
+			'returnDateWarning': 'Can\'t be earlier than first date',
+			'selectDate': 'Select date',
+			'selectTime': 'Select time',
 		};
 	}
 }
@@ -1287,18 +1287,18 @@ extension on _DynamicFormLocalizationsRu {
 			'countries.CD': 'Заир',
 			'countries.ZM': 'Замбия',
 			'countries.ZW': 'Зимбабве',
-			'passwordErrorText': ({required Object MIN, required Object MAX}) => 'Your password must be between $MIN and $MAX characters and contain at least one number and one letter',
-			'useridErrorText': ({required Object MIN}) => 'Login length should be greater than $MIN characters',
-			'invalidPhoneNumber': 'Phone number is not valid',
-			'invalidTime': 'Time is not valid',
-			'emailIsNotValidErrorText': 'Email is not valid',
-			'dateIsNotValidErrorText': ({required Object format}) => 'Please enter a valid date $format',
-			'fieldIsRequiredErrorText': 'This field is required',
-			'wrongFormatText': 'Something wrong with the format',
-			'fieldDoesNotMatch': 'The value entered does not match',
-			'returnDateWarning': 'Can\'t be earlier than first date',
-			'selectDate': 'Select date',
-			'selectTime': 'Select time',
+			'passwordErrorText': ({required Object MIN, required Object MAX}) => 'Пароль должен быть в пределах от $MIN до $MAX символов и содержать как минимум одну букву и одну цифру',
+			'useridErrorText': ({required Object MIN}) => 'Логин должен содержать более $MIN символов',
+			'invalidPhoneNumber': 'Введите корректный номер телефона',
+			'invalidTime': 'Введите корректное время',
+			'emailIsNotValidErrorText': 'Введите корректный e-mail',
+			'dateIsNotValidErrorText': ({required Object format}) => 'Введите дату в формате: $format',
+			'fieldIsRequiredErrorText': 'Поле не должно быть пустым',
+			'wrongFormatText': 'Неверный формат данных',
+			'fieldDoesNotMatch': 'Значения не совпадают',
+			'returnDateWarning': 'Не может быть раньше первой даты',
+			'selectDate': 'Выберите дату',
+			'selectTime': 'Выберите время',
 		};
 	}
 }
