@@ -119,7 +119,7 @@ class DynamicFormState extends State<DynamicForm> {
                 addRepaintBoundaries: false,
                 padding: const EdgeInsets.only(top: 16.0, bottom: 20),
                 shrinkWrap: widget.title == null,
-                itemCount: itemsCount + (widget.submitBtn != null ? 1 : 0),
+                itemCount: itemsCount,
                 itemBuilder: (BuildContext ctxt, int index) {
                   FocusNode? current;
                   FocusNode? next;
