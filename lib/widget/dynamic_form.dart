@@ -24,6 +24,7 @@ const averageFieldHeight = 135.0;
 const maxFieldsForPinnedButton = 5;
 
 class DynamicForm extends StatefulWidget {
+  final bool useBaseLocale;
   final String? title;
   final Widget? submitBtn;
   final Widget? hint;
@@ -49,6 +50,7 @@ class DynamicForm extends StatefulWidget {
     this.allowPinnedButton = false,
     this.titlePadding,
     this.allowFullZip = false,
+    this.useBaseLocale = false,
   }) : super(key: key);
   @override
   DynamicFormState createState() => DynamicFormState();
@@ -92,7 +94,9 @@ class DynamicFormState extends State<DynamicForm> {
 
   @override
   Widget build(BuildContext context) {
-    locale.LocaleSettings.useDeviceLocale();
+    if (!widget.useBaseLocale) {
+      locale.LocaleSettings.useDeviceLocale();
+    }
 
     if (widget.fields.length < MediaQuery.of(context).size.height / averageFieldHeight) {
       _pinButton = widget.allowPinnedButton;
@@ -513,7 +517,7 @@ class DynamicFormState extends State<DynamicForm> {
               setState(() {});
             },
             validators: _commonTextValidators(field, additionals: [
-              (String? value) => validators?.dateValidator(value, field.compareDate),
+              //(String? value) => validators?.dateValidator(value, field.compareDate),
             ]),
             controller: startController!,
             endDate: endDate,
@@ -564,7 +568,7 @@ class DynamicFormState extends State<DynamicForm> {
               setState(() {});
             },
             validators: _commonTextValidators(field, additionals: [
-              (String? value) => validators?.dateValidator(value, field.compareDate),
+              //(String? value) => validators?.dateValidator(value, field.compareDate),
               //TODO: add validator for data not earlier
             ]),
             controller: endController!,
