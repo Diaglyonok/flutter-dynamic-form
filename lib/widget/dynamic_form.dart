@@ -184,7 +184,7 @@ class DynamicFormState extends State<DynamicForm> {
                           height: 32,
                         );
                       default:
-                        return (index == itemsCount - (widget.submitBtn != null ? 1 : 0))
+                        return (index == itemsCount - (widget.submitBtn != null ? 0 : 1))
                             ? _pinButton
                                 ? Container(height: 40)
                                 : (widget.submitBtn ?? Container())
@@ -193,7 +193,7 @@ class DynamicFormState extends State<DynamicForm> {
                                 child: _generateField(field, current, next, ctxt));
                     }
                   } else {
-                    return (index == itemsCount - (widget.submitBtn != null ? 1 : 0))
+                    return (index == itemsCount - (widget.submitBtn != null ? 0 : 1))
                         ? _pinButton
                             ? Container(height: 40)
                             : (widget.submitBtn ?? Container())
