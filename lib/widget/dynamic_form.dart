@@ -119,7 +119,7 @@ class DynamicFormState extends State<DynamicForm> {
                 addRepaintBoundaries: false,
                 padding: const EdgeInsets.only(top: 16.0, bottom: 20),
                 shrinkWrap: widget.title == null,
-                itemCount: itemsCount,
+                itemCount: itemsCount + (widget.submitBtn != null ? 1 : 0),
                 itemBuilder: (BuildContext ctxt, int index) {
                   FocusNode? current;
                   FocusNode? next;
@@ -184,7 +184,7 @@ class DynamicFormState extends State<DynamicForm> {
                           height: 32,
                         );
                       default:
-                        return (index == itemsCount - 1)
+                        return (index == itemsCount - (widget.submitBtn != null ? 1 : 0))
                             ? _pinButton
                                 ? Container(height: 40)
                                 : (widget.submitBtn ?? Container())
@@ -193,7 +193,7 @@ class DynamicFormState extends State<DynamicForm> {
                                 child: _generateField(field, current, next, ctxt));
                     }
                   } else {
-                    return (index == itemsCount - 1)
+                    return (index == itemsCount - (widget.submitBtn != null ? 1 : 0))
                         ? _pinButton
                             ? Container(height: 40)
                             : (widget.submitBtn ?? Container())
@@ -319,6 +319,19 @@ class DynamicFormState extends State<DynamicForm> {
       return null;
     }
 
+    final autoUpdateValue = DynamicFormUtils.getAutoUpdateValue(field: field, values: values);
+    if (autoUpdateValue != null && (values[field.fieldId] == null)) {
+      values[field.fieldId] = autoUpdateValue.copyWith(autoUpdated: true);
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        controllers[field.fieldId]?.text = autoUpdateValue.value;
+      });
+    } else if (autoUpdateValue == null && (values[field.fieldId]?.autoUpdated ?? false)) {
+      values.remove(field.fieldId);
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        controllers[field.fieldId]?.text = '';
+      });
+    }
+
     if (field.fieldType == null) {
       return _getDefaultField(field, current, next, context);
     }
@@ -389,6 +402,16 @@ class DynamicFormState extends State<DynamicForm> {
     }
   }
 
+  _commonOnChanged(CompositeValue? value, String fieldId) {
+    if (value == null) {
+      values.remove(fieldId);
+    } else {
+      values[fieldId] = value;
+    }
+
+    setState(() {});
+  }
+
   ///
   ///
   ///
@@ -416,26 +439,29 @@ class DynamicFormState extends State<DynamicForm> {
 
     DateTime? startDate;
     DateTime? endDate;
-    try {
-      startDate = (extra.format ?? DateFormat(DynamicFormValidators.datePattern))
-          .parseStrict(values[field.fieldId]!.value);
-      if (field.extra.allowedDifference != null) {
-        startDate = startDate.subtract(field.extra.allowedDifference!);
-      }
-    } catch (e) {
-      log(e.toString());
-      //ignore
-    }
 
-    try {
-      endDate = (extra.format ?? DateFormat(DynamicFormValidators.datePattern))
-          .parseStrict(values[field.fieldId]!.extra!);
-      if (field.extra.allowedDifference != null) {
-        endDate = endDate.add(field.extra.allowedDifference!);
+    if (values[field.fieldId] != null) {
+      try {
+        startDate = (extra.format ?? DateFormat(DynamicFormValidators.datePattern))
+            .parseStrict(values[field.fieldId]!.value);
+        if (field.extra.allowedDifference != null) {
+          startDate = startDate.subtract(field.extra.allowedDifference!);
+        }
+      } catch (e) {
+        log(e.toString());
+        //ignore
       }
-    } catch (e) {
-      log(e.toString());
-      //ignore
+
+      try {
+        endDate = (extra.format ?? DateFormat(DynamicFormValidators.datePattern))
+            .parseStrict(values[field.fieldId]!.extra!);
+        if (field.extra.allowedDifference != null) {
+          endDate = endDate.add(field.extra.allowedDifference!);
+        }
+      } catch (e) {
+        log(e.toString());
+        //ignore
+      }
     }
 
     final style = widget.commonStyle ??
@@ -458,7 +484,11 @@ class DynamicFormState extends State<DynamicForm> {
             customLabel: field.label,
             pickType: extra.pickType ?? PickType.SuffixGetter,
             scrollPadding: _pinButton ? 100 : null,
-            onChanged: (CompositeValue value) {
+            onChanged: (CompositeValue? value) {
+              if (value == null) {
+                values.remove(field.fieldId);
+                return;
+              }
               values[field.fieldId] =
                   CompositeValue(startController?.text ?? value.value, extra: endController?.text);
               setState(() {});
@@ -505,7 +535,11 @@ class DynamicFormState extends State<DynamicForm> {
             scrollPadding: _pinButton ? 100 : null,
             onChanged: extra.pickType == PickType.FieldTap
                 ? null
-                : (CompositeValue value) {
+                : (CompositeValue? value) {
+                    if (value == null) {
+                      values.remove(field.fieldId);
+                      return;
+                    }
                     values[field.fieldId] = CompositeValue(startController.text,
                         extra: endController?.text ?? value.value);
                     setState(() {});
@@ -591,7 +625,11 @@ class DynamicFormState extends State<DynamicForm> {
       next: next,
       style: widget.commonStyle,
       scrollPadding: _pinButton ? 100 : null,
-      onChanged: (CompositeValue value) {
+      onChanged: (CompositeValue? value) {
+        if (value == null) {
+          values.remove(field.fieldId);
+          return;
+        }
         values[field.fieldId] = value;
         setState(() {});
       },
@@ -634,10 +672,7 @@ class DynamicFormState extends State<DynamicForm> {
       style: widget.commonStyle,
       maskText: true,
       scrollPadding: _pinButton ? 100 : null,
-      onChanged: (value) {
-        values[field.fieldId] = value;
-        setState(() {});
-      },
+      onChanged: (value) => _commonOnChanged(value, field.fieldId),
       controller: controllers[field.fieldId]!,
       validators: _commonTextValidators(field, additionals: [
         (String? value) => validators?.dateValidator(value, field.compareDate),
@@ -663,10 +698,7 @@ class DynamicFormState extends State<DynamicForm> {
       scrollPadding: _pinButton ? 100 : null,
       required: field.required,
       validators: _commonTextValidators(field),
-      onChanged: (value) {
-        values[field.fieldId] = value;
-        setState(() {});
-      },
+      onChanged: (value) => _commonOnChanged(value, field.fieldId),
       controller: controllers[field.fieldId]!,
     );
   }
@@ -730,10 +762,7 @@ class DynamicFormState extends State<DynamicForm> {
       inputType: TextInputType.text,
       multiline: true,
       validators: _commonTextValidators(field),
-      onChanged: (value) {
-        values[field.fieldId] = value;
-        setState(() {});
-      },
+      onChanged: (value) => _commonOnChanged(value, field.fieldId),
       controller: controllers[field.fieldId]!,
     );
   }
@@ -755,10 +784,7 @@ class DynamicFormState extends State<DynamicForm> {
       scrollPadding: _pinButton ? 100 : null,
       inputType: TextInputType.text,
       validators: _commonTextValidators(field),
-      onChanged: (value) {
-        values[field.fieldId] = value;
-        setState(() {});
-      },
+      onChanged: (value) => _commonOnChanged(value, field.fieldId),
       controller: controllers[field.fieldId]!,
     );
   }
@@ -782,10 +808,7 @@ class DynamicFormState extends State<DynamicForm> {
         validators: _commonTextValidators(field, additionals: [
           (String? email) => validators?.emailValidator(email),
         ]),
-        onChanged: (value) {
-          values[field.fieldId] = value;
-          setState(() {});
-        },
+        onChanged: (value) => _commonOnChanged(value, field.fieldId),
         controller: controllers[field.fieldId]!,
         maskText: field.maskText);
   }
@@ -823,10 +846,7 @@ class DynamicFormState extends State<DynamicForm> {
         validators: _commonTextValidators(field, additionals: [
           (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
         ]),
-        onChanged: (value) {
-          values[field.fieldId] = value;
-          setState(() {});
-        },
+        onChanged: (value) => _commonOnChanged(value, field.fieldId),
         controller: controllers[field.fieldId]!,
         maskText: field.maskText,
       ),
@@ -864,10 +884,7 @@ class DynamicFormState extends State<DynamicForm> {
       scrollPadding: _pinButton ? 100 : null,
       inputType: TextInputType.number,
       validators: _commonTextValidators(field),
-      onChanged: (value) {
-        values[field.fieldId] = value;
-        setState(() {});
-      },
+      onChanged: (value) => _commonOnChanged(value, field.fieldId),
       controller: controllers[field.fieldId]!,
     );
   }
@@ -880,7 +897,11 @@ class DynamicFormState extends State<DynamicForm> {
       next: next,
       type: CupertinoDatePickerMode.time,
       scrollPadding: _pinButton ? 100 : null,
-      onChanged: (CompositeValue value) {
+      onChanged: (CompositeValue? value) {
+        if (value == null) {
+          values.remove(field.fieldId);
+          return;
+        }
         values[field.fieldId] = value;
         setState(() {});
       },

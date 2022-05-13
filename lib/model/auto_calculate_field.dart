@@ -1,10 +1,13 @@
 import '../model/dynamic_form_models.dart';
 
 class AutoCalculateField extends Field {
+  final CompositeValue? Function(Map<String, CompositeValue>? values) calculate;
+
   AutoCalculateField({
     required String fieldId,
     required FieldTypes? fieldType,
     required String label,
+    required this.calculate,
     bool required = false,
     bool readOnly = false,
     String? labelId,

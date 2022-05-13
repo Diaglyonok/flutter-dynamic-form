@@ -1,3 +1,5 @@
+import 'package:realtor_manage_app/src/temp/lib/model/auto_calculate_field.dart';
+
 import '../model/dynamic_form_models.dart';
 
 class DynamicFormUtils {
@@ -41,5 +43,16 @@ class DynamicFormUtils {
     }
 
     return result;
+  }
+
+  static CompositeValue? getAutoUpdateValue({
+    required Field field,
+    required Map<String, CompositeValue> values,
+  }) {
+    if (field is! AutoCalculateField) {
+      return null;
+    }
+
+    return field.calculate(values);
   }
 }

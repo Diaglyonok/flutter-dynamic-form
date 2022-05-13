@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../model/auto_calculate_field.dart';
 import '../../model/dynamic_form_models.dart';
 import '../../model/multitype_field.dart';
 import 'multitype_wrapper.dart';
@@ -10,7 +11,7 @@ class DynamicTextField extends StatefulWidget {
   final Field field;
   final String? Function(String?)? validators;
   final TextEditingController controller;
-  final dynamic Function(CompositeValue)? onChanged;
+  final dynamic Function(CompositeValue?)? onChanged;
   final BuildContext context;
   final String? hintText;
   final Widget? suffixIcon;
@@ -60,6 +61,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
 
   @override
   void initState() {
+    if (widget.field is AutoCalculateField) {}
     currentExtra =
         widget.field is MultitypeField ? (widget.field as MultitypeField).types.first : null;
     super.initState();
@@ -149,7 +151,17 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
               .caption!
               .copyWith(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2)),
           labelText: caption,
-          suffixIcon: widget.suffixIcon,
+          suffixIcon: widget.suffixIcon ??
+              (widget.field is AutoCalculateField && !widget.field.readOnly
+                  ? IconButton(
+                      onPressed: () {
+                        widget.onChanged?.call(null);
+                      },
+                      icon: Icon(
+                        Icons.restart_alt,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ))
+                  : null),
           counterStyle: widget.field.maxLength != null
               ? Theme.of(context)
                   .textTheme

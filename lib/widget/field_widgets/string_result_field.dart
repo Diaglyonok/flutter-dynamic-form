@@ -51,7 +51,7 @@ class _StringResultViewState extends State<StringResultView> {
       },
       child: AbsorbPointer(
         child: DynamicTextField(
-          //current: widget.current,
+          current: widget.current,
           style: widget.style,
           next: widget.next,
           label: widget.field.label,

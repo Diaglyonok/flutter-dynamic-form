@@ -18,7 +18,7 @@ class DateField extends StatelessWidget {
   final double? scrollPadding;
   final CupertinoDatePickerMode type;
   final String? customLabel;
-  final Function(CompositeValue)? onChanged;
+  final Function(CompositeValue?)? onChanged;
   final void Function(DateTime) onDateTimeChanged;
   final String? Function(String?)? validators;
   final TextEditingController controller;

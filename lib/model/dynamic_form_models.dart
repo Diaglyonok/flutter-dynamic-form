@@ -187,11 +187,24 @@ class Option {
 class CompositeValue {
   String? extra;
   String value;
-  CompositeValue(this.value, {this.extra});
+  bool autoUpdated;
+  CompositeValue(this.value, {this.extra, this.autoUpdated = false});
 
   @override
   String toString() {
     return '$value:$extra';
+  }
+
+  CompositeValue copyWith({
+    String? value,
+    String? extra,
+    bool? autoUpdated,
+  }) {
+    return CompositeValue(
+      value ?? this.value,
+      extra: extra ?? this.extra,
+      autoUpdated: autoUpdated ?? false,
+    );
   }
 }
 

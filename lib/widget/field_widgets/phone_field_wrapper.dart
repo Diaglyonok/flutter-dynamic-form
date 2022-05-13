@@ -355,7 +355,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                       Expanded(
                         child: TextField(
                           focusNode: focusNode,
-                          keyboardType: TextInputType.phone,
+                          keyboardType: TextInputType.text,
                           cursorColor: Theme.of(context).colorScheme.secondary,
                           decoration: InputDecoration(
                             border: InputBorder.none,
