@@ -1,5 +1,4 @@
-import 'package:realtor_manage_app/src/temp/lib/model/auto_calculate_field.dart';
-
+import '../model/auto_calculate_field.dart';
 import '../model/dynamic_form_models.dart';
 
 class DynamicFormUtils {
