@@ -55,6 +55,7 @@ enum FieldTypes {
   Number,
   DatePeriod,
   ScreenResult,
+  Color,
 }
 
 class Field {
@@ -172,10 +173,6 @@ class Field {
       children: children ?? children,
     );
   }
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => super.hashCode;
 }
 
 class Option {

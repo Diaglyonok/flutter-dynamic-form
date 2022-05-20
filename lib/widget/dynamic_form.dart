@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dynamic_form/widget/field_widgets/color_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../flutter_dynamic_form.dart';
@@ -61,6 +62,7 @@ class DynamicFormState extends State<DynamicForm> {
     FieldTypes.Label,
     FieldTypes.CheckBox,
     FieldTypes.RadioOptions,
+    FieldTypes.Color,
   ];
 
   Map<String, CompositeValue> values = {};
@@ -259,6 +261,7 @@ class DynamicFormState extends State<DynamicForm> {
     for (var field in widget.fields) {
       switch (field.fieldType) {
         case FieldTypes.Label:
+        case FieldTypes.Color:
         case FieldTypes.CheckBox:
           break;
         case FieldTypes.Text:
@@ -341,6 +344,8 @@ class DynamicFormState extends State<DynamicForm> {
     }
 
     switch (field.fieldType) {
+      case FieldTypes.Color:
+        return _generateColorPickcer(context, field, current, next);
       case FieldTypes.RadioOptions:
         return _generateRadioField(context, field, current, next);
       case FieldTypes.Label:
@@ -370,6 +375,7 @@ class DynamicFormState extends State<DynamicForm> {
       case FieldTypes.ScreenResult:
         return _generateScreenResultField(context, field as ScreenResultField, current, next);
     }
+    return null;
   }
 
   String? Function(String?)? _commonTextValidators(
@@ -931,5 +937,14 @@ class DynamicFormState extends State<DynamicForm> {
       ]),
       controller: controller!,
     );
+  }
+
+  Widget? _generateColorPickcer(
+      BuildContext context, Field field, FocusNode? current, FocusNode? next) {
+    return ColorPicker(
+        field: field,
+        onChanged: (color) {
+          final parsedColor = Color(color);
+        });
   }
 }
