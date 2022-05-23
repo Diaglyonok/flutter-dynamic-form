@@ -898,7 +898,7 @@ class DynamicFormState extends State<DynamicForm> {
       scrollPadding: _pinButton ? 100 : null,
       inputType: const TextInputType.numberWithOptions(decimal: true),
       formatters: [
-        FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
+        FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
       ],
       validators: _commonTextValidators(field),
       onChanged: (value) => _commonOnChanged(value, field.fieldId),
