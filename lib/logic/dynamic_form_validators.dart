@@ -120,6 +120,21 @@ class DynamicFormValidators {
     return null;
   }
 
+  String? numberValidator(String? field) {
+    var value = field;
+
+    //if the text is optional, then check only non-empty
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+
+    if (double.tryParse(value) == null) {
+      return locale.dynamicFormTranslation.wrongFormatText;
+    }
+
+    return null;
+  }
+
   String? passwordValidator(CompositeValue field) {
     final value = field.value;
     final options = validationOptions == null

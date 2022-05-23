@@ -900,7 +900,12 @@ class DynamicFormState extends State<DynamicForm> {
       formatters: [
         FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
       ],
-      validators: _commonTextValidators(field),
+      validators: _commonTextValidators(
+        field,
+        additionals: [
+          if (validators != null) validators!.numberValidator,
+        ],
+      ),
       onChanged: (value) => _commonOnChanged(value, field.fieldId),
       controller: controllers[field.fieldId]!,
     );
