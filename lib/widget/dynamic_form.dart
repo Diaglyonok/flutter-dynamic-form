@@ -313,6 +313,9 @@ class DynamicFormState extends State<DynamicForm> {
       }
 
       nodes.add(FocusNode(debugLabel: field.label));
+      if (field.value != null) {
+        values[field.fieldId] = field.value!;
+      }
     }
   }
 
