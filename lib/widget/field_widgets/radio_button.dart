@@ -31,30 +31,27 @@ class _RadioButtonState extends State<RadioButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-      widget.title != null
-          ? Text(widget.title,
-              style: Theme.of(context)
-                  .textTheme
-                  .caption!
-                  .copyWith(color: Colors.black.withOpacity(0.4)))
-          : const SizedBox(
-              height: 0,
-            ),
-      widget.title != null
-          ? const SizedBox(
-              width: 16,
-              height: 16,
-            )
-          : const SizedBox(
-              height: 0,
-            ),
-      Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: _getList())
-    ]);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(
+          height: 8,
+        ),
+        Text(widget.title,
+            style: Theme.of(context)
+                .textTheme
+                .caption!
+                .copyWith(color: Theme.of(context).colorScheme.onBackground)),
+        const SizedBox(
+          height: 8,
+        ),
+        Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: _getList())
+      ],
+    );
   }
 
   List<Widget> _getList() {
@@ -62,6 +59,7 @@ class _RadioButtonState extends State<RadioButton> {
       return [
         Expanded(
             child: ToggleButton(
+          height: 40,
           textSelected: option.value!,
           selected: (value?.value == option.value),
           onChange: (changedValue) {
@@ -105,19 +103,24 @@ class ToggleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.headline6!;
+    TextStyle textStyle = Theme.of(context).textTheme.button!.copyWith(fontSize: 16);
     var borderRadius = BorderRadius.circular(borderRadiusValue);
-    Widget selectedWidget = Container(
+    Widget selectedWidget = AnimatedContainer(
+      duration: const Duration(milliseconds: 400),
       height: height,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
         borderRadius: borderRadius,
+        border: Border.all(
+          width: 1,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
       ),
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
-          splashColor: Colors.white.withOpacity(0.2),
-          highlightColor: Colors.white.withOpacity(0.2),
+          splashColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
+          highlightColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
           borderRadius: borderRadius,
           onTap: () {
             onChange(false);
@@ -130,24 +133,25 @@ class ToggleButton extends StatelessWidget {
                 textAlign: TextAlign.center,
                 semanticsLabel: textSelected,
                 textScaleFactor: 1.0,
-                style: textStyle.copyWith(color: Colors.white),
+                style: textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
             ),
           ),
         ),
       ),
     );
-    Widget notSelectedWidget = Container(
+    Widget notSelectedWidget = AnimatedContainer(
+      duration: const Duration(milliseconds: 400),
       height: height,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withOpacity(0.12),
+        color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
         borderRadius: borderRadius,
       ),
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
-          splashColor: Colors.white.withOpacity(0.2),
-          highlightColor: Colors.white.withOpacity(0.2),
+          splashColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
+          highlightColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
           borderRadius: borderRadius,
           onTap: () {
             onChange(true);
@@ -160,7 +164,7 @@ class ToggleButton extends StatelessWidget {
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.0,
                 semanticsLabel: textUnselected ?? textSelected,
-                style: textStyle.copyWith(color: Theme.of(context).primaryColor),
+                style: textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
             ),
           ),

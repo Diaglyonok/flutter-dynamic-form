@@ -1,11 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-const Map<String, FieldTypes> INPUT_TO_TYPE_MAP = {
-  'date': FieldTypes.Date,
-  'text': FieldTypes.Text,
-  'number': FieldTypes.Number,
-};
-
 class DynamicFormsConstants {
   static String defaultSpecSymbols = '~!@#\$%^&*()';
   static String loginUserInputRegex = '[\\[\\]0-9a-zA-Z`"\'/!?@^_#%&\$*+-.,:;(){}|<>=~]';
@@ -62,52 +56,41 @@ class Field {
   final String fieldId;
   final bool required;
   final bool readOnly;
-  final FieldTypes? _fieldType;
+  final FieldTypes fieldType;
   final String label;
-  final String? labelId;
+
   final bool? maskText;
   final int? maxLength;
   final String? inputType; // can be 'Text', 'Number' or 'Date'
   final List<Option>? options;
   final String? confirmField;
-  final bool? strict;
-  final String? fieldName;
-  final int? versionId;
+
   final CompositeValue? value;
   final List<DependsOnValue>? dependsOn;
-  final List<Field>? children;
   final bool? isCapitalized;
   final String? validationExpression;
   final String? validationErrorMessage;
   final CompareDate? compareDate;
-  final int? parentId;
+  //final int? parentId;
 
   Field({
-    this.fieldName,
-    this.versionId,
     required this.fieldId,
+    required this.fieldType,
+    required this.label,
     this.required = false,
     this.readOnly = false,
-    required this.label,
-    this.labelId,
     this.maskText,
     this.maxLength,
     this.inputType,
     this.options,
     this.isCapitalized,
-    FieldTypes? fieldType,
-    this.strict,
     this.confirmField,
     this.dependsOn,
     this.value,
-    this.parentId,
-    this.children,
     this.compareDate,
     this.validationExpression,
     this.validationErrorMessage,
-  }) : _fieldType = fieldType;
-
-  FieldTypes get fieldType => _fieldType ?? INPUT_TO_TYPE_MAP[inputType?.toLowerCase() ?? '']!;
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -126,21 +109,15 @@ class Field {
       required: required,
       readOnly: readOnly,
       label: label,
-      labelId: labelId,
       maskText: maskText,
       maxLength: maxLength,
       inputType: inputType,
       confirmField: confirmField,
-      strict: strict,
-      fieldName: fieldName,
       isCapitalized: isCapitalized,
       fieldType: fieldType,
-      versionId: versionId,
       options: options,
       compareDate: compareDate,
       dependsOn: dependsOn,
-      parentId: parentId,
-      children: children,
       validationExpression: validationExpression,
       validationErrorMessage: validationErrorMessage,
       value: value,
@@ -153,24 +130,18 @@ class Field {
       required: required,
       readOnly: readOnly,
       label: newLabel ?? label,
-      labelId: labelId,
       maskText: maskText,
       maxLength: maxLength,
       inputType: inputType,
       confirmField: confirmField,
-      strict: strict,
-      fieldName: fieldName,
       fieldType: fieldType,
       compareDate: compareDate,
       isCapitalized: isCapitalized,
-      versionId: versionId,
       options: options,
       dependsOn: dependsOn,
       value: value,
       validationExpression: validationExpression,
       validationErrorMessage: validationErrorMessage,
-      parentId: parentId ?? parentId,
-      children: children ?? children,
     );
   }
 }

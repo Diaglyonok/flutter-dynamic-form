@@ -134,17 +134,17 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(bottom: 6.0, top: 2),
           disabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.onBackground.withAlpha(0x66), width: 1)),
+              borderSide:
+                  BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.4)),
           focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1)),
           enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.onBackground.withAlpha(0x66), width: 1)),
+              borderSide:
+                  BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.4)),
           labelStyle: Theme.of(context)
               .textTheme
               .caption!
-              .copyWith(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.64)),
+              .copyWith(color: Theme.of(context).colorScheme.onBackground),
           hintText: widget.hintText,
           hintStyle: Theme.of(context)
               .textTheme

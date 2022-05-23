@@ -102,6 +102,14 @@ class _MyAppState extends State<MyApp> {
         fieldType: FieldTypes.PlainText,
         label: 'Plain text',
       ),
+      Field(
+          fieldId: 'radio_example',
+          fieldType: FieldTypes.RadioOptions,
+          label: 'Radio Example',
+          options: [
+            Option(id: '0', value: 'val 0'),
+            Option(id: '1', value: 'val 1'),
+          ]),
     ];
     super.initState();
   }
@@ -115,11 +123,10 @@ class _MyAppState extends State<MyApp> {
             title: const Text('Dynamic form example app'),
           ),
           body: DynamicForm(
-            physics: const NeverScrollableScrollPhysics(),
             key: key,
             fields: fields!,
             submitBtn: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: SimpleButton(
                 title: 'Validate',
                 callback: () {
