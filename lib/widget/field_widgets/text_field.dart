@@ -102,7 +102,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
         enabled: !widget.field.readOnly,
         autocorrect: false,
         controller: widget.controller,
-        keyboardType: inputType,
+        keyboardType: inputType ?? widget.inputType,
         textInputAction: widget.next == null ? TextInputAction.done : TextInputAction.next,
         validator: widget.field.readOnly ? null : widget.validators,
         onChanged: widget.field.readOnly
