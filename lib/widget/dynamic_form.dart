@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/color_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -895,7 +896,10 @@ class DynamicFormState extends State<DynamicForm> {
       next: next,
       current: current,
       scrollPadding: _pinButton ? 100 : null,
-      inputType: TextInputType.number,
+      inputType: const TextInputType.numberWithOptions(decimal: true),
+      formatters: [
+        FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
+      ],
       validators: _commonTextValidators(field),
       onChanged: (value) => _commonOnChanged(value, field.fieldId),
       controller: controllers[field.fieldId]!,
