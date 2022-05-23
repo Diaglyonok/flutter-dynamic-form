@@ -37,10 +37,13 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
-      Field(
+      ColorField(
         fieldId: 'color_example',
-        fieldType: FieldTypes.Color,
+        initColor: Colors.red,
         label: 'Color Example',
+        modifier: (color) {
+          return Color.alphaBlend(Colors.white.withOpacity(0.7), color);
+        },
       ),
       Field(
         fieldId: 'text_example',

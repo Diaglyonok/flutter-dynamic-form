@@ -944,7 +944,8 @@ class DynamicFormState extends State<DynamicForm> {
     return ColorPicker(
         field: field,
         onChanged: (color) {
-          final parsedColor = Color(color);
+          values[field.fieldId] = CompositeValue(color.toString());
+          setState(() {});
         });
   }
 }

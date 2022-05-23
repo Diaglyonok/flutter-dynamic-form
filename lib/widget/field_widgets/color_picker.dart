@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_dynamic_form/model/dynamic_form_models.dart';
 
+import '../../model/color_field.dart';
+
 class ColorPicker extends StatefulWidget {
   final Field field;
   final Function(int) onChanged;
@@ -13,20 +15,47 @@ class ColorPicker extends StatefulWidget {
 
 class _ColorPickerState extends State<ColorPicker> {
   Color color = Colors.white;
+
+  @override
+  void initState() {
+    final field = widget.field;
+    if (field is ColorField && field.value != null && int.tryParse(field.value!.value) != null) {
+      color = Color(int.tryParse(widget.field.value!.value)!);
+    }
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       child: MaterialButton(
-        padding: const EdgeInsets.only(),
+        padding: const EdgeInsets.only(top: 12),
         child: Row(
           children: [
-            Expanded(child: Text(widget.field.label)),
+            Expanded(
+                child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    child: Center(child: Text(widget.field.label)))),
+            const SizedBox(
+              width: 24,
+            ),
             CircleAvatar(
-              backgroundColor: color,
+              backgroundColor:
+                  widget.field is ColorField && (widget.field as ColorField).modifier != null
+                      ? (widget.field as ColorField).modifier!.call(color)
+                      : color,
               radius: 24,
             ),
             const SizedBox(
-              width: 24,
+              width: 12,
             )
           ],
         ),

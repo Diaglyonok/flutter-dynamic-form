@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 
 class BottomPickButton extends StatelessWidget {
   final String text;
-  final TextStyle style;
+  final TextStyle? style;
   final Widget child;
   final bool rightArrow;
+  final Function()? customOnTap;
 
   const BottomPickButton({
     Key? key,
     required this.text,
-    required this.style,
+    this.style,
     required this.child,
+    this.customOnTap,
     this.rightArrow = false,
   }) : super(key: key);
 
@@ -31,7 +33,7 @@ class BottomPickButton extends StatelessWidget {
           // padding: const EdgeInsets.only(),
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: Theme.of(context).colorScheme.secondary,
@@ -62,11 +64,12 @@ class BottomPickButton extends StatelessWidget {
               ],
             ),
           ),
-          onTap: () {
-            Navigator.of(context).push(
-              BottomSheetRoute(child: child),
-            );
-          },
+          onTap: customOnTap ??
+              () {
+                Navigator.of(context).push(
+                  BottomSheetRoute(child: child),
+                );
+              },
         ),
       ),
     );
