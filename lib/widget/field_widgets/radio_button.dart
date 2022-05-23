@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/dynamic_form_models.dart';
@@ -34,14 +35,16 @@ class _RadioButtonState extends State<RadioButton> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const SizedBox(
-          height: 8,
-        ),
-        Text(widget.title,
-            style: Theme.of(context)
-                .textTheme
-                .caption!
-                .copyWith(color: Theme.of(context).colorScheme.onBackground)),
+        if (widget.title.isNotEmpty)
+          const SizedBox(
+            height: 8,
+          ),
+        if (widget.title.isNotEmpty)
+          Text(widget.title,
+              style: Theme.of(context)
+                  .textTheme
+                  .caption!
+                  .copyWith(color: Theme.of(context).colorScheme.onBackground)),
         const SizedBox(
           height: 8,
         ),
@@ -109,12 +112,8 @@ class ToggleButton extends StatelessWidget {
       duration: const Duration(milliseconds: 400),
       height: height,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+        color: Theme.of(context).colorScheme.secondary,
         borderRadius: borderRadius,
-        border: Border.all(
-          width: 1,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
       ),
       child: Material(
         type: MaterialType.transparency,
@@ -128,12 +127,13 @@ class ToggleButton extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: padding),
             child: Center(
-              child: Text(
+              child: AutoSizeText(
                 textSelected,
+                maxLines: 2,
                 textAlign: TextAlign.center,
                 semanticsLabel: textSelected,
                 textScaleFactor: 1.0,
-                style: textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
+                style: textStyle.copyWith(color: Theme.of(context).colorScheme.onSecondary),
               ),
             ),
           ),
@@ -159,7 +159,7 @@ class ToggleButton extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: padding),
             child: Center(
-              child: Text(
+              child: AutoSizeText(
                 textUnselected ?? textSelected,
                 textAlign: TextAlign.center,
                 textScaleFactor: 1.0,

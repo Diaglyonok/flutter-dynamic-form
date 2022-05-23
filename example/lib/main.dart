@@ -103,13 +103,15 @@ class _MyAppState extends State<MyApp> {
         label: 'Plain text',
       ),
       Field(
-          fieldId: 'radio_example',
-          fieldType: FieldTypes.RadioOptions,
-          label: 'Radio Example',
-          options: [
-            Option(id: '0', value: 'val 0'),
-            Option(id: '1', value: 'val 1'),
-          ]),
+        fieldId: 'radio_example',
+        fieldType: FieldTypes.RadioOptions,
+        label: '',
+        options: [
+          Option(id: 'type0', value: 'Едино-\nразовая'),
+          Option(id: 'type1', value: 'Еже-\nнедельная'),
+          Option(id: 'type2', value: 'Еже-\nмесячная'),
+        ],
+      ),
     ];
     super.initState();
   }
