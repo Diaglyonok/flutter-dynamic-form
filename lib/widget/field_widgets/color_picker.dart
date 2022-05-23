@@ -69,6 +69,8 @@ class _ColorPickerState extends State<ColorPicker> {
                 setState(() {
                   this.color = color;
                 });
+
+                widget.onChanged(color.value);
               },
             ),
           );
