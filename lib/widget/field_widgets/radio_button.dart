@@ -67,7 +67,7 @@ class _RadioButtonState extends State<RadioButton> {
           selected: (value?.value == option.value),
           onChange: (changedValue) {
             if (changedValue != null && changedValue is bool && changedValue) {
-              value = CompositeValue(option.value!);
+              value = CompositeValue(option.value!, extra: option.id);
               setState(() {});
               widget.onChanged(value!);
             }
