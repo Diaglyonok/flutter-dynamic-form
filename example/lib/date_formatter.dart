@@ -13,6 +13,22 @@ class DateFormatter {
     //locale.languageCode == 'en'
     return DateFormat('MM/dd' + (short ? '' : '/yyyy'));
   }
+}
 
-  static byContext(BuildContext context) {}
+extension DateFormatExt on DateFormat {
+  DateTime? safeStrictParse(String? inp) {
+    try {
+      return parseStrict(inp!);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  String? safeFormat(DateTime? dateTime) {
+    try {
+      return format(dateTime!);
+    } catch (e) {
+      return null;
+    }
+  }
 }

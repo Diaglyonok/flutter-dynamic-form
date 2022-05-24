@@ -38,16 +38,9 @@ class _StringResultViewState extends State<StringResultView> {
           widget.controller.text = result.value;
           prefix = result.extra;
           setState(() {});
-        }
 
-        widget.onChanged?.call(
-          result ??
-              ScreenResultCompositeValue(
-                result?.value ?? '',
-                extra: result?.extra,
-                jsonData: result?.jsonData,
-              ),
-        );
+          widget.onChanged?.call(result);
+        }
       },
       child: AbsorbPointer(
         child: DynamicTextField(

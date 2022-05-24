@@ -331,7 +331,8 @@ class DynamicFormState extends State<DynamicForm> {
     }
 
     final autoUpdateValue = DynamicFormUtils.getAutoUpdateValue(field: field, values: values);
-    if (autoUpdateValue != null && (values[field.fieldId] == null)) {
+    if (autoUpdateValue != null &&
+        (values[field.fieldId] == null || (values[field.fieldId]?.autoUpdated ?? false))) {
       values[field.fieldId] = autoUpdateValue.copyWith(autoUpdated: true);
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         controllers[field.fieldId]?.text = autoUpdateValue.value;

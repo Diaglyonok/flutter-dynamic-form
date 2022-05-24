@@ -7,6 +7,7 @@ import 'package:flutter_dynamic_form/flutter_dynamic_form.dart';
 import 'package:flutter_dynamic_form/model/auto_calculate_field.dart';
 import 'package:hello_example/date_formatter.dart';
 import 'package:hello_example/theme.dart';
+import 'package:jiffy/jiffy.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,9 +24,14 @@ class _MyAppState extends State<MyApp> {
   List<Field>? fields;
   final key = GlobalKey<DynamicFormState>();
 
+  final Map<String, String> priceTypeTranslations = {
+    'night': 'Night',
+    'month': 'Month',
+  };
+
   @override
   void initState() {
-    final format = DateFormatter.byContext(context);
+    final format = DateFormatter.byLocale(context);
     fields = [
       ScreenResultField(
         fieldId: 'screen_res_example',
@@ -56,37 +62,6 @@ class _MyAppState extends State<MyApp> {
         fieldId: 'phone_example',
         label: 'Phone Text',
       ),
-      PeriodField(
-        fieldId: 'date_period',
-        label: 'Period Start',
-        extra: PeriodExtra(
-          secondLabel: 'Period End',
-          type: CupertinoDatePickerMode.date,
-          pickType: PickType.FieldTap,
-          format: format,
-        ),
-      ),
-      MultitypeField(
-        fieldId: 'miltiselect_example',
-        fieldType: FieldTypes.Number,
-        label: 'MultiType Example',
-        types: ['type_1', 'type_2'],
-        translations: {
-          'type_1': 'Type 1',
-          'type_2': 'Type 2',
-        },
-      ),
-      AutoCalculateField(
-        calculate: (values) {
-          if (values?['date_period']?.value == null) {
-            return null;
-          }
-          return CompositeValue('auto result');
-        },
-        fieldId: 'auto_example',
-        fieldType: FieldTypes.Number,
-        label: 'Select Multitype (Auto)',
-      ),
       Field(
         fieldId: 'simple_num_fueld',
         fieldType: FieldTypes.Number,
@@ -111,6 +86,61 @@ class _MyAppState extends State<MyApp> {
           Option(id: 'type1', value: 'Еже-\nнедельная'),
           Option(id: 'type2', value: 'Еже-\nмесячная'),
         ],
+      ),
+      PeriodField(
+        fieldId: 'date_period',
+        label: 'Period label 1',
+        extra: PeriodExtra(
+          secondLabel: 'Period label 2',
+          type: CupertinoDatePickerMode.date,
+          pickType: PickType.FieldTap,
+          format: format,
+        ),
+      ),
+      MultitypeField(
+        fieldId: 'price',
+        fieldType: FieldTypes.Number,
+        label: 'Price',
+        types: priceTypeTranslations.keys.toList(),
+        translations: priceTypeTranslations,
+      ),
+      AutoCalculateField(
+        calculate: (values) {
+          final start = format.safeStrictParse(values?['date_period']?.value);
+          final end = format.safeStrictParse(values?['date_period']?.extra);
+
+          if (values == null ||
+              start == null ||
+              end == null ||
+              values['price']?.value == null ||
+              values['price']!.value.isEmpty ||
+              double.tryParse(values['price']!.value) == null) {
+            return null;
+          }
+
+          final priceVal = double.tryParse(values['price']!.value)!;
+
+          if (values['price']!.extra == 'night') {
+            final days = end.difference(start).inDays;
+            return CompositeValue((days * priceVal).toStringAsFixed(2));
+          } else if (values['price']!.extra == 'month') {
+            final jstart = Jiffy(start, format.pattern);
+            final jend = Jiffy(end, format.pattern);
+
+            var startCount = jstart.clone();
+            int months = 0;
+            while (startCount.isBefore(jend)) {
+              months++;
+              startCount.add(months: 1);
+            }
+
+            return CompositeValue((months * priceVal).toStringAsFixed(2));
+          }
+          return null;
+        },
+        fieldId: 'full_price',
+        fieldType: FieldTypes.Number,
+        label: 'Full price',
       ),
     ];
     super.initState();
