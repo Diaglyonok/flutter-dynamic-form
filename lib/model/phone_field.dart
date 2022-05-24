@@ -33,7 +33,7 @@ class PhoneField extends Field {
           fieldType: FieldTypes.Phone,
           confirmField: confirmField,
           dependsOn: dependsOn,
-          value: value,
+          value: value ?? CompositeValue('', extra: initialPrefix),
           validationExpression: validationExpression,
           validationErrorMessage: validationErrorMessage,
           onUpdated: onUpdated,

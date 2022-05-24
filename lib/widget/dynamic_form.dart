@@ -877,7 +877,11 @@ class DynamicFormState extends State<DynamicForm> {
         validators: _commonTextValidators(field, additionals: [
           (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
         ]),
-        onChanged: (value) => _commonOnChanged(value, field),
+        onChanged: (value) {
+          final result = values[field.fieldId];
+
+          _commonOnChanged(CompositeValue(value!.value, extra: result?.extra), field);
+        },
         controller: controllers[field.fieldId]!,
         maskText: field.maskText,
       ),
