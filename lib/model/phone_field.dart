@@ -20,6 +20,7 @@ class PhoneField extends Field {
     String? validationErrorMessage,
     CompareDate? compareDate,
     required this.initialPrefix,
+    Function(CompositeValue?)? onUpdated,
   }) : super(
           fieldId: fieldId,
           required: required,
@@ -37,5 +38,6 @@ class PhoneField extends Field {
           compareDate: compareDate,
           validationExpression: validationExpression,
           validationErrorMessage: validationErrorMessage,
+          onUpdated: onUpdated,
         );
 }

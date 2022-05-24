@@ -20,6 +20,7 @@ class ColorField extends Field {
     String? validationErrorMessage,
     CompareDate? compareDate,
     Color? initColor,
+    Function(CompositeValue?)? onUpdated,
   }) : super(
           fieldId: fieldId,
           required: false,
@@ -27,6 +28,7 @@ class ColorField extends Field {
           label: label,
           maskText: maskText,
           maxLength: maxLength,
+          onUpdated: onUpdated,
           inputType: inputType,
           options: options,
           isCapitalized: isCapitalized,

@@ -22,6 +22,7 @@ class DateField extends Field {
     String? validationExpression,
     String? validationErrorMessage,
     CompareDate? compareDate,
+    Function(CompositeValue?)? onUpdated,
   }) : super(
           fieldId: fieldId,
           required: required,
@@ -31,6 +32,7 @@ class DateField extends Field {
           maxLength: maxLength,
           inputType: inputType,
           options: options,
+          onUpdated: onUpdated,
           isCapitalized: isCapitalized,
           fieldType: FieldTypes.Date,
           confirmField: confirmField,

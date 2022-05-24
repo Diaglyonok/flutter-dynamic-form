@@ -424,13 +424,14 @@ class DynamicFormState extends State<DynamicForm> {
     }
   }
 
-  _commonOnChanged(CompositeValue? value, String fieldId) {
+  _commonOnChanged(CompositeValue? value, Field field) {
     if (value == null) {
-      values.remove(fieldId);
+      values.remove(field.fieldId);
     } else {
-      values[fieldId] = value;
+      values[field.fieldId] = value;
     }
 
+    field.onUpdated?.call(value);
     setState(() {});
   }
 
@@ -508,12 +509,13 @@ class DynamicFormState extends State<DynamicForm> {
             scrollPadding: _pinButton ? 100 : null,
             onChanged: (CompositeValue? value) {
               if (value == null) {
-                values.remove(field.fieldId);
+                _commonOnChanged(null, field);
                 return;
               }
-              values[field.fieldId] =
-                  CompositeValue(startController?.text ?? value.value, extra: endController?.text);
-              setState(() {});
+
+              _commonOnChanged(
+                  CompositeValue(startController?.text ?? value.value, extra: endController?.text),
+                  field);
             },
             onDateTimeChanged: (DateTime dateTime) {
               String value;
@@ -530,9 +532,9 @@ class DynamicFormState extends State<DynamicForm> {
               } else {
                 startController!.text = value;
               }
-              values[field.fieldId] =
-                  CompositeValue(startController!.text, extra: endController?.text);
-              setState(() {});
+
+              _commonOnChanged(
+                  CompositeValue(startController!.text, extra: endController?.text), field);
             },
             validators: _commonTextValidators(field, additionals: [
               //(String? value) => validators?.dateValidator(value, field.compareDate),
@@ -559,12 +561,14 @@ class DynamicFormState extends State<DynamicForm> {
                 ? null
                 : (CompositeValue? value) {
                     if (value == null) {
-                      values.remove(field.fieldId);
+                      _commonOnChanged(null, field);
                       return;
                     }
-                    values[field.fieldId] = CompositeValue(startController.text,
-                        extra: endController?.text ?? value.value);
-                    setState(() {});
+
+                    _commonOnChanged(
+                        CompositeValue(startController.text,
+                            extra: endController?.text ?? value.value),
+                        field);
                   },
             onDateTimeChanged: (DateTime dateTime) {
               String value;
@@ -581,9 +585,9 @@ class DynamicFormState extends State<DynamicForm> {
               } else {
                 endController!.text = value;
               }
-              values[field.fieldId] =
-                  CompositeValue(startController.text, extra: endController?.text);
-              setState(() {});
+
+              _commonOnChanged(
+                  CompositeValue(startController.text, extra: endController?.text), field);
             },
             validators: _commonTextValidators(field, additionals: [
               //(String? value) => validators?.dateValidator(value, field.compareDate),
@@ -625,8 +629,7 @@ class DynamicFormState extends State<DynamicForm> {
       next: next,
       style: widget.commonStyle,
       onChanged: (ScreenResultCompositeValue value) {
-        values[field.fieldId] = value;
-        setState(() {});
+        _commonOnChanged(value, field);
       },
       controller: controller!,
       field: field,
@@ -649,12 +652,7 @@ class DynamicFormState extends State<DynamicForm> {
       style: widget.commonStyle,
       scrollPadding: _pinButton ? 100 : null,
       onChanged: (CompositeValue? value) {
-        if (value == null) {
-          values.remove(field.fieldId);
-          return;
-        }
-        values[field.fieldId] = value;
-        setState(() {});
+        _commonOnChanged(value, field);
       },
       onDateTimeChanged: (DateTime dateTime) {
         String value;
@@ -673,8 +671,8 @@ class DynamicFormState extends State<DynamicForm> {
         } else {
           controller!.text = value;
         }
-        values[field.fieldId] = CompositeValue(controller!.text);
-        setState(() {});
+
+        _commonOnChanged(CompositeValue(controller!.text), field);
       },
       validators: _commonTextValidators(field, additionals: [
         (String? value) => validators?.dateValidator(
@@ -704,7 +702,7 @@ class DynamicFormState extends State<DynamicForm> {
       style: widget.commonStyle,
       maskText: true,
       scrollPadding: _pinButton ? 100 : null,
-      onChanged: (value) => _commonOnChanged(value, field.fieldId),
+      onChanged: (value) => _commonOnChanged(value, field),
       controller: controllers[field.fieldId]!,
       validators: _commonTextValidators(field, additionals: [
         (String? value) => validators?.passwordValidator(CompositeValue(value ?? '')),
@@ -729,7 +727,7 @@ class DynamicFormState extends State<DynamicForm> {
       scrollPadding: _pinButton ? 100 : null,
       required: field.required,
       validators: _commonTextValidators(field),
-      onChanged: (value) => _commonOnChanged(value, field.fieldId),
+      onChanged: (value) => _commonOnChanged(value, field),
       controller: controllers[field.fieldId]!,
     );
   }
@@ -793,7 +791,7 @@ class DynamicFormState extends State<DynamicForm> {
       inputType: TextInputType.text,
       multiline: true,
       validators: _commonTextValidators(field),
-      onChanged: (value) => _commonOnChanged(value, field.fieldId),
+      onChanged: (value) => _commonOnChanged(value, field),
       controller: controllers[field.fieldId]!,
     );
   }
@@ -815,7 +813,7 @@ class DynamicFormState extends State<DynamicForm> {
       scrollPadding: _pinButton ? 100 : null,
       inputType: TextInputType.text,
       validators: _commonTextValidators(field),
-      onChanged: (value) => _commonOnChanged(value, field.fieldId),
+      onChanged: (value) => _commonOnChanged(value, field),
       controller: controllers[field.fieldId]!,
     );
   }
@@ -839,7 +837,7 @@ class DynamicFormState extends State<DynamicForm> {
         validators: _commonTextValidators(field, additionals: [
           (String? email) => validators?.emailValidator(email),
         ]),
-        onChanged: (value) => _commonOnChanged(value, field.fieldId),
+        onChanged: (value) => _commonOnChanged(value, field),
         controller: controllers[field.fieldId]!,
         maskText: field.maskText);
   }
@@ -861,8 +859,8 @@ class DynamicFormState extends State<DynamicForm> {
       style: style,
       onExtraChanged: (extra) {
         final result = values[field.fieldId];
-        values[field.fieldId] = CompositeValue(result?.value ?? '', extra: extra);
-        setState(() {});
+
+        _commonOnChanged(CompositeValue(result?.value ?? '', extra: extra), field);
       },
       child: DynamicTextField(
         context: context,
@@ -877,7 +875,7 @@ class DynamicFormState extends State<DynamicForm> {
         validators: _commonTextValidators(field, additionals: [
           (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
         ]),
-        onChanged: (value) => _commonOnChanged(value, field.fieldId),
+        onChanged: (value) => _commonOnChanged(value, field),
         controller: controllers[field.fieldId]!,
         maskText: field.maskText,
       ),
@@ -896,8 +894,7 @@ class DynamicFormState extends State<DynamicForm> {
       title: field.label,
       initialValue: values[field.fieldId],
       onChanged: (value) {
-        values[field.fieldId] = value;
-        setState(() {});
+        _commonOnChanged(value, field);
       },
     );
   }
@@ -923,7 +920,7 @@ class DynamicFormState extends State<DynamicForm> {
           if (validators != null) validators!.numberValidator,
         ],
       ),
-      onChanged: (value) => _commonOnChanged(value, field.fieldId),
+      onChanged: (value) => _commonOnChanged(value, field),
       controller: controllers[field.fieldId]!,
     );
   }
@@ -937,12 +934,7 @@ class DynamicFormState extends State<DynamicForm> {
       type: CupertinoDatePickerMode.time,
       scrollPadding: _pinButton ? 100 : null,
       onChanged: (CompositeValue? value) {
-        if (value == null) {
-          values.remove(field.fieldId);
-          return;
-        }
-        values[field.fieldId] = value;
-        setState(() {});
+        _commonOnChanged(value, field);
       },
       onDateTimeChanged: (DateTime dateTime) {
         String value;
@@ -958,8 +950,7 @@ class DynamicFormState extends State<DynamicForm> {
         } else {
           controller!.text = value;
         }
-        values[field.fieldId] = CompositeValue(controller!.text);
-        setState(() {});
+        _commonOnChanged(CompositeValue(controller!.text), field);
       },
       validators: _commonTextValidators(field, additionals: [
         (String? value) => validators?.timeValidator(value),
@@ -973,8 +964,7 @@ class DynamicFormState extends State<DynamicForm> {
     return ColorPicker(
         field: field,
         onChanged: (color) {
-          values[field.fieldId] = CompositeValue(color.toString());
-          setState(() {});
+          _commonOnChanged(CompositeValue(color.toString()), field);
         });
   }
 }

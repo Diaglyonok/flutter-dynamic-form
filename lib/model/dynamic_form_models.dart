@@ -71,12 +71,14 @@ class Field {
   final String? validationExpression;
   final String? validationErrorMessage;
   final CompareDate? compareDate;
-  //final int? parentId;
+
+  final Function(CompositeValue?)? onUpdated;
 
   Field({
     required this.fieldId,
     required this.fieldType,
     required this.label,
+    this.onUpdated,
     this.required = false,
     this.readOnly = false,
     this.maskText,
@@ -144,6 +146,10 @@ class Field {
       validationErrorMessage: validationErrorMessage,
     );
   }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => super.hashCode;
 }
 
 class Option {

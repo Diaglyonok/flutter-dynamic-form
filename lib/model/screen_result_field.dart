@@ -37,6 +37,7 @@ class ScreenResultField extends Field {
     String? validationErrorMessage,
     CompareDate? compareDate,
     required this.extra,
+    Function(CompositeValue?)? onUpdated,
   }) : super(
           fieldId: fieldId,
           required: required,
@@ -54,5 +55,6 @@ class ScreenResultField extends Field {
           compareDate: compareDate,
           validationExpression: validationExpression,
           validationErrorMessage: validationErrorMessage,
+          onUpdated: onUpdated,
         );
 }
