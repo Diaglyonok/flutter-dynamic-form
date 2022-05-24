@@ -18,7 +18,6 @@ class PhoneField extends Field {
     bool? isCapitalized,
     String? validationExpression,
     String? validationErrorMessage,
-    CompareDate? compareDate,
     required this.initialPrefix,
     Function(CompositeValue?)? onUpdated,
   }) : super(
@@ -35,7 +34,6 @@ class PhoneField extends Field {
           confirmField: confirmField,
           dependsOn: dependsOn,
           value: value,
-          compareDate: compareDate,
           validationExpression: validationExpression,
           validationErrorMessage: validationErrorMessage,
           onUpdated: onUpdated,

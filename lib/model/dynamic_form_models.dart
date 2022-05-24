@@ -70,7 +70,6 @@ class Field {
   final bool? isCapitalized;
   final String? validationExpression;
   final String? validationErrorMessage;
-  final CompareDate? compareDate;
 
   final Function(CompositeValue?)? onUpdated;
 
@@ -89,7 +88,6 @@ class Field {
     this.confirmField,
     this.dependsOn,
     this.value,
-    this.compareDate,
     this.validationExpression,
     this.validationErrorMessage,
   });
@@ -118,7 +116,6 @@ class Field {
       isCapitalized: isCapitalized,
       fieldType: fieldType,
       options: options,
-      compareDate: compareDate,
       dependsOn: dependsOn,
       validationExpression: validationExpression,
       validationErrorMessage: validationErrorMessage,
@@ -137,7 +134,6 @@ class Field {
       inputType: inputType,
       confirmField: confirmField,
       fieldType: fieldType,
-      compareDate: compareDate,
       isCapitalized: isCapitalized,
       options: options,
       dependsOn: dependsOn,

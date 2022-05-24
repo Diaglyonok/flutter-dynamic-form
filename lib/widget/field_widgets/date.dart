@@ -53,7 +53,9 @@ class DateFieldView extends StatelessWidget {
     var minimumDate = startDate ?? DateTime(1700, 1, 1);
     DateTime? maximumDate = endDate;
 
-    switch (field.compareDate ?? CompareDate.AllDates) {
+    switch (field is! DateField
+        ? CompareDate.AllDates
+        : (field as DateField).compareDate ?? CompareDate.AllDates) {
       case CompareDate.AllDates:
         break;
       case CompareDate.FutureOnly:

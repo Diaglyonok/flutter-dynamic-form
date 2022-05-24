@@ -18,7 +18,6 @@ class ColorField extends Field {
     bool? isCapitalized,
     String? validationExpression,
     String? validationErrorMessage,
-    CompareDate? compareDate,
     Color? initColor,
     Function(CompositeValue?)? onUpdated,
   }) : super(
@@ -36,7 +35,6 @@ class ColorField extends Field {
           confirmField: confirmField,
           dependsOn: dependsOn,
           value: initColor == null ? null : CompositeValue(initColor.value.toString()),
-          compareDate: compareDate,
           validationExpression: validationExpression,
           validationErrorMessage: validationErrorMessage,
         );

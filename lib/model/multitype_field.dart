@@ -22,7 +22,6 @@ class MultitypeField extends Field {
     bool? isCapitalized,
     String? validationExpression,
     String? validationErrorMessage,
-    CompareDate? compareDate,
     Function(CompositeValue?)? onUpdated,
   }) : super(
           fieldId: fieldId,
@@ -38,7 +37,6 @@ class MultitypeField extends Field {
           confirmField: confirmField,
           dependsOn: dependsOn,
           value: value,
-          compareDate: compareDate,
           validationExpression: validationExpression,
           validationErrorMessage: validationErrorMessage,
           onUpdated: onUpdated,

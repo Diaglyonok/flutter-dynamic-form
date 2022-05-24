@@ -654,6 +654,8 @@ class DynamicFormState extends State<DynamicForm> {
       onChanged: (CompositeValue? value) {
         _commonOnChanged(value, field);
       },
+      startDate: field is DateField ? field.startDateBounds : null,
+      endDate: field is DateField ? field.endDateBounds : null,
       onDateTimeChanged: (DateTime dateTime) {
         String value;
         try {
@@ -677,7 +679,7 @@ class DynamicFormState extends State<DynamicForm> {
       validators: _commonTextValidators(field, additionals: [
         (String? value) => validators?.dateValidator(
             value,
-            field.compareDate,
+            field is! DateField ? null : field.compareDate,
             (field is DateField && field.format != null
                     ? field.format!
                     : DateFormat(DynamicFormValidators.datePattern))

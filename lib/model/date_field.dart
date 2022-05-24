@@ -4,6 +4,9 @@ import '../model/dynamic_form_models.dart';
 
 class DateField extends Field {
   final DateFormat? format;
+  final DateTime? startDateBounds;
+  final DateTime? endDateBounds;
+  final CompareDate? compareDate;
 
   DateField({
     required String fieldId,
@@ -21,7 +24,9 @@ class DateField extends Field {
     bool? isCapitalized,
     String? validationExpression,
     String? validationErrorMessage,
-    CompareDate? compareDate,
+    this.startDateBounds,
+    this.endDateBounds,
+    this.compareDate,
     Function(CompositeValue?)? onUpdated,
   }) : super(
           fieldId: fieldId,
@@ -38,7 +43,6 @@ class DateField extends Field {
           confirmField: confirmField,
           dependsOn: dependsOn,
           value: value,
-          compareDate: compareDate,
           validationExpression: validationExpression,
           validationErrorMessage: validationErrorMessage,
         );
