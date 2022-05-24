@@ -47,7 +47,7 @@ class DynamicFormValidators {
       return null;
     }
     try {
-      final date = DateFormat(datePattern).parseLoose(inputDate);
+      final date = DateFormat(pattern ?? datePattern).parseLoose(inputDate);
       var compareDate = DateTime.now();
       compareDate = DateTime(compareDate.year, compareDate.month, compareDate.day);
       switch (compare ?? CompareDate.AllDates) {
@@ -78,7 +78,7 @@ class DynamicFormValidators {
           break;
       }
     } catch (e) {
-      return locale.dynamicFormTranslation.dateIsNotValidErrorText(format: datePattern);
+      return locale.dynamicFormTranslation.dateIsNotValidErrorText(format: pattern ?? datePattern);
     }
 
     return null;
