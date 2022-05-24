@@ -42,7 +42,7 @@ class DynamicFormValidators {
     }
   }
 
-  String? dateValidator(String? inputDate, CompareDate? compare) {
+  String? dateValidator(String? inputDate, CompareDate? compare, String? pattern) {
     if (inputDate == null || inputDate.isEmpty) {
       return null;
     }

@@ -274,7 +274,14 @@ class DynamicFormState extends State<DynamicForm> {
           controllers[field.fieldId] = TextEditingController(text: field.value?.value);
           break;
         case FieldTypes.Date:
-          final controller = MaskedTextController(mask: '00/00/0000');
+          final controller = MaskedTextController(
+              mask: (field is DateField && field.format != null
+                      ? field.format!
+                      : DateFormat(DynamicFormValidators.datePattern))
+                  .pattern!
+                  .replaceAll('d', '0')
+                  .replaceAll('M', '0')
+                  .replaceAll('y', '0'));
           controller.updateText(field.value?.value ?? '');
           controllers[field.fieldId] = controller;
           break;
@@ -489,7 +496,7 @@ class DynamicFormState extends State<DynamicForm> {
     return Row(
       children: [
         Expanded(
-          child: DateField(
+          child: DateFieldView(
             field: field,
             current: current,
             next: additionalNodes[field.fieldId],
@@ -538,7 +545,7 @@ class DynamicFormState extends State<DynamicForm> {
           width: 16,
         ),
         Expanded(
-          child: DateField(
+          child: DateFieldView(
             field: field,
             current: additionalNodes[field.fieldId],
             next: next,
@@ -634,8 +641,9 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? next,
   ) {
     final controller = controllers[field.fieldId];
-    return DateField(
+    return DateFieldView(
       field: field,
+      format: field is DateField ? field.format : null,
       current: current,
       next: next,
       style: widget.commonStyle,
@@ -651,7 +659,10 @@ class DynamicFormState extends State<DynamicForm> {
       onDateTimeChanged: (DateTime dateTime) {
         String value;
         try {
-          value = DateFormat(DynamicFormValidators.datePattern).format(dateTime);
+          value = (field is DateField && field.format != null
+                  ? field.format!
+                  : DateFormat(DynamicFormValidators.datePattern))
+              .format(dateTime);
         } catch (e) {
           return;
         }
@@ -666,7 +677,13 @@ class DynamicFormState extends State<DynamicForm> {
         setState(() {});
       },
       validators: _commonTextValidators(field, additionals: [
-        (String? value) => validators?.dateValidator(value, field.compareDate),
+        (String? value) => validators?.dateValidator(
+            value,
+            field.compareDate,
+            (field is DateField && field.format != null
+                    ? field.format!
+                    : DateFormat(DynamicFormValidators.datePattern))
+                .pattern),
       ]),
       controller: controller!,
     );
@@ -690,7 +707,6 @@ class DynamicFormState extends State<DynamicForm> {
       onChanged: (value) => _commonOnChanged(value, field.fieldId),
       controller: controllers[field.fieldId]!,
       validators: _commonTextValidators(field, additionals: [
-        (String? value) => validators?.dateValidator(value, field.compareDate),
         (String? value) => validators?.passwordValidator(CompositeValue(value ?? '')),
       ]),
     );
@@ -914,7 +930,7 @@ class DynamicFormState extends State<DynamicForm> {
 
   _generateTimeField(BuildContext context, Field field, FocusNode? current, FocusNode? next) {
     final controller = controllers[field.fieldId];
-    return DateField(
+    return DateFieldView(
       field: field,
       current: current,
       next: next,

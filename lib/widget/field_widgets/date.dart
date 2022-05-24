@@ -11,7 +11,7 @@ import 'text_field.dart';
 const String DATE_LEAVING = 'date_date_leaving';
 const String DATE_RETURNING = 'date_date_returning';
 
-class DateField extends StatelessWidget {
+class DateFieldView extends StatelessWidget {
   final Field field;
   final FocusNode? current;
   final FocusNode? next;
@@ -28,7 +28,7 @@ class DateField extends StatelessWidget {
   final TextStyle? style;
   final PickType pickType;
 
-  const DateField({
+  const DateFieldView({
     Key? key,
     required this.field,
     this.current,
@@ -163,7 +163,7 @@ class DateField extends StatelessWidget {
           hintText: pickType == PickType.FieldTap
               ? null
               : type == CupertinoDatePickerMode.date || type == CupertinoDatePickerMode.dateAndTime
-                  ? DynamicFormValidators.datePattern.toUpperCase()
+                  ? (format?.pattern ?? DynamicFormValidators.datePattern).toUpperCase()
                   : DynamicFormValidators.timePattern.toUpperCase(),
           current: current,
           required: field.required,

@@ -6,7 +6,7 @@ class DateFormatter {
     final String? deviceLocale = WidgetsBinding.instance?.window.locale.toLanguageTag();
     final locale = deviceLocale == null ? const Locale('en') : Locale(deviceLocale);
 
-    if (locale.languageCode == 'ru') {
+    if (locale.languageCode.startsWith('ru')) {
       return DateFormat('dd.MM' + (short ? '' : '.yyyy'));
     }
 

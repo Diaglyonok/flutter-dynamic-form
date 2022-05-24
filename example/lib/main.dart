@@ -67,10 +67,10 @@ class _MyAppState extends State<MyApp> {
         fieldType: FieldTypes.Number,
         label: 'Simple Number Field',
       ),
-      Field(
+      DateField(
         fieldId: 'simple_date_fueld',
-        fieldType: FieldTypes.Date,
         label: 'Simple Date Field',
+        format: format,
       ),
       Field(
         fieldId: 'plain_text_example',
