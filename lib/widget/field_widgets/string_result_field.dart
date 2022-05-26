@@ -29,6 +29,15 @@ class StringResultView extends StatefulWidget {
 
 class _StringResultViewState extends State<StringResultView> {
   String? prefix;
+
+  @override
+  void initState() {
+    prefix = widget.field.value is! ScreenResultCompositeValue
+        ? null
+        : (widget.field.value as ScreenResultCompositeValue).extra;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
