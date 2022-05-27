@@ -25,7 +25,7 @@ dependencies:
   dglk_flutter_dev_kit:
     git:
       url: https://github.com/Diaglyonok/dglk-flutter-dev-kit.git
-      ref: a073c15
+      ref: c8fdaf9
   intl: ^0.17.0
   auto_size_text: 3.0.0
   flutter_colorpicker: 1.0.3
