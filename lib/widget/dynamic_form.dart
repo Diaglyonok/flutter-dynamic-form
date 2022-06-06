@@ -703,6 +703,7 @@ class DynamicFormState extends State<DynamicForm> {
           context: context,
           field: field,
           current: current,
+          required: field.required,
           next: next,
           style: widget.commonStyle,
           maskText: true,
