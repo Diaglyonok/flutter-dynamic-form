@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dynamic_form/flutter_dynamic_form.dart';
 import 'package:flutter_dynamic_form/model/auto_calculate_field.dart';
+import 'package:flutter_dynamic_form/model/password_field.dart';
 import 'package:hello_example/date_formatter.dart';
 import 'package:hello_example/theme.dart';
 import 'package:jiffy/jiffy.dart';
@@ -50,6 +51,29 @@ class _MyAppState extends State<MyApp> {
         modifier: (color) {
           return Color.alphaBlend(Colors.white.withOpacity(0.7), color);
         },
+      ),
+      PasswordField(
+        fieldId: 'password_example',
+        forgotPasswordBuilder: (context, field) {
+          return Align(
+            alignment: Alignment.topLeft,
+            child: MaterialButton(
+              padding: const EdgeInsets.only(),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Scaffold(
+                      appBar: AppBar(),
+                    ),
+                  ),
+                );
+              },
+              child: const Text("Forgot password?"),
+            ),
+          );
+        },
+        required: true,
+        label: 'Password Example',
       ),
       Field(
         fieldId: 'text_example',

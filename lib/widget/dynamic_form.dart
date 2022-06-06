@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dynamic_form/model/password_field.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/color_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -695,20 +696,27 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? current,
     FocusNode? next,
   ) {
-    return DynamicTextField(
-      label: field.label,
-      context: context,
-      field: field,
-      current: current,
-      next: next,
-      style: widget.commonStyle,
-      maskText: true,
-      scrollPadding: _pinButton ? 100 : null,
-      onChanged: (value) => _commonOnChanged(value, field),
-      controller: controllers[field.fieldId]!,
-      validators: _commonTextValidators(field, additionals: [
-        (String? value) => validators?.passwordValidator(CompositeValue(value ?? '')),
-      ]),
+    return Column(
+      children: [
+        DynamicTextField(
+          label: field.label,
+          context: context,
+          field: field,
+          current: current,
+          next: next,
+          style: widget.commonStyle,
+          maskText: true,
+          scrollPadding: _pinButton ? 100 : null,
+          onChanged: (value) => _commonOnChanged(value, field),
+          controller: controllers[field.fieldId]!,
+          validators: _commonTextValidators(field, additionals: [
+            if (field is! PasswordField || !field.disableFormatting)
+              (String? value) => validators?.passwordValidator(CompositeValue(value ?? '')),
+          ]),
+        ),
+        if (field is PasswordField && field.forgotPasswordBuilder != null)
+          field.forgotPasswordBuilder!(context, field) ?? Container()
+      ],
     );
   }
 
