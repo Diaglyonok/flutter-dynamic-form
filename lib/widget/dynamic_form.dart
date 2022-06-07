@@ -39,6 +39,7 @@ class DynamicForm extends StatefulWidget {
   final bool? allowFullZip;
   final ScrollController? scrollController;
   final bool allowPinnedButton;
+  final EdgeInsets? listPadding;
 
   const DynamicForm({
     Key? key,
@@ -46,6 +47,7 @@ class DynamicForm extends StatefulWidget {
     this.validationOptions,
     this.scrollController,
     this.physics,
+    this.listPadding,
     this.submitBtn,
     required this.fields,
     this.commonStyle,
@@ -125,7 +127,7 @@ class DynamicFormState extends State<DynamicForm> {
                 physics: widget.physics ?? const BouncingScrollPhysics(),
                 controller: widget.scrollController,
                 addRepaintBoundaries: false,
-                padding: const EdgeInsets.only(top: 16.0, bottom: 20),
+                padding: widget.listPadding ?? const EdgeInsets.only(top: 16.0, bottom: 20),
                 shrinkWrap: widget.title == null,
                 itemCount: itemsCount,
                 itemBuilder: (BuildContext ctxt, int index) {
