@@ -38,7 +38,9 @@ class DynamicFormUtils {
 
     for (var i = 0; i < field.dependsOn!.length; i++) {
       final dependsOnValue = field.dependsOn![i];
-      result = result && values[dependsOnValue.fieldId]?.value == dependsOnValue.conditionValue;
+      result = result &&
+          (values[dependsOnValue.fieldId]?.value == dependsOnValue.conditionValue ||
+              values[dependsOnValue.fieldId]?.extra == dependsOnValue.conditionExtra);
     }
 
     return result;

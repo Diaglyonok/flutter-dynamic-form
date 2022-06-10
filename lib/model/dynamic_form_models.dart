@@ -142,10 +142,6 @@ class Field {
       validationErrorMessage: validationErrorMessage,
     );
   }
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => super.hashCode;
 }
 
 class Option {
@@ -181,12 +177,13 @@ class CompositeValue {
 class DependsOnValue {
   final String? fieldId;
   final String? conditionValue;
+  final String? conditionExtra;
 
-  DependsOnValue({this.fieldId, this.conditionValue});
-
-  factory DependsOnValue.fromJson(Map<String, dynamic> json) {
-    return DependsOnValue(fieldId: json['fieldId'], conditionValue: json['value']);
-  }
+  DependsOnValue({
+    this.fieldId,
+    this.conditionValue,
+    this.conditionExtra,
+  });
 }
 
 class KeyValue {
