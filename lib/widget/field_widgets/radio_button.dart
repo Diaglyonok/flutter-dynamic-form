@@ -110,30 +110,35 @@ class ToggleButton extends StatelessWidget {
     var borderRadius = BorderRadius.circular(borderRadiusValue);
     Widget selectedWidget = AnimatedContainer(
       duration: const Duration(milliseconds: 400),
-      height: height,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondary,
         borderRadius: borderRadius,
       ),
-      child: Material(
-        type: MaterialType.transparency,
-        child: InkWell(
-          splashColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
-          highlightColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
-          borderRadius: borderRadius,
-          onTap: () {
-            onChange(false);
-          },
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: padding),
-            child: Center(
-              child: AutoSizeText(
-                textSelected,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                semanticsLabel: textSelected,
-                textScaleFactor: 1.0,
-                style: textStyle.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+        child: SizedBox(
+          height: height,
+          child: Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              splashColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
+              highlightColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
+              borderRadius: borderRadius,
+              onTap: () {
+                onChange(false);
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: padding),
+                child: Center(
+                  child: AutoSizeText(
+                    textSelected,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    semanticsLabel: textSelected,
+                    textScaleFactor: 1.0,
+                    style: textStyle.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                  ),
+                ),
               ),
             ),
           ),
@@ -142,29 +147,34 @@ class ToggleButton extends StatelessWidget {
     );
     Widget notSelectedWidget = AnimatedContainer(
       duration: const Duration(milliseconds: 400),
-      height: height,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
         borderRadius: borderRadius,
       ),
-      child: Material(
-        type: MaterialType.transparency,
-        child: InkWell(
-          splashColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
-          highlightColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
-          borderRadius: borderRadius,
-          onTap: () {
-            onChange(true);
-          },
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: padding),
-            child: Center(
-              child: AutoSizeText(
-                textUnselected ?? textSelected,
-                textAlign: TextAlign.center,
-                textScaleFactor: 1.0,
-                semanticsLabel: textUnselected ?? textSelected,
-                style: textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+        child: SizedBox(
+          height: height,
+          child: Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              splashColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
+              highlightColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
+              borderRadius: borderRadius,
+              onTap: () {
+                onChange(true);
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: padding),
+                child: Center(
+                  child: AutoSizeText(
+                    textUnselected ?? textSelected,
+                    textAlign: TextAlign.center,
+                    textScaleFactor: 1.0,
+                    semanticsLabel: textUnselected ?? textSelected,
+                    style: textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
+                  ),
+                ),
               ),
             ),
           ),
