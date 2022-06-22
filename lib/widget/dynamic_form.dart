@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
+import 'package:flutter_dynamic_form/utils/replacement_formatter.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/color_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -344,12 +345,12 @@ class DynamicFormState extends State<DynamicForm> {
     if (autoUpdateValue != null &&
         (values[field.fieldId] == null || (values[field.fieldId]?.autoUpdated ?? false))) {
       values[field.fieldId] = autoUpdateValue.copyWith(autoUpdated: true);
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         controllers[field.fieldId]?.text = autoUpdateValue.value;
       });
     } else if (autoUpdateValue == null && (values[field.fieldId]?.autoUpdated ?? false)) {
       values.remove(field.fieldId);
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         controllers[field.fieldId]?.text = '';
       });
     }
@@ -929,6 +930,7 @@ class DynamicFormState extends State<DynamicForm> {
       scrollPadding: _pinButton ? 100 : null,
       inputType: const TextInputType.numberWithOptions(decimal: true),
       formatters: [
+        ReplacementFormatter(toReplace: ',', replaceBy: '.'),
         FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
       ],
       validators: _commonTextValidators(
