@@ -11,12 +11,14 @@ class StringResultView extends StatefulWidget {
   final FocusNode? current;
   final FocusNode? next;
   final TextStyle? style;
+  final InputDecoration? decoration;
 
   const StringResultView({
     Key? key,
     required this.field,
     required this.controller,
     required this.onChanged,
+    this.decoration,
     this.current,
     this.next,
     this.style,
@@ -53,6 +55,7 @@ class _StringResultViewState extends State<StringResultView> {
       },
       child: AbsorbPointer(
         child: DynamicTextField(
+          decoration: widget.decoration,
           current: widget.current,
           style: widget.style,
           next: widget.next,

@@ -41,6 +41,7 @@ class DynamicForm extends StatefulWidget {
   final ScrollController? scrollController;
   final bool allowPinnedButton;
   final EdgeInsets? listPadding;
+  final InputDecoration? decoration;
 
   const DynamicForm({
     Key? key,
@@ -57,6 +58,7 @@ class DynamicForm extends StatefulWidget {
     this.titlePadding,
     this.allowFullZip = false,
     this.useBaseLocale = false,
+    this.decoration,
   }) : super(key: key);
   @override
   DynamicFormState createState() => DynamicFormState();
@@ -506,6 +508,7 @@ class DynamicFormState extends State<DynamicForm> {
       children: [
         Expanded(
           child: DateFieldView(
+            decoration: widget.decoration,
             field: field,
             current: current,
             next: additionalNodes[field.fieldId],
@@ -556,6 +559,7 @@ class DynamicFormState extends State<DynamicForm> {
         ),
         Expanded(
           child: DateFieldView(
+            decoration: widget.decoration,
             field: field,
             current: additionalNodes[field.fieldId],
             next: next,
@@ -633,6 +637,7 @@ class DynamicFormState extends State<DynamicForm> {
     final controller = controllers[field.fieldId];
 
     return StringResultView(
+      decoration: widget.decoration,
       current: current,
       next: next,
       style: widget.commonStyle,
@@ -653,6 +658,7 @@ class DynamicFormState extends State<DynamicForm> {
   ) {
     final controller = controllers[field.fieldId];
     return DateFieldView(
+      decoration: widget.decoration,
       field: field,
       format: field is DateField ? field.format : null,
       current: current,
@@ -706,6 +712,7 @@ class DynamicFormState extends State<DynamicForm> {
     return Column(
       children: [
         DynamicTextField(
+          decoration: widget.decoration,
           label: field.label,
           context: context,
           field: field,
@@ -735,6 +742,7 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? next,
   ) {
     return DynamicTextField(
+      decoration: widget.decoration,
       context: context,
       label: field.label,
       field: field,
@@ -798,6 +806,7 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? next,
   ) {
     return DynamicTextField(
+      decoration: widget.decoration,
       context: context,
       label: field.label,
       field: field,
@@ -821,6 +830,7 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? next,
   ) {
     return DynamicTextField(
+      decoration: widget.decoration,
       context: context,
       label: field.label,
       field: field,
@@ -843,6 +853,7 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? next,
   ) {
     return DynamicTextField(
+        decoration: widget.decoration,
         context: context,
         label: field.label,
         field: field,
@@ -881,6 +892,7 @@ class DynamicFormState extends State<DynamicForm> {
         _commonOnChanged(CompositeValue(result?.value ?? '', extra: extra), field);
       },
       child: DynamicTextField(
+        decoration: widget.decoration,
         context: context,
         field: field,
         label: field.label,
@@ -924,6 +936,7 @@ class DynamicFormState extends State<DynamicForm> {
   Widget _generateNumberField(
       BuildContext context, Field field, FocusNode? current, FocusNode? next) {
     return DynamicTextField(
+      decoration: widget.decoration,
       context: context,
       label: field.label,
       field: field,
@@ -951,6 +964,7 @@ class DynamicFormState extends State<DynamicForm> {
   _generateTimeField(BuildContext context, Field field, FocusNode? current, FocusNode? next) {
     final controller = controllers[field.fieldId];
     return DateFieldView(
+      decoration: widget.decoration,
       field: field,
       current: current,
       next: next,

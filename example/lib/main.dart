@@ -81,6 +81,13 @@ class _MyAppState extends State<MyApp> {
         required: true,
         label: 'Simple Required Text',
       ),
+      Field(
+        fieldId: 'ro_example',
+        readOnly: true,
+        fieldType: FieldTypes.Text,
+        required: true,
+        label: 'Read Only Test',
+      ),
       PhoneField(
         initialPrefix: '+7',
         fieldId: 'phone_example',

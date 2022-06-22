@@ -27,6 +27,7 @@ class DateFieldView extends StatelessWidget {
   final DateFormat? format;
   final TextStyle? style;
   final PickType pickType;
+  final InputDecoration? decoration;
 
   const DateFieldView({
     Key? key,
@@ -40,6 +41,7 @@ class DateFieldView extends StatelessWidget {
     required this.onDateTimeChanged,
     this.validators,
     required this.controller,
+    this.decoration,
     this.startDate,
     this.endDate,
     this.format,
@@ -156,6 +158,7 @@ class DateFieldView extends StatelessWidget {
       child: AbsorbPointer(
         absorbing: pickType == PickType.FieldTap,
         child: DynamicTextField(
+          decoration: decoration,
           context: context,
           field: field,
           label: customLabel ?? field.label,
