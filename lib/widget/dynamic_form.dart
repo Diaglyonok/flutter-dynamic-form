@@ -201,7 +201,9 @@ class DynamicFormState extends State<DynamicForm> {
                                 : (widget.submitBtn ?? Container())
                             : FieldWrapper(
                                 key: ValueKey<String>(field!.fieldId),
-                                child: _generateField(field, current, next, ctxt));
+                                child: AbsorbPointer(
+                                    absorbing: field.readOnly,
+                                    child: _generateField(field, current, next, ctxt)));
                     }
                   } else {
                     return (index == itemsCount - 1 && widget.submitBtn != null)
@@ -210,7 +212,9 @@ class DynamicFormState extends State<DynamicForm> {
                             : (widget.submitBtn ?? Container())
                         : FieldWrapper(
                             key: ValueKey<String>(field!.fieldId),
-                            child: _generateField(field, current, next, ctxt),
+                            child: AbsorbPointer(
+                                absorbing: field.readOnly,
+                                child: _generateField(field, current, next, ctxt)),
                           );
                   }
                 }),
