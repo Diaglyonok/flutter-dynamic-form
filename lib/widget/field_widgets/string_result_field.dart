@@ -59,6 +59,7 @@ class _StringResultViewState extends State<StringResultView> {
           current: widget.current,
           style: widget.style,
           next: widget.next,
+          multiline: widget.field.extra.isMultiline,
           label: widget.field.label,
           required: widget.field.required,
           suffixIcon: !widget.field.extraPrefix || prefix == null

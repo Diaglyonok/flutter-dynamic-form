@@ -11,8 +11,11 @@ class ScreenResultCompositeValue extends CompositeValue {
 
 class ScreenResultExtra {
   Future<ScreenResultCompositeValue?> Function(BuildContext context) getResult;
-
-  ScreenResultExtra({required this.getResult});
+  final bool isMultiline;
+  ScreenResultExtra({
+    required this.getResult,
+    this.isMultiline = false,
+  });
 }
 
 class ScreenResultField extends Field {
