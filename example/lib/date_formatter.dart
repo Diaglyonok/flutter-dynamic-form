@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 class DateFormatter {
   static DateFormat byLocale(BuildContext context, {short = false}) {
-    final String? deviceLocale = WidgetsBinding.instance?.window.locale.toLanguageTag();
+    final String? deviceLocale = WidgetsBinding.instance.window.locale.toLanguageTag();
     final locale = deviceLocale == null ? const Locale('en') : Locale(deviceLocale);
 
     if (locale.languageCode.startsWith('ru')) {

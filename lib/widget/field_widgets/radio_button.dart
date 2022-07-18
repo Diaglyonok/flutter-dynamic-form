@@ -93,6 +93,9 @@ class ToggleButton extends StatelessWidget {
   final double borderRadiusValue;
   final double height;
   final double padding;
+  final bool unselectedOutline;
+  final Widget Function(String text, TextStyle style, Color color)? customWidgetBuilder;
+
   const ToggleButton(
       {Key? key,
       required this.textSelected,
@@ -100,6 +103,8 @@ class ToggleButton extends StatelessWidget {
       this.borderRadiusValue = 8.0,
       this.height = 48.0,
       this.padding = 16.0,
+      this.customWidgetBuilder,
+      this.unselectedOutline = false,
       required this.selected,
       required this.onChange})
       : super(key: key);
@@ -111,6 +116,11 @@ class ToggleButton extends StatelessWidget {
     Widget selectedWidget = AnimatedContainer(
       duration: const Duration(milliseconds: 400),
       decoration: BoxDecoration(
+        border: unselectedOutline
+            ? Border.all(
+                color: Colors.transparent,
+              )
+            : null,
         color: Theme.of(context).colorScheme.secondary,
         borderRadius: borderRadius,
       ),
@@ -130,13 +140,27 @@ class ToggleButton extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: padding),
                 child: Center(
-                  child: AutoSizeText(
-                    textSelected,
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    semanticsLabel: textSelected,
-                    textScaleFactor: 1.0,
-                    style: textStyle.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                  child: Row(
+                    children: [
+                      if (customWidgetBuilder != null)
+                        customWidgetBuilder!(
+                          textSelected,
+                          textStyle.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                          Theme.of(context).colorScheme.secondary,
+                        )
+                      else
+                        Expanded(
+                          child: AutoSizeText(
+                            textSelected,
+                            maxLines: 3,
+                            textAlign: TextAlign.center,
+                            semanticsLabel: textSelected,
+                            textScaleFactor: 1.0,
+                            style: textStyle.copyWith(
+                                color: Theme.of(context).colorScheme.onSecondary),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ),
@@ -148,7 +172,14 @@ class ToggleButton extends StatelessWidget {
     Widget notSelectedWidget = AnimatedContainer(
       duration: const Duration(milliseconds: 400),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+        color: unselectedOutline
+            ? Colors.transparent
+            : Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+        border: unselectedOutline
+            ? Border.all(
+                color: Theme.of(context).colorScheme.secondary,
+              )
+            : null,
         borderRadius: borderRadius,
       ),
       child: Padding(
@@ -167,12 +198,27 @@ class ToggleButton extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: padding),
                 child: Center(
-                  child: AutoSizeText(
-                    textUnselected ?? textSelected,
-                    textAlign: TextAlign.center,
-                    textScaleFactor: 1.0,
-                    semanticsLabel: textUnselected ?? textSelected,
-                    style: textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
+                  child: Row(
+                    children: [
+                      if (customWidgetBuilder != null)
+                        customWidgetBuilder!(
+                          textUnselected ?? textSelected,
+                          textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
+                          Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                        )
+                      else
+                        Expanded(
+                          child: AutoSizeText(
+                            textUnselected ?? textSelected,
+                            maxLines: 3,
+                            textAlign: TextAlign.center,
+                            textScaleFactor: 1.0,
+                            semanticsLabel: textUnselected ?? textSelected,
+                            style:
+                                textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ),
