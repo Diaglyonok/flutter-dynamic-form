@@ -54,7 +54,19 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
 
   @override
   void initState() {
-    daysCount = widget.field.withDaysNum ? 0 : null;
+    final format = widget.field.extra.format;
+
+    if (format != null) {
+      final start = format.safeStrictParse(widget.field.value?.value);
+      final end = format.safeStrictParse(widget.field.value?.extra);
+      int newDaysCount = 0;
+      if (start != null && end != null) {
+        newDaysCount = end.difference(start).inDays;
+      }
+      daysCount = widget.field.withDaysNum && widget.field.extra.pickType == PickType.FieldTap
+          ? newDaysCount
+          : null;
+    }
 
     middleNode = FocusNode(debugLabel: widget.field.label);
     super.initState();

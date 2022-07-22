@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
 import 'package:flutter_dynamic_form/utils/replacement_formatter.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/color_picker.dart';
-import 'package:flutter_dynamic_form/widget/field_widgets/period_field.dart';
+import 'package:flutter_dynamic_form/widget/field_widgets/period_field_view.dart';
 import 'package:intl/intl.dart';
 
 import '../flutter_dynamic_form.dart';
