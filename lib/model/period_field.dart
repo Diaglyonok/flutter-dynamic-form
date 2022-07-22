@@ -10,18 +10,28 @@ class PeriodExtra {
   final DateFormat? format;
   final PickType? pickType;
   final Duration? allowedDifference;
+  final String? daysBottomSheetTitle;
 
-  PeriodExtra({this.pickType, this.secondLabel, this.type, this.format, this.allowedDifference});
+  PeriodExtra({
+    this.daysBottomSheetTitle,
+    this.pickType,
+    this.secondLabel,
+    this.type,
+    this.format,
+    this.allowedDifference,
+  });
 }
 
 class PeriodField extends Field {
   final PeriodExtra extra;
+  final bool withDaysNum;
 
   PeriodField({
     required String fieldId,
     bool required = false,
     bool readOnly = false,
     required String label,
+    this.withDaysNum = false,
     bool? maskText,
     int? maxLength,
     String? inputType,

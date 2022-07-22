@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
 import 'package:flutter_dynamic_form/utils/replacement_formatter.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/color_picker.dart';
+import 'package:flutter_dynamic_form/widget/field_widgets/period_field.dart';
 import 'package:intl/intl.dart';
 
 import '../flutter_dynamic_form.dart';
@@ -82,7 +83,6 @@ class DynamicFormState extends State<DynamicForm> {
 
   final Map<String, TextEditingController> controllers = {};
   final List<FocusNode> nodes = [];
-  final additionalNodes = <String, FocusNode>{};
 
   @override
   void initState() {
@@ -325,8 +325,6 @@ class DynamicFormState extends State<DynamicForm> {
               ? TextEditingController(text: field.value?.extra)
               : (MaskedTextController(mask: '00/00/0000')..updateText(field.value?.extra ?? ''));
           controllers[field.fieldId + '_end'] = controllerEnd;
-
-          additionalNodes[field.fieldId] = FocusNode(debugLabel: field.label);
           break;
       }
 
@@ -467,8 +465,8 @@ class DynamicFormState extends State<DynamicForm> {
   ) {
     final extra = field.extra;
 
-    final startController = controllers[field.fieldId + '_start'];
-    final endController = controllers[field.fieldId + '_end'];
+    final startController = controllers[field.fieldId + '_start'] ?? TextEditingController();
+    final endController = controllers[field.fieldId + '_end'] ?? TextEditingController();
 
     DateTime? startDate;
     DateTime? endDate;
@@ -504,112 +502,26 @@ class DynamicFormState extends State<DynamicForm> {
             color: field.readOnly
                 ? Theme.of(context).colorScheme.onBackground.withOpacity(0.44)
                 : Theme.of(context).colorScheme.onBackground);
-    return Row(
-      children: [
-        Expanded(
-          child: DateFieldView(
-            decoration: widget.decoration,
-            field: field,
-            current: current,
-            next: additionalNodes[field.fieldId],
-            format: extra.format,
-            style: style,
-            type: extra.type ?? CupertinoDatePickerMode.date,
-            customLabel: field.label,
-            pickType: extra.pickType ?? PickType.SuffixGetter,
-            scrollPadding: _pinButton ? 100 : null,
-            onChanged: (CompositeValue? value) {
-              if (value == null) {
-                _commonOnChanged(null, field);
-                return;
-              }
 
-              _commonOnChanged(
-                  CompositeValue(startController?.text ?? value.value, extra: endController?.text),
-                  field);
-            },
-            onDateTimeChanged: (DateTime dateTime) {
-              String value;
-              try {
-                value = (extra.format ?? DateFormat(DynamicFormValidators.datePattern))
-                    .format(dateTime);
-              } catch (e) {
-                return;
-              }
-
-              if (startController is MaskedTextController) {
-                startController.updateText(value);
-                startController.selection = TextSelection.collapsed(offset: value.length);
-              } else {
-                startController!.text = value;
-              }
-
-              _commonOnChanged(
-                  CompositeValue(startController!.text, extra: endController?.text), field);
-            },
-            validators: _commonTextValidators(field, additionals: [
-              //(String? value) => validators?.dateValidator(value, field.compareDate),
-            ]),
-            controller: startController!,
-            endDate: endDate,
-          ),
-        ),
-        const SizedBox(
-          width: 16,
-        ),
-        Expanded(
-          child: DateFieldView(
-            decoration: widget.decoration,
-            field: field,
-            current: additionalNodes[field.fieldId],
-            next: next,
-            style: style,
-            format: extra.format,
-            type: extra.type ?? CupertinoDatePickerMode.date,
-            customLabel: extra.secondLabel ?? field.label,
-            pickType: extra.pickType ?? PickType.SuffixGetter,
-            scrollPadding: _pinButton ? 100 : null,
-            onChanged: extra.pickType == PickType.FieldTap
-                ? null
-                : (CompositeValue? value) {
-                    if (value == null) {
-                      _commonOnChanged(null, field);
-                      return;
-                    }
-
-                    _commonOnChanged(
-                        CompositeValue(startController.text,
-                            extra: endController?.text ?? value.value),
-                        field);
-                  },
-            onDateTimeChanged: (DateTime dateTime) {
-              String value;
-              try {
-                value = (extra.format ?? DateFormat(DynamicFormValidators.datePattern))
-                    .format(dateTime);
-              } catch (e) {
-                return;
-              }
-
-              if (endController is MaskedTextController) {
-                endController.updateText(value);
-                endController.selection = TextSelection.collapsed(offset: value.length);
-              } else {
-                endController!.text = value;
-              }
-
-              _commonOnChanged(
-                  CompositeValue(startController.text, extra: endController?.text), field);
-            },
-            validators: _commonTextValidators(field, additionals: [
-              //(String? value) => validators?.dateValidator(value, field.compareDate),
-              //TODO: add validator for data not earlier
-            ]),
-            controller: endController!,
-            startDate: startDate,
-          ),
-        ),
-      ],
+    return PeriodFieldView(
+      field: field,
+      current: current,
+      next: next,
+      endController: endController,
+      startController: startController,
+      startDate: startDate,
+      endDate: endDate,
+      style: style,
+      decoration: widget.decoration,
+      scrollPadding: _pinButton ? 100 : null,
+      startValidators: _commonTextValidators(field, additionals: [
+        //(String? value) => validators?.dateValidator(value, field.compareDate),
+      ]),
+      endValidators: _commonTextValidators(field, additionals: [
+        //(String? value) => validators?.dateValidator(value, field.compareDate),
+        //TODO: add validator for data not earlier
+      ]),
+      onChanged: (value) => _commonOnChanged(value, field),
     );
   }
 

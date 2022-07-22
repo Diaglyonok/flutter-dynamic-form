@@ -98,6 +98,18 @@ class _MyAppState extends State<MyApp> {
         fieldType: FieldTypes.Number,
         label: 'Simple Number Field',
       ),
+      PeriodField(
+        fieldId: 'date_period',
+        label: 'Period label 1',
+        withDaysNum: true,
+        extra: PeriodExtra(
+          daysBottomSheetTitle: 'Select',
+          secondLabel: 'Period label 2',
+          type: CupertinoDatePickerMode.date,
+          pickType: PickType.FieldTap,
+          format: format,
+        ),
+      ),
       DateField(
         fieldId: 'simple_date_fueld',
         label: 'Simple Date Field',
@@ -117,16 +129,6 @@ class _MyAppState extends State<MyApp> {
           Option(id: 'type1', value: 'Еже-\nнедельная'),
           Option(id: 'type2', value: 'Еже-\nмесячная'),
         ],
-      ),
-      PeriodField(
-        fieldId: 'date_period',
-        label: 'Period label 1',
-        extra: PeriodExtra(
-          secondLabel: 'Period label 2',
-          type: CupertinoDatePickerMode.date,
-          pickType: PickType.FieldTap,
-          format: format,
-        ),
       ),
       MultitypeField(
         fieldId: 'price',
