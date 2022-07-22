@@ -49,11 +49,13 @@ class PeriodFieldView extends StatefulWidget {
 
 class _PeriodFieldViewState extends State<PeriodFieldView> {
   late FocusNode middleNode;
-  int daysCount = 0;
+  int? daysCount;
   FixedExtentScrollController? scrollController = FixedExtentScrollController();
 
   @override
   void initState() {
+    daysCount = widget.field.withDaysNum ? 0 : null;
+
     middleNode = FocusNode(debugLabel: widget.field.label);
     super.initState();
   }
@@ -104,23 +106,25 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                 return;
               }
 
-              if (daysCount > 0) {
-                final endDate = dateTime.add(Duration(days: daysCount));
+              if (daysCount != null) {
+                if (daysCount! > 0) {
+                  final endDate = dateTime.add(Duration(days: daysCount!));
 
-                String endValue;
-                try {
-                  endValue = format.format(endDate);
-                } catch (e) {
-                  return;
-                }
+                  String endValue;
+                  try {
+                    endValue = format.format(endDate);
+                  } catch (e) {
+                    return;
+                  }
 
-                updateValue(widget.endController, endValue);
-                setState(() {});
-              } else {
-                final endDate = format.safeStrictParse(widget.endController.text);
-                if (endDate != null) {
-                  daysCount = endDate.difference(dateTime).inDays;
+                  updateValue(widget.endController, endValue);
                   setState(() {});
+                } else {
+                  final endDate = format.safeStrictParse(widget.endController.text);
+                  if (endDate != null) {
+                    daysCount = endDate.difference(dateTime).inDays;
+                    setState(() {});
+                  }
                 }
               }
 
@@ -170,12 +174,14 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                 return;
               }
 
-              final startDate = format.safeStrictParse(widget.startController.text);
+              if (daysCount != null) {
+                final startDate = format.safeStrictParse(widget.startController.text);
 
-              if (startDate != null) {
-                final diff = dateTime.difference(startDate).inDays;
-                daysCount = diff;
-                setState(() {});
+                if (startDate != null) {
+                  final diff = dateTime.difference(startDate).inDays;
+                  daysCount = diff;
+                  setState(() {});
+                }
               }
 
               updateValue(widget.endController, value);
@@ -189,7 +195,7 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
             startDate: widget.startDate,
           ),
         ),
-        if (widget.field.withDaysNum)
+        if (daysCount != null)
           BottomPickButton(
             text: daysCount.toString(),
             style: widget.style?.copyWith(fontSize: 18),
@@ -212,7 +218,8 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                           child: CupertinoPicker.builder(
                               itemExtent: 32,
                               childCount: 364,
-                              scrollController: FixedExtentScrollController(initialItem: daysCount),
+                              scrollController:
+                                  FixedExtentScrollController(initialItem: daysCount!),
                               onSelectedItemChanged: (index) {
                                 daysCount = index + 1;
                                 setState(() {});
@@ -231,7 +238,7 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                                   return;
                                 }
 
-                                final endDate = startDate.add(Duration(days: daysCount));
+                                final endDate = startDate.add(Duration(days: daysCount!));
 
                                 String value;
                                 try {
