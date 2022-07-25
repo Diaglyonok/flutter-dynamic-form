@@ -262,6 +262,9 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                                 }
 
                                 updateValue(widget.endController, value);
+
+                                widget.onChanged(CompositeValue(widget.startController.text,
+                                    extra: widget.endController.text));
                               },
                               itemBuilder: (context, index) {
                                 return Center(
