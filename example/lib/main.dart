@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dynamic_form/flutter_dynamic_form.dart';
 import 'package:flutter_dynamic_form/model/auto_calculate_field.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
+import 'package:flutter_dynamic_form/model/row_field.dart';
 import 'package:hello_example/date_formatter.dart';
 import 'package:hello_example/theme.dart';
 import 'package:jiffy/jiffy.dart';
@@ -15,7 +16,7 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -81,6 +82,45 @@ class _MyAppState extends State<MyApp> {
         required: true,
         label: 'Simple Required Text',
       ),
+      RowField(
+        fieldId: 'row_example',
+        fields: [
+          Field(
+              fieldId: 'info_example1',
+              fieldType: FieldTypes.Text,
+              required: true,
+              label: 'Info Example1',
+              value: CompositeValue('test')),
+          Field(
+            fieldId: 'info_example2',
+            fieldType: FieldTypes.Text,
+            required: true,
+            label: 'Info Example2',
+          ),
+        ],
+      ),
+      Field(
+        fieldId: 'info_example',
+        infoCallback: () {},
+        fieldType: FieldTypes.Text,
+        required: true,
+        label: 'Info Example',
+      ),
+      RowField(
+        fieldId: 'counters_row',
+        fields: [
+          Field(
+              fieldId: 'example_counter1',
+              fieldType: FieldTypes.Counter,
+              label: 'Counter 1',
+              value: CompositeValue('100')),
+          Field(
+            fieldId: 'example_counter2',
+            fieldType: FieldTypes.Counter,
+            label: 'Counter 2',
+          ),
+        ],
+      ),
       Field(
         fieldId: 'ro_example',
         readOnly: true,
@@ -134,6 +174,10 @@ class _MyAppState extends State<MyApp> {
         fieldId: 'price',
         fieldType: FieldTypes.Number,
         label: 'Price',
+        infoCallback: () {},
+        shouldShowInfo: (value) {
+          return value?.extra == 'month';
+        },
         types: priceTypeTranslations.keys.toList(),
         translations: priceTypeTranslations,
       ),

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
+import 'package:flutter_dynamic_form/model/row_field.dart';
 import 'package:flutter_dynamic_form/utils/replacement_formatter.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/color_picker.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/period_field_view.dart';
@@ -17,6 +18,7 @@ import '../utils/masked_text_controller.dart';
 import '../widget/field_widgets/checkbox_field.dart';
 import '../widget/field_widgets/radio_button.dart';
 import '../widget/field_widgets/string_result_field.dart';
+import 'field_widgets/counter_field_view.dart';
 import 'field_widgets/date.dart';
 import 'field_widgets/field_wrapper.dart';
 import 'field_widgets/phone_field_wrapper.dart';
@@ -45,7 +47,7 @@ class DynamicForm extends StatefulWidget {
   final InputDecoration? decoration;
 
   const DynamicForm({
-    Key? key,
+    super.key,
     this.title,
     this.validationOptions,
     this.scrollController,
@@ -60,7 +62,7 @@ class DynamicForm extends StatefulWidget {
     this.allowFullZip = false,
     this.useBaseLocale = false,
     this.decoration,
-  }) : super(key: key);
+  });
   @override
   DynamicFormState createState() => DynamicFormState();
 }
@@ -83,6 +85,7 @@ class DynamicFormState extends State<DynamicForm> {
 
   final Map<String, TextEditingController> controllers = {};
   final List<FocusNode> nodes = [];
+  final Map<String, FocusNode> additionalNodes = {};
 
   @override
   void initState() {
@@ -92,7 +95,7 @@ class DynamicFormState extends State<DynamicForm> {
       allowFullZip: _allowFullZip,
     );
     _allowFullZip = widget.allowFullZip ?? false;
-    _initFieldData();
+    _initFieldData(widget.fields);
   }
 
   @override
@@ -268,8 +271,8 @@ class DynamicFormState extends State<DynamicForm> {
     }
   }
 
-  void _initFieldData() {
-    for (var field in widget.fields) {
+  void _initFieldData(List<Field> fields, {Function(Field field)? generateNodesCallback}) {
+    for (var field in fields) {
       switch (field.fieldType) {
         case FieldTypes.Label:
         case FieldTypes.Color:
@@ -312,6 +315,7 @@ class DynamicFormState extends State<DynamicForm> {
           break;
 
         case FieldTypes.Number:
+        case FieldTypes.Counter:
           controllers[field.fieldId] = TextEditingController(text: field.value?.value);
           break;
         case FieldTypes.DatePeriod:
@@ -326,9 +330,23 @@ class DynamicFormState extends State<DynamicForm> {
               : (MaskedTextController(mask: '00/00/0000')..updateText(field.value?.extra ?? ''));
           controllers[field.fieldId + '_end'] = controllerEnd;
           break;
+
+        case FieldTypes.RowField:
+          field as RowField;
+          _initFieldData(
+            field.fields,
+            generateNodesCallback: (field) {
+              additionalNodes[field.fieldId] = FocusNode(debugLabel: field.label);
+            },
+          );
+          break;
       }
 
-      nodes.add(FocusNode(debugLabel: field.label));
+      if (generateNodesCallback == null) {
+        nodes.add(FocusNode(debugLabel: field.label));
+      } else {
+        generateNodesCallback.call(field);
+      }
       if (field.value != null) {
         values[field.fieldId] = field.value!;
       }
@@ -394,6 +412,10 @@ class DynamicFormState extends State<DynamicForm> {
         return _generateDatePeriod(context, field as PeriodField, current, next);
       case FieldTypes.ScreenResult:
         return _generateScreenResultField(context, field as ScreenResultField, current, next);
+      case FieldTypes.RowField:
+        return _generateRowField(context, field as RowField, current, next);
+      case FieldTypes.Counter:
+        return _generateCounter(context, field, current, next);
     }
     return null;
   }
@@ -456,6 +478,58 @@ class DynamicFormState extends State<DynamicForm> {
   ///
   ///
   ///
+
+  Widget _generateCounter(
+    BuildContext context,
+    Field field,
+    FocusNode? current,
+    FocusNode? next,
+  ) {
+    final controller = controllers[field.fieldId];
+    return CounterFieldView(
+      onChanged: (value) => _commonOnChanged(value, field),
+      decoration: widget.decoration,
+      field: field,
+      format: field is DateField ? field.format : null,
+      style: widget.commonStyle,
+      scrollPadding: _pinButton ? 100 : null,
+      validators: _commonTextValidators(field),
+      controller: controller!,
+    );
+  }
+
+  Widget _generateRowField(
+    BuildContext context,
+    RowField field,
+    FocusNode? current,
+    FocusNode? next,
+  ) {
+    final widgetList = <Widget>[];
+
+    for (int i = 0; i < field.fields.length; i++) {
+      final e = field.fields[i];
+      FocusNode? currNext;
+      if (i < field.fields.length - 1) {
+        currNext = additionalNodes[field.fields[i + 1].fieldId];
+      }
+      final fieldWidget = _generateField(
+          e, i == 0 ? current : additionalNodes[e.fieldId], currNext ?? next, context);
+      widgetList.add(fieldWidget == null
+          ? Container()
+          : Expanded(
+              child: fieldWidget,
+            ));
+
+      if (i != field.fields.length - 1) {
+        widgetList.add(const SizedBox(
+          width: 16,
+        ));
+      }
+    }
+    return Row(
+      children: widgetList,
+    );
+  }
 
   Widget _generateDatePeriod(
     BuildContext context,

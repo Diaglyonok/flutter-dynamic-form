@@ -1,13 +1,11 @@
-import '../model/dynamic_form_models.dart';
+import '../flutter_dynamic_form.dart';
 
-class AutoCalculateField extends Field {
-  final CompositeValue? Function(Map<String, CompositeValue>? values) calculate;
+class RowField extends Field {
+  final List<Field> fields;
 
-  AutoCalculateField({
+  RowField({
     required super.fieldId,
-    required super.fieldType,
-    required super.label,
-    required this.calculate,
+    required this.fields,
     super.required = false,
     super.readOnly = false,
     super.maskText,
@@ -21,7 +19,7 @@ class AutoCalculateField extends Field {
     super.validationExpression,
     super.validationErrorMessage,
     super.onUpdated,
-    super.infoCallback,
     super.shouldShowInfo,
-  });
+    super.infoCallback,
+  }) : super(fieldType: FieldTypes.RowField, label: '');
 }

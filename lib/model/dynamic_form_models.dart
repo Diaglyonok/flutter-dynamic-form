@@ -50,6 +50,8 @@ enum FieldTypes {
   DatePeriod,
   ScreenResult,
   Color,
+  RowField,
+  Counter,
 }
 
 class Field {
@@ -72,11 +74,15 @@ class Field {
   final String? validationErrorMessage;
 
   final Function(CompositeValue?)? onUpdated;
+  final Function()? infoCallback;
+  final bool Function(CompositeValue?)? shouldShowInfo;
 
   Field({
     required this.fieldId,
     required this.fieldType,
     required this.label,
+    this.infoCallback,
+    this.shouldShowInfo,
     this.onUpdated,
     this.required = false,
     this.readOnly = false,
@@ -110,6 +116,8 @@ class Field {
       readOnly: readOnly,
       label: label,
       maskText: maskText,
+      infoCallback: infoCallback,
+      shouldShowInfo: shouldShowInfo,
       maxLength: maxLength,
       inputType: inputType,
       confirmField: confirmField,
@@ -127,9 +135,11 @@ class Field {
     return Field(
       fieldId: fieldId,
       required: required,
+      infoCallback: infoCallback,
       readOnly: readOnly,
       label: newLabel ?? label,
       maskText: maskText,
+      shouldShowInfo: shouldShowInfo,
       maxLength: maxLength,
       inputType: inputType,
       confirmField: confirmField,

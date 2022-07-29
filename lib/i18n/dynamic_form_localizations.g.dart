@@ -121,7 +121,7 @@ class DynamicFormAppLocaleUtils {
   /// Returns the locale of the device as the enum type.
   /// Fallbacks to base locale.
   static DynamicFormAppLocale findDeviceLocale() {
-    final String? deviceLocale = WidgetsBinding.instance?.window.locale.toLanguageTag();
+    final String? deviceLocale = WidgetsBinding.instance.window.locale.toLanguageTag();
     if (deviceLocale != null) {
       final typedLocale = _selectLocale(deviceLocale);
       if (typedLocale != null) {

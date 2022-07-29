@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../../model/auto_calculate_field.dart';
 import '../../model/dynamic_form_models.dart';
 import '../../model/multitype_field.dart';
+import 'info_wrapper.dart';
 import 'multitype_wrapper.dart';
 
 class DynamicTextField extends StatefulWidget {
@@ -92,11 +93,14 @@ class DynamicTextField extends StatefulWidget {
 class _DynamicTextFieldState extends State<DynamicTextField> {
   String? currentExtra;
 
+  CompositeValue? currentValue;
+
   @override
   void initState() {
-    if (widget.field is AutoCalculateField) {}
     currentExtra =
         widget.field is MultitypeField ? (widget.field as MultitypeField).types.first : null;
+
+    currentValue = widget.field.value;
     super.initState();
   }
 
@@ -127,61 +131,65 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
               : null,
       onExtraChanged: (extra) {
         currentExtra = extra;
+        currentValue = CompositeValue(widget.controller.text, extra: extra);
         widget.onChanged?.call(
-          CompositeValue(widget.controller.text, extra: extra),
+          currentValue,
         );
       },
-      child: TextFormField(
-          focusNode: widget.current,
-          key: ValueKey<String>(widget.field.fieldId),
-          enabled: !widget.field.readOnly,
-          autocorrect: false,
-          controller: widget.controller,
-          keyboardType: inputType ?? widget.inputType,
-          textInputAction: widget.next == null ? TextInputAction.done : TextInputAction.next,
-          validator: widget.field.readOnly ? null : widget.validators,
-          onChanged: widget.field.readOnly
-              ? null
-              : (value) {
-                  widget.onChanged?.call(
-                    CompositeValue(value, extra: currentExtra),
-                  );
-                },
-          scrollPadding: widget.scrollPadding != null
-              ? EdgeInsets.only(bottom: widget.scrollPadding!)
-              : const EdgeInsets.all(20),
-          onFieldSubmitted: (widget.field.readOnly)
-              ? null
-              : (term) {
-                  widget.current?.unfocus();
-                  if (widget.next != null) FocusScope.of(context).requestFocus(widget.next);
-                },
-          inputFormatters: widget.formatters,
-          cursorColor: Theme.of(context).colorScheme.secondary,
-          textCapitalization: widget.capitalize || (widget.field.isCapitalized ?? false)
-              ? TextCapitalization.words
-              : TextCapitalization.none,
-          style: style,
-          obscureText: widget.maskText ?? false,
-          cursorWidth: 1.0,
-          maxLines: (widget.multiline ? null : 1),
-          maxLength: widget.field.maxLength,
-          decoration: decoration.copyWith(
-            suffix: widget.suffixIcon ??
-                (widget.field is AutoCalculateField && !widget.field.readOnly
-                    ? IconButton(
-                        onPressed: () {
-                          widget.onChanged?.call(null);
-                        },
-                        icon: Icon(
-                          Icons.restart_alt,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ))
-                    : null),
-            counterStyle: widget.field.maxLength != null ? decoration.counterStyle : null,
-            hintText: widget.hintText,
-            labelText: caption,
-          )),
+      child: InfoWrapper(
+        shouldShow: widget.field.shouldShowInfo?.call(currentValue) ?? true,
+        infoCallback: widget.field.infoCallback,
+        child: TextFormField(
+            focusNode: widget.current,
+            key: ValueKey<String>(widget.field.fieldId),
+            enabled: !widget.field.readOnly,
+            autocorrect: false,
+            controller: widget.controller,
+            keyboardType: inputType ?? widget.inputType,
+            textInputAction: widget.next == null ? TextInputAction.done : TextInputAction.next,
+            validator: widget.field.readOnly ? null : widget.validators,
+            onChanged: widget.field.readOnly
+                ? null
+                : (value) {
+                    currentValue = CompositeValue(value, extra: currentExtra);
+                    widget.onChanged?.call(currentValue);
+                  },
+            scrollPadding: widget.scrollPadding != null
+                ? EdgeInsets.only(bottom: widget.scrollPadding!)
+                : const EdgeInsets.all(20),
+            onFieldSubmitted: (widget.field.readOnly)
+                ? null
+                : (term) {
+                    widget.current?.unfocus();
+                    if (widget.next != null) FocusScope.of(context).requestFocus(widget.next);
+                  },
+            inputFormatters: widget.formatters,
+            cursorColor: Theme.of(context).colorScheme.secondary,
+            textCapitalization: widget.capitalize || (widget.field.isCapitalized ?? false)
+                ? TextCapitalization.words
+                : TextCapitalization.none,
+            style: style,
+            obscureText: widget.maskText ?? false,
+            cursorWidth: 1.0,
+            maxLines: (widget.multiline ? null : 1),
+            maxLength: widget.field.maxLength,
+            decoration: decoration.copyWith(
+              suffix: widget.suffixIcon ??
+                  (widget.field is AutoCalculateField && !widget.field.readOnly
+                      ? IconButton(
+                          onPressed: () {
+                            widget.onChanged?.call(null);
+                          },
+                          icon: Icon(
+                            Icons.restart_alt,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ))
+                      : null),
+              counterStyle: widget.field.maxLength != null ? decoration.counterStyle : null,
+              hintText: widget.hintText,
+              labelText: caption,
+            )),
+      ),
     );
   }
 }

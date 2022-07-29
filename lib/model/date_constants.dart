@@ -1,1 +1,0 @@
-enum PickType { SuffixGetter, FieldTap }

@@ -2,6 +2,8 @@ import 'package:intl/intl.dart';
 
 import '../model/dynamic_form_models.dart';
 
+enum PickType { SuffixGetter, FieldTap }
+
 class DateField extends Field {
   final DateFormat? format;
   final DateTime? startDateBounds;
@@ -9,41 +11,28 @@ class DateField extends Field {
   final CompareDate? compareDate;
 
   DateField({
-    required String fieldId,
-    bool required = false,
-    bool readOnly = false,
-    required String label,
-    this.format,
-    bool? maskText,
-    int? maxLength,
-    String? inputType,
-    List<Option>? options,
-    String? confirmField,
-    CompositeValue? value,
-    List<DependsOnValue>? dependsOn,
-    bool? isCapitalized,
-    String? validationExpression,
-    String? validationErrorMessage,
+    required super.fieldId,
+    required super.label,
     this.startDateBounds,
     this.endDateBounds,
     this.compareDate,
-    Function(CompositeValue?)? onUpdated,
+    this.format,
+    super.required = false,
+    super.readOnly = false,
+    super.maskText,
+    super.maxLength,
+    super.inputType,
+    super.options,
+    super.confirmField,
+    super.value,
+    super.dependsOn,
+    super.isCapitalized,
+    super.validationExpression,
+    super.validationErrorMessage,
+    super.onUpdated,
+    super.infoCallback,
+    super.shouldShowInfo,
   }) : super(
-          fieldId: fieldId,
-          required: required,
-          readOnly: readOnly,
-          label: label,
-          maskText: maskText,
-          maxLength: maxLength,
-          inputType: inputType,
-          options: options,
-          onUpdated: onUpdated,
-          isCapitalized: isCapitalized,
           fieldType: FieldTypes.Date,
-          confirmField: confirmField,
-          dependsOn: dependsOn,
-          value: value,
-          validationExpression: validationExpression,
-          validationErrorMessage: validationErrorMessage,
         );
 }

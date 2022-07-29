@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
-import '../model/dynamic_form_models.dart';
-import 'date_constants.dart';
+import '../flutter_dynamic_form.dart';
 
 class PeriodExtra {
   final String? secondLabel;
@@ -27,39 +26,24 @@ class PeriodField extends Field {
   final bool withDaysNum;
 
   PeriodField({
-    required String fieldId,
-    bool required = false,
-    bool readOnly = false,
-    required String label,
-    this.withDaysNum = false,
-    bool? maskText,
-    int? maxLength,
-    String? inputType,
-    List<Option>? options,
-    String? confirmField,
-    CompositeValue? value,
-    List<DependsOnValue>? dependsOn,
-    bool? isCapitalized,
-    String? validationExpression,
-    String? validationErrorMessage,
+    required super.fieldId,
     required this.extra,
-    Function(CompositeValue?)? onUpdated,
-  }) : super(
-          fieldId: fieldId,
-          required: required,
-          readOnly: readOnly,
-          label: label,
-          maskText: maskText,
-          maxLength: maxLength,
-          inputType: inputType,
-          options: options,
-          isCapitalized: isCapitalized,
-          fieldType: FieldTypes.DatePeriod,
-          confirmField: confirmField,
-          dependsOn: dependsOn,
-          value: value,
-          validationExpression: validationExpression,
-          validationErrorMessage: validationErrorMessage,
-          onUpdated: onUpdated,
-        );
+    this.withDaysNum = false,
+    super.required = false,
+    super.readOnly = false,
+    required super.label,
+    super.maskText,
+    super.maxLength,
+    super.inputType,
+    super.options,
+    super.confirmField,
+    super.value,
+    super.dependsOn,
+    super.isCapitalized,
+    super.validationExpression,
+    super.validationErrorMessage,
+    super.onUpdated,
+    super.infoCallback,
+    super.shouldShowInfo,
+  }) : super(fieldType: FieldTypes.DatePeriod);
 }
