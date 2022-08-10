@@ -231,7 +231,7 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                               itemExtent: 32,
                               childCount: 364,
                               scrollController:
-                                  FixedExtentScrollController(initialItem: daysCount!),
+                                  FixedExtentScrollController(initialItem: daysCount! - 1),
                               onSelectedItemChanged: (index) {
                                 daysCount = index + 1;
                                 setState(() {});
