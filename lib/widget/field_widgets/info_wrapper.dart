@@ -31,9 +31,10 @@ class InfoWrapper extends StatelessWidget {
                         splashRadius: 20,
                         padding: const EdgeInsets.only(),
                         onPressed: infoCallback!,
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.info_outline,
                           size: 18,
+                          color: Theme.of(context).colorScheme.onBackground,
                         ),
                       ),
                     ),
