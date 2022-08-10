@@ -13,7 +13,7 @@ class PhoneField extends Field {
     super.inputType,
     super.options,
     super.confirmField,
-    super.value,
+    CompositeValue? value,
     super.dependsOn,
     super.isCapitalized,
     super.validationExpression,
@@ -22,5 +22,8 @@ class PhoneField extends Field {
     super.onUpdated,
     super.infoCallback,
     super.shouldShowInfo,
-  }) : super(fieldType: FieldTypes.Phone);
+  }) : super(
+          fieldType: FieldTypes.Phone,
+          value: value ?? CompositeValue('', extra: initialPrefix),
+        );
 }
