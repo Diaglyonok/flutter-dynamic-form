@@ -129,7 +129,7 @@ class _MyAppState extends State<MyApp> {
         label: 'Read Only Test',
       ),
       PhoneField(
-        initialPrefix: '+7',
+        initialPrefix: '+',
         fieldId: 'phone_example',
         label: 'Phone Text',
       ),

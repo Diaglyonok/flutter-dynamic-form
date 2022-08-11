@@ -308,6 +308,8 @@ class DynamicFormState extends State<DynamicForm> {
             ..updateText(field.value?.value ?? '');
           controllers[field.fieldId]!.selection =
               TextSelection.collapsed(offset: field.value?.value.length ?? 0);
+
+          controllers[field.fieldId + '_simple'] = TextEditingController(text: field.value?.value);
           break;
 
         case FieldTypes.RadioOptions:
@@ -869,11 +871,20 @@ class DynamicFormState extends State<DynamicForm> {
             color: field.readOnly
                 ? Theme.of(context).colorScheme.onBackground.withOpacity(0.44)
                 : Theme.of(context).colorScheme.onBackground);
+
+    final extra = values[field.fieldId]?.extra;
+
     return PhoneFieldWrapper(
       field: field is PhoneField ? field : null,
       style: style,
       onExtraChanged: (extra) {
         final result = values[field.fieldId];
+
+        if (result?.extra == '+' && extra != '+') {
+          controllers[field.fieldId]!.clear();
+        } else if (result?.extra != '+' && extra == '+') {
+          controllers[field.fieldId + '_simple']!.clear();
+        }
 
         _commonOnChanged(CompositeValue(result?.value ?? '', extra: extra), field);
       },
@@ -888,15 +899,20 @@ class DynamicFormState extends State<DynamicForm> {
         style: style,
         required: field.required,
         inputType: TextInputType.phone,
-        validators: _commonTextValidators(field, additionals: [
-          (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
-        ]),
+        validators: _commonTextValidators(
+          field,
+          additionals: [
+            if (extra != '+')
+              (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
+          ],
+        ),
         onChanged: (value) {
           final result = values[field.fieldId];
 
           _commonOnChanged(CompositeValue(value!.value, extra: result?.extra), field);
         },
-        controller: controllers[field.fieldId]!,
+        controller:
+            extra == '+' ? controllers[field.fieldId + '_simple']! : controllers[field.fieldId]!,
         maskText: field.maskText,
       ),
     );

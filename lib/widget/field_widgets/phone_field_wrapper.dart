@@ -8,6 +8,7 @@ import '../../i18n/dynamic_form_localizations.g.dart' as locale;
 import '../field_widgets/bottom_pick_button.dart';
 
 const countryPhoneCodes = <String, String>{
+  'AA': '+',
   'AF': '+93',
   'AL': '+355',
   'DZ': '+21',
@@ -273,6 +274,7 @@ class _PhoneFieldWrapperState extends State<PhoneFieldWrapper> {
             onChanged: (code) {
               current = code;
               setState(() {});
+
               widget.onExtraChanged?.call(code);
             },
           ),
@@ -481,7 +483,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                                   Container(
                                                     constraints: const BoxConstraints(minWidth: 48),
                                                     child: Text(
-                                                      '${countryPhoneCodes[key]!}:',
+                                                      '${countryPhoneCodes[key]!}${key == countryPhoneCodes.keys.first ? '' : ':'}',
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .bodyText2!
