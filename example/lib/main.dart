@@ -129,9 +129,13 @@ class _MyAppState extends State<MyApp> {
         label: 'Read Only Test',
       ),
       PhoneField(
-        initialPrefix: '+',
+        initialPrefix: '+7',
         fieldId: 'phone_example',
         label: 'Phone Text',
+        value: CompositeValue(
+          "null (123) 123-1232".replaceAll(RegExp('[^0-9]'), ''),
+          extra: '+7',
+        ),
       ),
       Field(
         fieldId: 'simple_num_fueld',
@@ -178,6 +182,10 @@ class _MyAppState extends State<MyApp> {
         shouldShowInfo: (value) {
           return value?.extra == 'month';
         },
+        value: CompositeValue(
+          '213124',
+          extra: "month",
+        ),
         types: priceTypeTranslations.keys.toList(),
         translations: priceTypeTranslations,
       ),

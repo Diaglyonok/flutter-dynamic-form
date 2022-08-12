@@ -306,8 +306,12 @@ class DynamicFormState extends State<DynamicForm> {
         case FieldTypes.Phone:
           controllers[field.fieldId] = MaskedTextController(mask: '(000) 000-0000')
             ..updateText(field.value?.value ?? '');
-          controllers[field.fieldId]!.selection =
-              TextSelection.collapsed(offset: field.value?.value.length ?? 0);
+          try {
+            controllers[field.fieldId]!.selection =
+                TextSelection.collapsed(offset: field.value?.value.length ?? 0);
+          } catch (e) {
+            //ignore
+          }
 
           controllers[field.fieldId + '_simple'] = TextEditingController(text: field.value?.value);
           break;

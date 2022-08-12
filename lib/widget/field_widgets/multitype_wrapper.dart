@@ -25,7 +25,7 @@ class _MultitypeFieldWrapperState extends State<MultitypeFieldWrapper> {
 
   @override
   void initState() {
-    current = widget.field?.types.first;
+    current = widget.field?.value?.extra ?? widget.field?.types.first;
     super.initState();
   }
 
