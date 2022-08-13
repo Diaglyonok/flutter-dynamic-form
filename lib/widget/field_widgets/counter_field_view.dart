@@ -46,7 +46,7 @@ class CounterFieldView extends StatelessWidget {
                 Expanded(
                   child: CupertinoPicker.builder(
                     itemExtent: 32,
-                    childCount: 0x7fffffffffffffff,
+                    childCount: 9007199254740991,
                     scrollController: FixedExtentScrollController(
                         initialItem: int.tryParse(controller.text) ?? 0),
                     onSelectedItemChanged: (index) {
