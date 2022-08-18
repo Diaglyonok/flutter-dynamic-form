@@ -160,6 +160,12 @@ class _MyAppState extends State<MyApp> {
         format: format,
       ),
       Field(
+        fieldId: 'time',
+        fieldType: FieldTypes.Time,
+        // value: timeValue != null ? CompositeValue(timeValue) : null,
+        label: 'Time',
+      ),
+      Field(
         fieldId: 'plain_text_example',
         fieldType: FieldTypes.PlainText,
         label: 'Plain text',
