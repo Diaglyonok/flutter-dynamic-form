@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -260,6 +261,25 @@ class DynamicFormState extends State<DynamicForm> {
       return result;
     } else {
       return null;
+    }
+  }
+
+  void updateField(
+      {required String? id,
+      required CompositeValue value,
+      String Function(CompositeValue)? valueConverter}) {
+    final field = widget.fields.firstWhereOrNull((element) => element.fieldId == id);
+
+    if (field != null) {
+      final controller = controllers[id];
+      final valueString = valueConverter?.call(value) ?? value.value;
+      if (controller is MaskedTextController) {
+        controller.updateText(valueString);
+      } else {
+        controller?.text = valueString;
+      }
+
+      _commonOnChanged(value, field);
     }
   }
 

@@ -54,6 +54,12 @@ class _MyAppState extends State<MyApp> {
         },
       ),
       PasswordField(
+        onUpdated: (value) {
+          if (value?.value == 'autoFill') {
+            key.currentState
+                ?.updateField(value: CompositeValue('top kek, its working'), id: 'text_example');
+          }
+        },
         fieldId: 'password_example',
         forgotPasswordBuilder: (context, field) {
           return Align(
@@ -133,7 +139,7 @@ class _MyAppState extends State<MyApp> {
         fieldId: 'phone_example',
         label: 'Phone Text',
         value: CompositeValue(
-          "null (123) 123-1232".replaceAll(RegExp('[^0-9]'), ''),
+          "9811206081".replaceAll(RegExp('[^0-9]'), ''),
           extra: '+7',
         ),
       ),
