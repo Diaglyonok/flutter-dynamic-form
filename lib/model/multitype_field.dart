@@ -25,5 +25,6 @@ class MultitypeField extends Field {
     super.validationErrorMessage,
     super.onUpdated,
     super.shouldShowInfo,
+    super.multiline,
   });
 }

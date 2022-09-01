@@ -70,6 +70,7 @@ class Field {
   final CompositeValue? value;
   final List<DependsOnValue>? dependsOn;
   final bool? isCapitalized;
+  final bool multiline;
   final String? validationExpression;
   final String? validationErrorMessage;
 
@@ -86,6 +87,7 @@ class Field {
     this.onUpdated,
     this.required = false,
     this.readOnly = false,
+    this.multiline = false,
     this.maskText,
     this.maxLength,
     this.inputType,
@@ -111,24 +113,24 @@ class Field {
     }
 
     return Field(
-      fieldId: fieldId,
-      required: required,
-      readOnly: readOnly,
-      label: label,
-      maskText: maskText,
-      infoCallback: infoCallback,
-      shouldShowInfo: shouldShowInfo,
-      maxLength: maxLength,
-      inputType: inputType,
-      confirmField: confirmField,
-      isCapitalized: isCapitalized,
-      fieldType: fieldType,
-      options: options,
-      dependsOn: dependsOn,
-      validationExpression: validationExpression,
-      validationErrorMessage: validationErrorMessage,
-      value: value,
-    );
+        fieldId: fieldId,
+        required: required,
+        readOnly: readOnly,
+        label: label,
+        maskText: maskText,
+        infoCallback: infoCallback,
+        shouldShowInfo: shouldShowInfo,
+        maxLength: maxLength,
+        inputType: inputType,
+        confirmField: confirmField,
+        isCapitalized: isCapitalized,
+        fieldType: fieldType,
+        options: options,
+        dependsOn: dependsOn,
+        validationExpression: validationExpression,
+        validationErrorMessage: validationErrorMessage,
+        value: value,
+        multiline: multiline);
   }
 
   Field copyWith({int? parentId, List<Field>? children, String? newLabel}) {
@@ -150,6 +152,7 @@ class Field {
       value: value,
       validationExpression: validationExpression,
       validationErrorMessage: validationErrorMessage,
+      multiline: multiline,
     );
   }
 }

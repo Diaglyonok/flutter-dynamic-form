@@ -160,6 +160,12 @@ class _MyAppState extends State<MyApp> {
           format: format,
         ),
       ),
+      Field(
+        fieldId: 'time',
+        fieldType: FieldTypes.Time,
+        value: CompositeValue('12:30'),
+        label: 'Time',
+      ),
       DateField(
         fieldId: 'simple_date_fueld',
         label: 'Simple Date Field',

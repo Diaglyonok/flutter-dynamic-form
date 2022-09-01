@@ -159,6 +159,7 @@ class DateFieldView extends StatelessWidget {
         absorbing: pickType == PickType.FieldTap,
         child: DynamicTextField(
           decoration: decoration,
+          multiline: field.multiline,
           context: context,
           field: field,
           label: customLabel ?? field.label,

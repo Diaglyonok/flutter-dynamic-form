@@ -23,5 +23,6 @@ class AutoCalculateField extends Field {
     super.onUpdated,
     super.infoCallback,
     super.shouldShowInfo,
+    super.multiline,
   });
 }

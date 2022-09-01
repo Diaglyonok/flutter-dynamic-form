@@ -21,5 +21,6 @@ class RowField extends Field {
     super.onUpdated,
     super.shouldShowInfo,
     super.infoCallback,
+    super.multiline,
   }) : super(fieldType: FieldTypes.RowField, label: '');
 }

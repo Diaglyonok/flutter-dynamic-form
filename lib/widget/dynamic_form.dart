@@ -755,6 +755,7 @@ class DynamicFormState extends State<DynamicForm> {
   ) {
     return DynamicTextField(
       decoration: widget.decoration,
+      multiline: field.multiline,
       context: context,
       label: field.label,
       field: field,
@@ -842,6 +843,7 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? next,
   ) {
     return DynamicTextField(
+      multiline: field.multiline,
       decoration: widget.decoration,
       context: context,
       label: field.label,
@@ -869,6 +871,7 @@ class DynamicFormState extends State<DynamicForm> {
         context: context,
         label: field.label,
         field: field,
+        multiline: field.multiline,
         next: next,
         scrollPadding: _pinButton ? 100 : null,
         style: widget.commonStyle,
@@ -917,6 +920,7 @@ class DynamicFormState extends State<DynamicForm> {
         context: context,
         field: field,
         label: field.label,
+        multiline: field.multiline,
         next: next,
         current: current,
         scrollPadding: _pinButton ? 100 : null,
@@ -966,6 +970,7 @@ class DynamicFormState extends State<DynamicForm> {
       context: context,
       label: field.label,
       field: field,
+      multiline: field.multiline,
       required: field.required,
       style: widget.commonStyle,
       next: next,
@@ -992,6 +997,7 @@ class DynamicFormState extends State<DynamicForm> {
     return DateFieldView(
       decoration: widget.decoration,
       field: field,
+      style: widget.commonStyle,
       current: current,
       next: next,
       type: CupertinoDatePickerMode.time,

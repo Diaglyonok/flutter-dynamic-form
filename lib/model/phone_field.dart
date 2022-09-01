@@ -22,6 +22,7 @@ class PhoneField extends Field {
     super.onUpdated,
     super.infoCallback,
     super.shouldShowInfo,
+    super.multiline,
   }) : super(
           fieldType: FieldTypes.Phone,
           value: value ?? CompositeValue('', extra: initialPrefix),

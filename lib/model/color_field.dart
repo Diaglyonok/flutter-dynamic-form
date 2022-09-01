@@ -22,6 +22,7 @@ class ColorField extends Field {
     super.onUpdated,
     super.infoCallback,
     super.shouldShowInfo,
+    super.multiline,
   }) : super(
           required: false,
           readOnly: false,

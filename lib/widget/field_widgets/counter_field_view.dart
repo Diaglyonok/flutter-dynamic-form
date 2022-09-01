@@ -78,6 +78,7 @@ class CounterFieldView extends StatelessWidget {
         absorbing: true,
         child: DynamicTextField(
           decoration: decoration,
+          multiline: field.multiline,
           context: context,
           field: field,
           label: customLabel ?? field.label,
