@@ -797,18 +797,10 @@ class DynamicFormState extends State<DynamicForm> {
   ) {
     return CheckboxField(
       field: field,
-      onSaved: (value) {
+      style: widget.commonStyle,
+      onChanged: (value) {
         values[field.fieldId] = CompositeValue(value.toString());
       },
-      validator: field.required
-          ? (bool? value) {
-              value ??= false;
-              if (!value) {
-                return locale.dynamicFormTranslation.fieldIsRequiredErrorText;
-              }
-              return null;
-            }
-          : null,
     );
   }
 

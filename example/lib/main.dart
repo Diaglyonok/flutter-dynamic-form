@@ -45,6 +45,11 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
+      Field(
+        fieldType: FieldTypes.CheckBox,
+        fieldId: 'checkbox_example',
+        label: 'Checkbox Example',
+      ),
       ColorField(
         fieldId: 'color_example',
         initColor: Colors.red,

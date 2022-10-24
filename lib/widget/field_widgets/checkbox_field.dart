@@ -2,46 +2,73 @@ import 'package:flutter/material.dart';
 
 import '../../model/dynamic_form_models.dart';
 
-class CheckboxField extends FormField<bool> {
-  CheckboxField({
+class CheckboxField extends StatefulWidget {
+  final Field field;
+  final TextStyle? style;
+  final Function(bool) onChanged;
+
+  const CheckboxField({
+    required this.field,
+    required this.onChanged,
     Key? key,
-    required Field field,
-    FormFieldValidator<bool>? validator,
-    FormFieldSetter<bool>? onSaved,
-  }) : super(
-          key: key,
-          initialValue: field.value?.value.toBool(),
-          builder: (FormFieldState<bool> state) => _CheckboxWidget(field, state),
-          validator: validator,
-          onSaved: onSaved,
-        );
+    this.style,
+  }) : super(key: key);
+
+  @override
+  State<CheckboxField> createState() => _CheckboxFieldState();
 }
 
-class _CheckboxWidget extends StatelessWidget {
-  final Field field;
-  final FormFieldState<bool> state;
+class _CheckboxFieldState extends State<CheckboxField> {
+  bool value = false;
 
-  const _CheckboxWidget(this.field, this.state);
+  @override
+  void initState() {
+    value = widget.field.value?.value.toBool() ?? false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final tile = CheckboxListTile(
-      value: state.value ?? false,
-      dense: true,
-      title: Text(
-        field.label,
-        style: theme.textTheme.subtitle1!.copyWith(fontSize: 14),
+    return InkWell(
+      onTap: () {
+        setState(() {
+          value = !value;
+        });
+        widget.onChanged(value);
+      },
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              widget.field.label,
+              style: (widget.style ?? Theme.of(context).textTheme.button)
+                  ?.copyWith(fontWeight: FontWeight.w500),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: 26,
+              width: 26,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7),
+                color: Theme.of(context).colorScheme.secondary.withOpacity(value ? 1.0 : 0.1),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.secondary,
+                  width: 1.5,
+                ),
+              ),
+              child: Icon(
+                Icons.check,
+                size: 19,
+                color: value ? Theme.of(context).colorScheme.onSecondary : Colors.transparent,
+              ),
+            ),
+          )
+        ],
       ),
-      onChanged: state.didChange,
     );
-    if (state.hasError) {
-      return Theme(
-        data: ThemeData(unselectedWidgetColor: theme.errorColor),
-        child: tile,
-      );
-    }
-    return tile;
   }
 }
 
