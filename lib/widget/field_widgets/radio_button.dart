@@ -62,7 +62,7 @@ class _RadioButtonState extends State<RadioButton> {
       return [
         Expanded(
             child: ToggleButton(
-          height: 40,
+          height: widget.field.multiline ? 40 : 28,
           textSelected: option.value!,
           selected: (value?.value == option.value),
           onChange: (changedValue) {
@@ -73,6 +73,7 @@ class _RadioButtonState extends State<RadioButton> {
             }
             FocusScope.of(context).unfocus();
           },
+          multiline: widget.field.multiline,
         )),
         if (option != widget.field.options?.last)
           const SizedBox(
@@ -90,6 +91,7 @@ class ToggleButton extends StatelessWidget {
   final String textSelected;
   final String? textUnselected;
   final bool selected;
+  final bool multiline;
   final double borderRadiusValue;
   final double height;
   final double padding;
@@ -106,7 +108,8 @@ class ToggleButton extends StatelessWidget {
       this.customWidgetBuilder,
       this.unselectedOutline = false,
       required this.selected,
-      required this.onChange})
+      required this.onChange,
+      required this.multiline})
       : super(key: key);
 
   @override
@@ -152,7 +155,7 @@ class ToggleButton extends StatelessWidget {
                         Expanded(
                           child: AutoSizeText(
                             textSelected,
-                            maxLines: 3,
+                            maxLines: multiline ? 3 : 1,
                             textAlign: TextAlign.center,
                             semanticsLabel: textSelected,
                             textScaleFactor: 1.0,
@@ -210,7 +213,7 @@ class ToggleButton extends StatelessWidget {
                         Expanded(
                           child: AutoSizeText(
                             textUnselected ?? textSelected,
-                            maxLines: 3,
+                            maxLines: multiline ? 3 : 1,
                             textAlign: TextAlign.center,
                             textScaleFactor: 1.0,
                             semanticsLabel: textUnselected ?? textSelected,

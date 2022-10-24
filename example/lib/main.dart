@@ -184,6 +184,7 @@ class _MyAppState extends State<MyApp> {
       ),
       Field(
         fieldId: 'radio_example',
+        multiline: false,
         fieldType: FieldTypes.RadioOptions,
         label: '',
         options: [
