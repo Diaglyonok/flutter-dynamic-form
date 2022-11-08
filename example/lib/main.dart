@@ -35,6 +35,12 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     final format = DateFormatter.byLocale(context);
     fields = [
+      Field(
+        fieldId: 'email',
+        required: true,
+        fieldType: FieldTypes.Email,
+        label: "Email",
+      ),
       ScreenResultField(
         fieldId: 'screen_res_example',
         label: 'Delayed result',

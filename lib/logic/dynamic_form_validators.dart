@@ -18,7 +18,7 @@ class DynamicFormValidators {
         email.length <= 2 ||
         !email.contains('@') ||
         !email.contains('.') ||
-        email.indexOf('.') <= email.indexOf('@') ||
+        email.lastIndexOf('.') <= email.indexOf('@') ||
         email.endsWith('.') ||
         email.endsWith('@') ||
         email.startsWith('@')) {
