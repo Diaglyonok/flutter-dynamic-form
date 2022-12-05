@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -264,11 +263,28 @@ class DynamicFormState extends State<DynamicForm> {
     }
   }
 
+  Field? _findField(List<Field> fields, String? id) {
+    for (int i = 0; i < fields.length; i++) {
+      if (id == fields[i].fieldId) {
+        return fields[i];
+      } else if (fields[i] is RowField) {
+        final rowField = fields[i] as RowField;
+        final foundField = _findField(rowField.fields, id);
+
+        if (foundField != null) {
+          return foundField;
+        }
+      }
+    }
+
+    return null;
+  }
+
   void updateField(
       {required String? id,
       required CompositeValue value,
       String Function(CompositeValue)? valueConverter}) {
-    final field = widget.fields.firstWhereOrNull((element) => element.fieldId == id);
+    final field = _findField(widget.fields, id);
 
     if (field != null) {
       final controller = controllers[id];
