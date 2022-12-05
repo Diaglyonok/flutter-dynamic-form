@@ -265,15 +265,15 @@ class DynamicFormState extends State<DynamicForm> {
 
   Field? _findField(List<Field> fields, String? id) {
     for (int i = 0; i < fields.length; i++) {
-      if (id == fields[i].fieldId) {
-        return fields[i];
-      } else if (fields[i] is RowField) {
+      if (fields[i] is RowField) {
         final rowField = fields[i] as RowField;
         final foundField = _findField(rowField.fields, id);
 
         if (foundField != null) {
           return foundField;
         }
+      } else if (id == fields[i].fieldId) {
+        return fields[i];
       }
     }
 
