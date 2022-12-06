@@ -157,42 +157,47 @@ class DateFieldView extends StatelessWidget {
       onTap: pickType != PickType.FieldTap ? null : _onPressed,
       child: AbsorbPointer(
         absorbing: pickType == PickType.FieldTap,
-        child: DynamicTextField(
-          decoration: decoration,
-          multiline: field.multiline,
-          context: context,
-          field: field,
-          label: customLabel ?? field.label,
-          next: next,
-          style: style,
-          scrollPadding: scrollPadding,
-          hintText: pickType == PickType.FieldTap
-              ? null
-              : type == CupertinoDatePickerMode.date || type == CupertinoDatePickerMode.dateAndTime
-                  ? (format?.pattern ?? DynamicFormValidators.datePattern).toUpperCase()
-                  : DynamicFormValidators.timePattern.toUpperCase(),
-          current: current,
-          required: field.required,
-          inputType: TextInputType.datetime,
-          controller: controller,
-          onChanged: field.readOnly ? null : onChanged,
-          validators: field.readOnly ? null : validators,
-          maskText: field.maskText,
-          suffixIcon: pickType != PickType.SuffixGetter
-              ? null
-              : SizedBox(
-                  height: 24,
-                  child: IconButton(
-                    padding: const EdgeInsets.all(0.0),
-                    icon: Icon(
-                      type == CupertinoDatePickerMode.date
-                          ? Icons.calendar_month
-                          : Icons.access_time_rounded,
-                      color: Colors.black.withOpacity(0.32),
+        child: SizedBox(
+          height: 58,
+          child: DynamicTextField(
+            decoration: decoration?.copyWith(contentPadding: null),
+            multiline: field.multiline,
+            context: context,
+            field: field,
+            label: customLabel ?? field.label,
+            next: next,
+            style: style,
+            scrollPadding: scrollPadding,
+            hintText: pickType == PickType.FieldTap
+                ? null
+                : type == CupertinoDatePickerMode.date ||
+                        type == CupertinoDatePickerMode.dateAndTime
+                    ? (format?.pattern ?? DynamicFormValidators.datePattern).toUpperCase()
+                    : DynamicFormValidators.timePattern.toUpperCase(),
+            current: current,
+            required: field.required,
+            inputType: TextInputType.datetime,
+            controller: controller,
+            onChanged: field.readOnly ? null : onChanged,
+            validators: field.readOnly ? null : validators,
+            maskText: field.maskText,
+            suffixIcon: pickType != PickType.SuffixGetter
+                ? null
+                : SizedBox(
+                    height: 28,
+                    child: IconButton(
+                      alignment: Alignment.bottomCenter,
+                      padding: const EdgeInsets.all(0.0),
+                      icon: Icon(
+                        type == CupertinoDatePickerMode.date
+                            ? Icons.calendar_month
+                            : Icons.access_time_rounded,
+                        color: Colors.black.withOpacity(0.32),
+                      ),
+                      onPressed: _onPressed,
                     ),
-                    onPressed: _onPressed,
                   ),
-                ),
+          ),
         ),
       ),
     );

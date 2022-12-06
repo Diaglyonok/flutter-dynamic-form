@@ -56,6 +56,25 @@ class _MyAppState extends State<MyApp> {
         fieldId: 'checkbox_example',
         label: 'Checkbox Example',
       ),
+      RowField(
+        fieldId: 'arrival_row',
+        fields: [
+          ScreenResultField(
+            fieldId: 'arrival_date',
+            label: 'Arrival',
+            extra: ScreenResultExtra(
+              getResult: (context) async {
+                return ScreenResultCompositeValue('value');
+              },
+            ),
+          ),
+          Field(
+            fieldId: 'arrival_time',
+            fieldType: FieldTypes.Time,
+            label: 'Time',
+          ),
+        ],
+      ),
       ColorField(
         fieldId: 'color_example',
         initColor: Colors.red,
@@ -272,6 +291,49 @@ class _MyAppState extends State<MyApp> {
           body: DynamicForm(
             key: key,
             fields: fields!,
+            decoration: InputDecoration(
+              disabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+                ),
+              ),
+              labelStyle: Theme.of(context).textTheme.caption!.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                  ),
+              hintStyle: Theme.of(context).textTheme.caption!.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                  ),
+              errorStyle: Theme.of(context).textTheme.caption!.copyWith(
+                    color: Theme.of(context).colorScheme.error,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                  ),
+              focusedErrorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
+              ),
+              errorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+            commonStyle: Theme.of(context).textTheme.headline6!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
             submitBtn: Padding(
               padding: const EdgeInsets.all(16.0),
               child: SimpleButton(
