@@ -11,6 +11,7 @@ class AutoCalculateField extends Field {
     super.required = false,
     super.readOnly = false,
     super.maskText,
+    super.customValidator,
     super.maxLength,
     super.inputType,
     super.options,

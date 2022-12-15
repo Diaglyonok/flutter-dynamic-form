@@ -28,10 +28,11 @@ class PeriodField extends Field {
   PeriodField({
     required super.fieldId,
     required this.extra,
+    required super.label,
     this.withDaysNum = false,
     super.required = false,
     super.readOnly = false,
-    required super.label,
+    super.customValidator,
     super.maskText,
     super.maxLength,
     super.inputType,

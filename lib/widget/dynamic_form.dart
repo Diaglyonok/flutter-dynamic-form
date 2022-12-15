@@ -86,7 +86,7 @@ class DynamicFormState extends State<DynamicForm> {
   final Map<String, TextEditingController> controllers = {};
   final List<FocusNode> nodes = [];
   final Map<String, FocusNode> additionalNodes = {};
-
+  void Function()? focusListener;
   @override
   void initState() {
     super.initState();
@@ -476,6 +476,7 @@ class DynamicFormState extends State<DynamicForm> {
                 value == null ? null : CompositeValue(value),
                 isRequired: field.required,
               ),
+        if (field.customValidator != null) field.customValidator!,
         if (additionals != null) ...additionals
       ]);
 

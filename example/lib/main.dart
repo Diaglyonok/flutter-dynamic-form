@@ -239,6 +239,9 @@ class _MyAppState extends State<MyApp> {
         translations: priceTypeTranslations,
       ),
       AutoCalculateField(
+        customValidator: (strValue) {
+          return 'test validation';
+        },
         calculate: (values) {
           final start = format.safeStrictParse(values?['date_period']?.value);
           final end = format.safeStrictParse(values?['date_period']?.extra);

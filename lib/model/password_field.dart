@@ -13,6 +13,7 @@ class PasswordField extends Field {
     this.forgotPasswordBuilder,
     super.required = false,
     super.readOnly = false,
+    super.customValidator,
     super.maskText,
     super.maxLength,
     super.inputType,

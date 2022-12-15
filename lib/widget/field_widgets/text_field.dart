@@ -95,13 +95,27 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
 
   CompositeValue? currentValue;
 
+  void Function()? listener;
   @override
   void initState() {
     currentExtra =
         widget.field is MultitypeField ? (widget.field as MultitypeField).types.first : null;
 
     currentValue = widget.field.value;
+
+    listener = () {
+      setState(() {});
+    };
+    widget.current?.addListener(listener!);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (listener != null) {
+      widget.current?.removeListener(listener!);
+    }
+    super.dispose();
   }
 
   @override
@@ -122,6 +136,20 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
     final caption = (widget.label) + (widget.required ? ' *' : '');
 
     final decoration = (widget.decoration ?? DynamicTextField.defaultDecoration(context));
+    final suffixIcon = widget.suffixIcon ??
+        (widget.field is AutoCalculateField && !widget.field.readOnly
+            ? IconButton(
+                alignment: Alignment.bottomCenter,
+                padding: const EdgeInsets.all(0.0),
+                icon: Icon(
+                  Icons.restart_alt,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                onPressed: () {
+                  widget.onChanged?.call(null);
+                },
+              )
+            : null);
     return MultitypeFieldWrapper(
       style: style,
       field: widget.field.readOnly
@@ -140,55 +168,57 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
         shouldShow: widget.field.shouldShowInfo?.call(currentValue) ?? true,
         infoCallback: widget.field.infoCallback,
         child: TextFormField(
-            focusNode: widget.current,
-            key: ValueKey<String>(widget.field.fieldId),
-            enabled: !widget.field.readOnly,
-            autocorrect: false,
-            controller: widget.controller,
-            keyboardType: inputType ?? widget.inputType,
-            textInputAction: widget.next == null ? TextInputAction.done : TextInputAction.next,
-            validator: widget.field.readOnly ? null : widget.validators,
-            onChanged: widget.field.readOnly
-                ? null
-                : (value) {
-                    currentValue = CompositeValue(value, extra: currentExtra);
-                    widget.onChanged?.call(currentValue);
-                  },
-            scrollPadding: widget.scrollPadding != null
-                ? EdgeInsets.only(bottom: widget.scrollPadding!)
-                : const EdgeInsets.all(20),
-            onFieldSubmitted: (widget.field.readOnly)
-                ? null
-                : (term) {
-                    widget.current?.unfocus();
-                    if (widget.next != null) FocusScope.of(context).requestFocus(widget.next);
-                  },
-            inputFormatters: widget.formatters,
-            cursorColor: Theme.of(context).colorScheme.secondary,
-            textCapitalization: widget.capitalize || (widget.field.isCapitalized ?? false)
-                ? TextCapitalization.words
-                : TextCapitalization.none,
-            style: style,
-            obscureText: widget.maskText ?? false,
-            cursorWidth: 1.0,
-            maxLines: (widget.multiline ? null : 1),
-            maxLength: widget.field.maxLength,
-            decoration: decoration.copyWith(
-              suffix: widget.suffixIcon ??
-                  (widget.field is AutoCalculateField && !widget.field.readOnly
-                      ? IconButton(
-                          onPressed: () {
-                            widget.onChanged?.call(null);
-                          },
-                          icon: Icon(
-                            Icons.restart_alt,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ))
-                      : null),
-              counterStyle: widget.field.maxLength != null ? decoration.counterStyle : null,
-              hintText: widget.hintText,
-              labelText: caption,
-            )),
+          focusNode: widget.current,
+          key: ValueKey<String>(widget.field.fieldId),
+          enabled: !widget.field.readOnly,
+          autocorrect: false,
+          controller: widget.controller,
+          keyboardType: inputType ?? widget.inputType,
+          textInputAction: widget.next == null ? TextInputAction.done : TextInputAction.next,
+          validator: widget.field.readOnly ? null : widget.validators,
+          onChanged: widget.field.readOnly
+              ? null
+              : (value) {
+                  currentValue = CompositeValue(value, extra: currentExtra);
+                  widget.onChanged?.call(currentValue);
+                },
+          scrollPadding: widget.scrollPadding != null
+              ? EdgeInsets.only(bottom: widget.scrollPadding!)
+              : const EdgeInsets.all(20),
+          onFieldSubmitted: (widget.field.readOnly)
+              ? null
+              : (term) {
+                  widget.current?.unfocus();
+                  if (widget.next != null) FocusScope.of(context).requestFocus(widget.next);
+                },
+          inputFormatters: widget.formatters,
+          cursorColor: Theme.of(context).colorScheme.secondary,
+          textCapitalization: widget.capitalize || (widget.field.isCapitalized ?? false)
+              ? TextCapitalization.words
+              : TextCapitalization.none,
+          style: style,
+          obscureText: widget.maskText ?? false,
+          cursorWidth: 1.0,
+          maxLines: (widget.multiline ? null : 1),
+          maxLength: widget.field.maxLength,
+          decoration: decoration.copyWith(
+            suffixIcon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: widget.current == null || !widget.current!.hasFocus || suffixIcon == null
+                  ? const SizedBox(
+                      height: 0,
+                      width: 0,
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: suffixIcon,
+                    ),
+            ),
+            counterStyle: widget.field.maxLength != null ? decoration.counterStyle : null,
+            hintText: widget.hintText,
+            labelText: caption,
+          ),
+        ),
       ),
     );
   }

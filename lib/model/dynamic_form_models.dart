@@ -73,6 +73,7 @@ class Field {
   final bool multiline;
   final String? validationExpression;
   final String? validationErrorMessage;
+  final String? Function(String? value)? customValidator;
 
   final Function(CompositeValue?)? onUpdated;
   final Function()? infoCallback;
@@ -88,6 +89,7 @@ class Field {
     this.required = false,
     this.readOnly = false,
     this.multiline = false,
+    this.customValidator,
     this.maskText,
     this.maxLength,
     this.inputType,
@@ -155,6 +157,10 @@ class Field {
       multiline: multiline,
     );
   }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => super.hashCode;
 }
 
 class Option {
