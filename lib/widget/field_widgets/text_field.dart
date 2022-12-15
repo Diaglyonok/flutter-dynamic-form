@@ -202,18 +202,12 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
           maxLines: (widget.multiline ? null : 1),
           maxLength: widget.field.maxLength,
           decoration: decoration.copyWith(
-            suffixIcon: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              child: widget.current == null || !widget.current!.hasFocus || suffixIcon == null
-                  ? const SizedBox(
-                      height: 0,
-                      width: 0,
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: suffixIcon,
-                    ),
-            ),
+            suffixIcon: widget.current == null || !widget.current!.hasFocus || suffixIcon == null
+                ? null
+                : Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: suffixIcon,
+                  ),
             counterStyle: widget.field.maxLength != null ? decoration.counterStyle : null,
             hintText: widget.hintText,
             labelText: caption,
