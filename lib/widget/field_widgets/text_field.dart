@@ -56,7 +56,6 @@ class DynamicTextField extends StatefulWidget {
   }) : super(key: key);
 
   static InputDecoration defaultDecoration(BuildContext context) => InputDecoration(
-        contentPadding: const EdgeInsets.only(bottom: 6.0, top: 2),
         disabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.4)),
         focusedBorder: UnderlineInputBorder(
