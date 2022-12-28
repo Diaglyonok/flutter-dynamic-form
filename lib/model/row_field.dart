@@ -9,6 +9,7 @@ class RowField extends Field {
     super.required = false,
     super.readOnly = false,
     super.maskText,
+    super.minLines,
     super.maxLength,
     super.inputType,
     super.options,

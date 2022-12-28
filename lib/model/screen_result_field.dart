@@ -29,6 +29,7 @@ class ScreenResultField extends Field {
     this.extraPrefix = false,
     super.required = false,
     super.readOnly = false,
+    super.minLines,
     super.customValidator,
     super.maskText,
     super.maxLength,

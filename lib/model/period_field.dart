@@ -30,6 +30,7 @@ class PeriodField extends Field {
     required this.extra,
     required super.label,
     this.withDaysNum = false,
+    super.minLines,
     super.required = false,
     super.readOnly = false,
     super.customValidator,

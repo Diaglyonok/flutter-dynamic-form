@@ -198,7 +198,8 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
           style: style,
           obscureText: widget.maskText ?? false,
           cursorWidth: 1.0,
-          maxLines: (widget.multiline ? null : 1),
+          minLines: widget.field.minLines,
+          maxLines: (widget.multiline || widget.field.minLines != null ? null : 1),
           maxLength: widget.field.maxLength,
           decoration: decoration.copyWith(
             suffixIcon: widget.current == null || !widget.current!.hasFocus || suffixIcon == null

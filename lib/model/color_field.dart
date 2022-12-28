@@ -10,6 +10,7 @@ class ColorField extends Field {
     this.modifier,
     required super.label,
     super.maskText,
+    super.minLines,
     super.maxLength,
     super.inputType,
     super.options,

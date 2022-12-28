@@ -9,6 +9,7 @@ class PhoneField extends Field {
     super.readOnly = false,
     required super.label,
     super.customValidator,
+    super.minLines,
     super.maskText,
     super.maxLength,
     super.inputType,

@@ -13,6 +13,7 @@ class MultitypeField extends Field {
     super.required = false,
     super.readOnly = false,
     super.customValidator,
+    super.minLines,
     super.infoCallback,
     super.maskText,
     super.maxLength,

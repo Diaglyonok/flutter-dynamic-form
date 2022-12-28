@@ -58,6 +58,8 @@ class Field {
   final String fieldId;
   final bool required;
   final bool readOnly;
+  final int? minLines;
+
   final FieldTypes fieldType;
   final String label;
 
@@ -83,6 +85,7 @@ class Field {
     required this.fieldId,
     required this.fieldType,
     required this.label,
+    this.minLines,
     this.infoCallback,
     this.shouldShowInfo,
     this.onUpdated,
@@ -118,6 +121,7 @@ class Field {
         fieldId: fieldId,
         required: required,
         readOnly: readOnly,
+        minLines: minLines,
         label: label,
         maskText: maskText,
         infoCallback: infoCallback,

@@ -14,6 +14,7 @@ class DateField extends Field {
     required super.fieldId,
     required super.label,
     this.startDateBounds,
+    super.minLines,
     super.customValidator,
     this.endDateBounds,
     this.compareDate,
