@@ -295,6 +295,7 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
     await Navigator.of(context).push(
       BottomSheetRoute(
         child: DatePeriodPicker(
+          customConfig: widget.field.config,
           onChanged: (start, end, {clear = false}) {
             if (clear) {
               updateValue(widget.endController, '');
@@ -358,6 +359,7 @@ extension _DateFormatExt on DateFormat {
 }
 
 class DatePeriodPicker extends StatefulWidget {
+  final CalendarDatePicker2Config? customConfig;
   final DateTime? initialStartDate;
   final DateTime? initialEndDate;
   final Function(DateTime? start, DateTime? end, {bool clear}) onChanged;
@@ -367,6 +369,7 @@ class DatePeriodPicker extends StatefulWidget {
     required this.initialStartDate,
     required this.initialEndDate,
     required this.onChanged,
+    this.customConfig,
   }) : super(key: key);
 
   @override
@@ -453,14 +456,18 @@ class _DatePeriodPickerState extends State<DatePeriodPicker> {
                       : null;
                   widget.onChanged(dates[0], endDate, clear: false);
                 },
-                config: CalendarDatePicker2Config(
-                  selectedYearTextStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        color: Theme.of(context).colorScheme.onTertiary,
-                      ),
-                  selectedDayHighlightColor: Theme.of(context).colorScheme.tertiary,
-                  selectedDayTextStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Theme.of(context).colorScheme.onTertiary,
-                      ),
+                config: (widget.customConfig ??
+                        CalendarDatePicker2Config(
+                          selectedYearTextStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
+                                color: Theme.of(context).colorScheme.onTertiary,
+                              ),
+                          selectedDayHighlightColor: Theme.of(context).colorScheme.tertiary,
+                          selectedDayTextStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                color: Theme.of(context).colorScheme.onTertiary,
+                              ),
+                          calendarType: CalendarDatePicker2Type.range,
+                        ))
+                    .copyWith(
                   calendarType: CalendarDatePicker2Type.range,
                 ),
                 initialValue: [widget.initialStartDate, widget.initialEndDate],

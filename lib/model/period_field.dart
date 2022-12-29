@@ -1,3 +1,4 @@
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
@@ -24,11 +25,13 @@ class PeriodExtra {
 class PeriodField extends Field {
   final PeriodExtra extra;
   final bool withDaysNum;
+  final CalendarDatePicker2Config? config;
 
   PeriodField({
     required super.fieldId,
     required this.extra,
     required super.label,
+    this.config,
     this.withDaysNum = false,
     super.minLines,
     super.required = false,
