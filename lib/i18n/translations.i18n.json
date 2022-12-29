@@ -242,5 +242,8 @@
     "selectTime": "Select time",
     "chooseCountryCode": "Select or enter country code",
     "useInputtedCode": "Use inputted code",
-    "nothingFoundCountryCode": "Nothing found, try changing your query or entering the country code manually"
+    "nothingFoundCountryCode": "Nothing found, try changing your query or entering the country code manually",
+    "clear": "Clear",
+    "selectPeriod": "Select Period",
+    "done": "Done"
 }

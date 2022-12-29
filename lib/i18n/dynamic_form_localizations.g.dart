@@ -3,9 +3,9 @@
  * Generated file. Do not edit.
  *
  * Locales: 2
- * Strings: 484 (242.0 per locale)
+ * Strings: 490 (245.0 per locale)
  *
- * Built on 2022-08-11 at 05:32 UTC
+ * Built on 2022-12-29 at 09:26 UTC
  */
 
 import 'package:flutter/widgets.dart';
@@ -554,6 +554,9 @@ class _DynamicFormLocalizationsEn {
 	String get chooseCountryCode => 'Select or enter country code';
 	String get useInputtedCode => 'Use inputted code';
 	String get nothingFoundCountryCode => 'Nothing found, try changing your query or entering the country code manually';
+	String get clear => 'Clear';
+	String get selectPeriod => 'Select Period';
+	String get done => 'Done';
 }
 
 // Path: <root>
@@ -816,6 +819,9 @@ class _DynamicFormLocalizationsRu implements _DynamicFormLocalizationsEn {
 	@override String get chooseCountryCode => 'Выберите или введите код страны';
 	@override String get useInputtedCode => 'Использовать введенный код';
 	@override String get nothingFoundCountryCode => 'Ничего не найдено, попробуйте изменить запрос или ввести код страны вручную';
+	@override String get clear => 'Очистить';
+	@override String get selectPeriod => 'Выберите период';
+	@override String get done => 'Готово';
 }
 
 /// Flat map(s) containing all translations.
@@ -1066,6 +1072,9 @@ extension on _DynamicFormLocalizationsEn {
 			'chooseCountryCode': 'Select or enter country code',
 			'useInputtedCode': 'Use inputted code',
 			'nothingFoundCountryCode': 'Nothing found, try changing your query or entering the country code manually',
+			'clear': 'Clear',
+			'selectPeriod': 'Select Period',
+			'done': 'Done',
 		};
 	}
 }
@@ -1315,6 +1324,9 @@ extension on _DynamicFormLocalizationsRu {
 			'chooseCountryCode': 'Выберите или введите код страны',
 			'useInputtedCode': 'Использовать введенный код',
 			'nothingFoundCountryCode': 'Ничего не найдено, попробуйте изменить запрос или ввести код страны вручную',
+			'clear': 'Очистить',
+			'selectPeriod': 'Выберите период',
+			'done': 'Готово',
 		};
 	}
 }
