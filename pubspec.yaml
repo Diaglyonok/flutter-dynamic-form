@@ -25,7 +25,7 @@ dependencies:
   dglk_flutter_dev_kit:
     git:
       url: https://github.com/Diaglyonok/dglk-flutter-dev-kit.git
-      ref: d1a9059
+      ref: a1b06c3
   calendar_date_picker2: 0.3.1
   intl: ^0.17.0
   auto_size_text: 3.0.0
