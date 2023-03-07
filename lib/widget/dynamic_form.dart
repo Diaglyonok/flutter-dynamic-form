@@ -9,10 +9,12 @@ import 'package:flutter_dynamic_form/utils/replacement_formatter.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/color_picker.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/period_field_view.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../flutter_dynamic_form.dart';
 import '../i18n/dynamic_form_localizations.g.dart' as locale;
 import '../logic/dynamic_form_validators.dart';
+import '../model/link_field.dart';
 import '../utils/form_utils.dart';
 import '../utils/masked_text_controller.dart';
 import '../widget/field_widgets/checkbox_field.dart';
@@ -319,6 +321,7 @@ class DynamicFormState extends State<DynamicForm> {
         case FieldTypes.Password:
         case FieldTypes.Name:
         case FieldTypes.ScreenResult:
+        case FieldTypes.Link:
         case FieldTypes.Email:
           controllers[field.fieldId] = TextEditingController(text: field.value?.value);
           break;
@@ -458,6 +461,8 @@ class DynamicFormState extends State<DynamicForm> {
         return _generateRowField(context, field as RowField, current, next);
       case FieldTypes.Counter:
         return _generateCounter(context, field, current, next);
+      case FieldTypes.Link:
+        return _generateLinkField(context, field, current, next);
     }
     return null;
   }
@@ -788,23 +793,86 @@ class DynamicFormState extends State<DynamicForm> {
     );
   }
 
-  // Widget _generateAttachmentField(
-  //   BuildContext context,
-  //   Field field,
-  //   FocusNode? current,
-  //   FocusNode? next,
-  // ) {
-  //   return fieldGenerator.generateAttachmentField(
-  //     context: context,
-  //     label: field.label,
-  //     field: field,
-  //     successText: DFormLocalizations.of(context).localized(DFormLocalizationsId.attachment_added),
-  //     onAttached: (String filePath) {
-  //       values[field.fieldId] = CompositeValue(filePath);
-  //     },
-  //     errors: errors,
-  //   );
-  // }
+  Widget _generateLinkField(
+    BuildContext context,
+    Field field,
+    FocusNode? current,
+    FocusNode? next,
+  ) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: DynamicTextField(
+              decoration: widget.decoration,
+              multiline: field.multiline,
+              context: context,
+              label: field.label,
+              field: field,
+              capitalize: true,
+              style: widget.commonStyle,
+              next: next,
+              current: current,
+              inputType: TextInputType.url,
+              scrollPadding: _pinButton ? 100 : null,
+              required: field.required,
+              validators: _commonTextValidators(field),
+              onChanged: (value) => _commonOnChanged(value, field),
+              controller: controllers[field.fieldId]!,
+              suffixIcon: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: MaterialButton(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.all(0.0),
+                      child: field is LinkField && field.customCloseIcon != null
+                          ? field.customCloseIcon
+                          : Icon(
+                              Icons.close,
+                              color: Theme.of(context).colorScheme.onBackground.withOpacity(0.32),
+                            ),
+                      onPressed: () {
+                        controllers[field.fieldId]!.clear();
+                        _commonOnChanged(CompositeValue(''), field);
+                      },
+                    ),
+                  ),
+                ],
+              )),
+        ),
+        if (controllers[field.fieldId]!.text.isNotEmpty)
+          SizedBox(
+            width: 40,
+            height: 40,
+            child: MaterialButton(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              padding: const EdgeInsets.only(),
+              child: Center(
+                child: field is LinkField && field.customOpenIcon != null
+                    ? field.customOpenIcon
+                    : Icon(
+                        Icons.open_in_new,
+                        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.32),
+                      ),
+              ),
+              onPressed: () async {
+                final link = controllers[field.fieldId]!.text;
+                if (!(await canLaunchUrlString(link))) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(locale.dynamicFormTranslation.wrongLinkSnack)));
+                  return;
+                }
+
+                await launchUrlString(link);
+              },
+            ),
+          )
+      ],
+    );
+  }
 
   Widget _generateCheckboxField(
     BuildContext context,

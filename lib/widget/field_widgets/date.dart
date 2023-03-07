@@ -183,11 +183,13 @@ class DateFieldView extends StatelessWidget {
               : IconButton(
                   alignment: Alignment.bottomCenter,
                   padding: const EdgeInsets.all(0.0),
-                  icon: Icon(
-                    type == CupertinoDatePickerMode.date
-                        ? Icons.calendar_month
-                        : Icons.access_time_rounded,
-                    color: Colors.black.withOpacity(0.32),
+                  icon: Center(
+                    child: Icon(
+                      type == CupertinoDatePickerMode.date
+                          ? Icons.calendar_month
+                          : Icons.access_time_rounded,
+                      color: Colors.black.withOpacity(0.32),
+                    ),
                   ),
                   onPressed: _onPressed,
                 ),

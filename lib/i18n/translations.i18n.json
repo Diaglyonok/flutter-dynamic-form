@@ -245,5 +245,6 @@
     "nothingFoundCountryCode": "Nothing found, try changing your query or entering the country code manually",
     "clear": "Clear",
     "selectPeriod": "Select Period",
-    "done": "Done"
+    "done": "Done",
+    "wrongLinkSnack": "This link is incorrect, try replacing it with the correct one"
 }

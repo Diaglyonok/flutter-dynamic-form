@@ -3,9 +3,9 @@
  * Generated file. Do not edit.
  *
  * Locales: 2
- * Strings: 490 (245.0 per locale)
+ * Strings: 492 (246.0 per locale)
  *
- * Built on 2022-12-29 at 09:26 UTC
+ * Built on 2023-03-06 at 23:04 UTC
  */
 
 import 'package:flutter/widgets.dart';
@@ -557,6 +557,7 @@ class _DynamicFormLocalizationsEn {
 	String get clear => 'Clear';
 	String get selectPeriod => 'Select Period';
 	String get done => 'Done';
+	String get wrongLinkSnack => 'This link is incorrect, try replacing it with the correct one';
 }
 
 // Path: <root>
@@ -822,6 +823,7 @@ class _DynamicFormLocalizationsRu implements _DynamicFormLocalizationsEn {
 	@override String get clear => 'Очистить';
 	@override String get selectPeriod => 'Выберите период';
 	@override String get done => 'Готово';
+	@override String get wrongLinkSnack => 'Эта ссылка некорректная, вставьте правильную и попробуйте еще раз';
 }
 
 /// Flat map(s) containing all translations.
@@ -1075,6 +1077,7 @@ extension on _DynamicFormLocalizationsEn {
 			'clear': 'Clear',
 			'selectPeriod': 'Select Period',
 			'done': 'Done',
+			'wrongLinkSnack': 'This link is incorrect, try replacing it with the correct one',
 		};
 	}
 }
@@ -1327,6 +1330,7 @@ extension on _DynamicFormLocalizationsRu {
 			'clear': 'Очистить',
 			'selectPeriod': 'Выберите период',
 			'done': 'Готово',
+			'wrongLinkSnack': 'Эта ссылка некорректная, вставьте правильную и попробуйте еще раз',
 		};
 	}
 }

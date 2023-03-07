@@ -30,6 +30,7 @@ dependencies:
   intl: ^0.17.0
   auto_size_text: 3.0.0
   flutter_colorpicker: 1.0.3
+  url_launcher: ^6.1.10
   flutter:
     sdk: flutter
 

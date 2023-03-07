@@ -196,6 +196,11 @@ class _MyAppState extends State<MyApp> {
         value: CompositeValue('12:30'),
         label: 'Time',
       ),
+      Field(
+        fieldId: 'link',
+        fieldType: FieldTypes.Link,
+        label: 'Link',
+      ),
       DateField(
         fieldId: 'simple_date_fueld',
         label: 'Simple Date Field',

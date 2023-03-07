@@ -204,10 +204,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
           decoration: decoration.copyWith(
             suffixIcon: widget.current == null || !widget.current!.hasFocus || suffixIcon == null
                 ? null
-                : Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: suffixIcon,
-                  ),
+                : suffixIcon,
             counterStyle: widget.field.maxLength != null ? decoration.counterStyle : null,
             hintText: widget.hintText,
             labelText: caption,

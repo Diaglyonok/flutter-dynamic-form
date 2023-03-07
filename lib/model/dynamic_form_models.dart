@@ -52,6 +52,7 @@ enum FieldTypes {
   Color,
   RowField,
   Counter,
+  Link,
 }
 
 class Field {
