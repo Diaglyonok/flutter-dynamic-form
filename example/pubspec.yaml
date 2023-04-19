@@ -21,7 +21,7 @@ dependencies:
   dglk_flutter_dev_kit:
     git:
       url: https://github.com/Diaglyonok/dglk-flutter-dev-kit.git
-      ref: 33c5781
+      ref: 6d2d742
   jiffy: 5.0.0
   flutter_dynamic_form:
     path: ../
