@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../model/dynamic_form_models.dart';
 
 class CheckboxField extends StatefulWidget {
+  final bool checkboxFirst;
   final Field field;
   final TextStyle? style;
   final Function(bool) onChanged;
@@ -10,6 +11,7 @@ class CheckboxField extends StatefulWidget {
   const CheckboxField({
     required this.field,
     required this.onChanged,
+    this.checkboxFirst = false,
     Key? key,
     this.style,
   }) : super(key: key);
@@ -29,6 +31,36 @@ class _CheckboxFieldState extends State<CheckboxField> {
 
   @override
   Widget build(BuildContext context) {
+    final result = [
+      Expanded(
+        child: Text(
+          widget.field.label,
+          style: (widget.style ?? Theme.of(context).textTheme.labelLarge)
+              ?.copyWith(fontWeight: FontWeight.w500),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          height: 26,
+          width: 26,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(7),
+            color: Theme.of(context).colorScheme.secondary.withOpacity(value ? 1.0 : 0.1),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.secondary,
+              width: 1.5,
+            ),
+          ),
+          child: Icon(
+            Icons.check,
+            size: 19,
+            color: value ? Theme.of(context).colorScheme.onSecondary : Colors.transparent,
+          ),
+        ),
+      )
+    ];
     return InkWell(
       onTap: () {
         setState(() {
@@ -37,36 +69,7 @@ class _CheckboxFieldState extends State<CheckboxField> {
         widget.onChanged(value);
       },
       child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              widget.field.label,
-              style: (widget.style ?? Theme.of(context).textTheme.button)
-                  ?.copyWith(fontWeight: FontWeight.w500),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              height: 26,
-              width: 26,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7),
-                color: Theme.of(context).colorScheme.secondary.withOpacity(value ? 1.0 : 0.1),
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.secondary,
-                  width: 1.5,
-                ),
-              ),
-              child: Icon(
-                Icons.check,
-                size: 19,
-                color: value ? Theme.of(context).colorScheme.onSecondary : Colors.transparent,
-              ),
-            ),
-          )
-        ],
+        children: widget.checkboxFirst ? result.reversed.toList() : result,
       ),
     );
   }
