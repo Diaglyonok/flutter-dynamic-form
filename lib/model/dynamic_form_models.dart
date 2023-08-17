@@ -111,13 +111,7 @@ class Field {
       identical(this, other) ||
       other is Field && fieldId == other.fieldId && value?.value == other.value?.value;
 
-  Field withValue(CompositeValue value, {bool acceptNull = false}) {
-    if (!acceptNull) {
-      if (value.value == null) {
-        return this;
-      }
-    }
-
+  Field withValue(CompositeValue value) {
     return Field(
         fieldId: fieldId,
         required: required,
@@ -162,10 +156,6 @@ class Field {
       multiline: multiline,
     );
   }
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => super.hashCode;
 }
 
 class Option {

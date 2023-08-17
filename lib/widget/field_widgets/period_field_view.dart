@@ -1,5 +1,5 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
-import 'package:dglk_flutter_dev_kit/bottom_sheet/src/bottom_sheet_route.dart';
+import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/bottom_pick_button.dart';
@@ -403,7 +403,7 @@ class _DatePeriodPickerState extends State<DatePeriodPicker> {
                       child: Text(
                         locale.dynamicFormTranslation.clear,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.button!.copyWith(
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
                               color: Theme.of(context).colorScheme.error,
                             ),
                       ),
@@ -413,7 +413,7 @@ class _DatePeriodPickerState extends State<DatePeriodPicker> {
                     child: Text(
                       locale.dynamicFormTranslation.selectPeriod,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
@@ -430,7 +430,7 @@ class _DatePeriodPickerState extends State<DatePeriodPicker> {
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
-                            .button!
+                            .labelLarge!
                             .copyWith(color: Theme.of(context).colorScheme.secondary),
                       ),
                     ),
@@ -458,7 +458,7 @@ class _DatePeriodPickerState extends State<DatePeriodPicker> {
                 },
                 config: (widget.customConfig ??
                         CalendarDatePicker2Config(
-                          selectedYearTextStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
+                          selectedYearTextStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                 color: Theme.of(context).colorScheme.onTertiary,
                               ),
                           selectedDayHighlightColor: Theme.of(context).colorScheme.tertiary,

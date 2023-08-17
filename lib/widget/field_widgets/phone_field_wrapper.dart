@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dglk_flutter_dev_kit/simple_button/simple_button.dart';
+import 'package:dglk_simple_button/dglk_simple_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../flutter_dynamic_form.dart';
@@ -422,7 +422,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                               if (codeError != null)
                                 Text(
                                   codeError!,
-                                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                         color: Theme.of(context).colorScheme.error,
                                       ),
                                 ),
@@ -445,7 +445,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                             child: Text(
                               locale.dynamicFormTranslation.nothingFoundCountryCode,
                               textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     color: Theme.of(context).colorScheme.onBackground,
                                   ),
                             ),
@@ -486,7 +486,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                                       '${countryPhoneCodes[key]!}${key == countryPhoneCodes.keys.first ? '' : ':'}',
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .bodyText2!
+                                                          .bodyMedium!
                                                           .copyWith(
                                                               color: Theme.of(context)
                                                                   .colorScheme
@@ -498,7 +498,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                                     locale.dynamicFormTranslation.countries[key]!,
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .bodyText1!
+                                                        .bodyLarge!
                                                         .copyWith(
                                                           color: Theme.of(context)
                                                               .colorScheme

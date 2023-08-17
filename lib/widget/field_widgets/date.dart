@@ -1,4 +1,4 @@
-import 'package:dglk_flutter_dev_kit/bottom_sheet/src/bottom_sheet_route.dart';
+import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -120,7 +120,7 @@ class DateFieldView extends StatelessWidget {
                         ? locale.dynamicFormTranslation.selectDate
                         : locale.dynamicFormTranslation.selectTime,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
                   ),

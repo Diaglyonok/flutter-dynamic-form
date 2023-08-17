@@ -34,8 +34,7 @@ class DynamicFormValidators {
     }
 
     try {
-      final date = DateFormat(timePattern).parseStrict(input);
-
+      DateFormat(timePattern).parseStrict(input);
       return null;
     } catch (e) {
       return locale.dynamicFormTranslation.invalidTime;
@@ -52,9 +51,6 @@ class DynamicFormValidators {
       compareDate = DateTime(compareDate.year, compareDate.month, compareDate.day);
       switch (compare ?? CompareDate.AllDates) {
         case CompareDate.AllDates:
-          if (date == null) {
-            return null;
-          }
           break;
         case CompareDate.FutureOnly:
           if (date.compareTo(compareDate) <= 0) {

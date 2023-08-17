@@ -1,4 +1,4 @@
-import 'package:dglk_flutter_dev_kit/bottom_sheet/src/bottom_sheet_route.dart';
+import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
 import 'package:flutter/material.dart';
 
 class BottomPickButton extends StatelessWidget {

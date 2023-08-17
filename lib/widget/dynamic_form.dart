@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
@@ -185,7 +187,7 @@ class DynamicFormState extends State<DynamicForm> {
                             child: Text(
                               widget.title!,
                               textScaleFactor: 1.0,
-                              style: Theme.of(ctxt).textTheme.headline3,
+                              style: Theme.of(ctxt).textTheme.displaySmall,
                             ));
                         return widget.hint == null
                             ? titleView
@@ -422,10 +424,6 @@ class DynamicFormState extends State<DynamicForm> {
       });
     }
 
-    if (field.fieldType == null) {
-      return _getDefaultField(field, current, next, context);
-    }
-
     switch (field.fieldType) {
       case FieldTypes.Color:
         return _generateColorPickcer(context, field, current, next);
@@ -464,7 +462,6 @@ class DynamicFormState extends State<DynamicForm> {
       case FieldTypes.Link:
         return _generateLinkField(context, field, current, next);
     }
-    return null;
   }
 
   String? Function(String?)? _commonTextValidators(
@@ -484,23 +481,6 @@ class DynamicFormState extends State<DynamicForm> {
         if (field.customValidator != null) field.customValidator!,
         if (additionals != null) ...additionals
       ]);
-
-  Widget _getDefaultField(
-    Field field,
-    FocusNode? current,
-    FocusNode? next,
-    BuildContext context,
-  ) {
-    switch (field.inputType?.toLowerCase()) {
-      case 'number':
-        return _generateNumberField(context, field, current, next);
-      case 'date':
-        return _generateDateField(context, field, current, next);
-      case 'text':
-      default:
-        return _generateSimpleTextField(context, field, current, next);
-    }
-  }
 
   _commonOnChanged(CompositeValue? value, Field field) {
     if (value == null) {
@@ -618,7 +598,7 @@ class DynamicFormState extends State<DynamicForm> {
     }
 
     final style = widget.commonStyle ??
-        Theme.of(context).textTheme.headline6!.copyWith(
+        Theme.of(context).textTheme.titleLarge!.copyWith(
             height: 1.1,
             fontSize: 16,
             color: field.readOnly
@@ -653,7 +633,7 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? current,
     FocusNode? next,
   ) {
-    final style = Theme.of(context).textTheme.subtitle1!;
+    final style = Theme.of(context).textTheme.titleMedium!;
     return SizedBox(
         height: 20,
         child: Text(
@@ -970,7 +950,7 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? next,
   ) {
     final style = widget.commonStyle ??
-        Theme.of(context).textTheme.headline6!.copyWith(
+        Theme.of(context).textTheme.titleLarge!.copyWith(
             height: 1.1,
             color: field.readOnly
                 ? Theme.of(context).colorScheme.onBackground.withOpacity(0.44)
