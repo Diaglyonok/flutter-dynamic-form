@@ -67,7 +67,7 @@ class BottomPickButton extends StatelessWidget {
           onTap: customOnTap ??
               () {
                 Navigator.of(context).push(
-                  BottomSheetRoute(child: child),
+                  BottomSheetRoute(builder: (context) => child),
                 );
               },
         ),

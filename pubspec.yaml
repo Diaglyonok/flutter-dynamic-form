@@ -25,7 +25,7 @@ dependencies:
   dglk_bottom_sheet_route:
     git:
       url: https://github.com/Diaglyonok/dglk-bottom-sheet-route.git
-      ref: c94e884
+      ref: c504369
   dglk_simple_button:
     git:
       url: https://github.com/Diaglyonok/dglk_simple_button.git

@@ -176,9 +176,7 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                     customOnTap: () {
                       Navigator.of(context).push(
                         BottomSheetRoute(
-                            child: Material(
-                          type: MaterialType.transparency,
-                          child: SizedBox(
+                          builder: (context) => SizedBox(
                             height: 260,
                             child: Column(
                               children: [
@@ -240,7 +238,7 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                               ],
                             ),
                           ),
-                        )),
+                        ),
                       );
                     },
                     child: Container(),
@@ -256,7 +254,8 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
 
     await Navigator.of(context).push(
       BottomSheetRoute(
-        child: CalendarPage(
+        titleBoxHeight: 20,
+        builder: (context) => CalendarPage(
           customization: extra.customization,
           onDatesChanged: (start, end, {clear = false}) {
             if (clear) {
@@ -374,209 +373,206 @@ class _CalendarPageState extends State<CalendarPage> {
     final startDateValue = startDate == null ? null : DateFormat.yMMMd().format(startDate!);
     final endDateValue = endDate == null ? null : DateFormat.yMMMd().format(endDate!);
 
-    return Material(
-      type: MaterialType.transparency,
-      child: Column(
-        children: [
-          SizedBox(
-            height: 32,
+    return Column(
+      children: [
+        SizedBox(
+          height: 32,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              const SizedBox(
+                width: 8,
+              ),
+              SizedBox(
+                width: 100,
+                child: MaterialButton(
+                  onPressed: () {
+                    selectedManually = null;
+                    startDate = null;
+                    endDate = null;
+                    widget.onDatesChanged?.call(startDate, endDate, clear: true);
+                    setState(() {});
+                    //Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    custom.clearButtonText ?? locale.dynamicFormTranslation.clear,
+                    textAlign: TextAlign.left,
+                    style: custom.clearButtonStyle ??
+                        Theme.of(context).textTheme.labelLarge!.copyWith(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                  ),
+                ),
+              ),
+              const Spacer(),
+              SizedBox(
+                width: 100,
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    custom.okButtonText ?? locale.dynamicFormTranslation.done,
+                    textAlign: TextAlign.right,
+                    style: custom.okButtonStyle ??
+                        Theme.of(context)
+                            .textTheme
+                            .labelLarge!
+                            .copyWith(color: Theme.of(context).colorScheme.secondary),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8, left: 28, right: 28),
+          child: SizedBox(
+            height: 48,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                const SizedBox(
-                  width: 16,
-                ),
-                SizedBox(
-                  width: 100,
-                  child: MaterialButton(
-                    onPressed: () {
-                      selectedManually = null;
-                      startDate = null;
-                      endDate = null;
-                      widget.onDatesChanged?.call(startDate, endDate, clear: true);
+                Expanded(
+                  child: _buildDate(
+                    onTap: () {
+                      selectedManually = _Selectable.first;
                       setState(() {});
-                      //Navigator.of(context).pop();
                     },
-                    child: Text(
-                      custom.clearButtonText ?? locale.dynamicFormTranslation.clear,
-                      textAlign: TextAlign.left,
-                      style: custom.clearButtonStyle ??
-                          Theme.of(context).textTheme.labelLarge!.copyWith(
-                                color: Theme.of(context).colorScheme.error,
-                              ),
-                    ),
+                    name: custom.startDateText ?? locale.dynamicFormTranslation.startDate,
+                    value: startDateValue,
+                    isSelected: selectedManually == _Selectable.first ||
+                        selectedManually == null && (startDateValue == null || endDateValue != null),
                   ),
                 ),
-                const Spacer(),
-                SizedBox(
-                  width: 100,
-                  child: MaterialButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
+                const SizedBox(width: 20),
+                Expanded(
+                  child: _buildDate(
+                    onTap: () {
+                      selectedManually = _Selectable.second;
+                      setState(() {});
                     },
-                    child: Text(
-                      custom.okButtonText ?? locale.dynamicFormTranslation.done,
-                      textAlign: TextAlign.right,
-                      style: custom.okButtonStyle ??
-                          Theme.of(context)
-                              .textTheme
-                              .labelLarge!
-                              .copyWith(color: Theme.of(context).colorScheme.secondary),
-                    ),
+                    name: custom.endDateText ?? locale.dynamicFormTranslation.endDate,
+                    value: endDateValue,
+                    isSelected: selectedManually == _Selectable.second ||
+                        selectedManually == null && (startDateValue != null && endDateValue == null),
                   ),
-                ),
-                const SizedBox(
-                  width: 16,
                 ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12, left: 28, right: 28),
-            child: SizedBox(
-              height: 48,
-              child: Row(
+        ),
+        Expanded(
+          child: PagedVerticalCalendar(
+            listPadding: const EdgeInsets.all(8.0),
+            monthBuilder: (context, month, year) {
+              return Column(
                 children: [
-                  Expanded(
-                    child: _buildDate(
-                      onTap: () {
-                        selectedManually = _Selectable.first;
-                        setState(() {});
-                      },
-                      name: custom.startDateText ?? locale.dynamicFormTranslation.startDate,
-                      value: startDateValue,
-                      isSelected: selectedManually == _Selectable.first ||
-                          selectedManually == null && (startDateValue == null || endDateValue != null),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            DateFormat.MMMM().format(DateTime(year, month)),
+                            style: custom.monthStyle ?? Theme.of(context).textTheme.titleLarge,
+                          ),
+                        ),
+                        Text(
+                          year.toString(),
+                          style: custom.yearStyle ??
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                                  ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: _buildDate(
-                      onTap: () {
-                        selectedManually = _Selectable.second;
-                        setState(() {});
-                      },
-                      name: custom.endDateText ?? locale.dynamicFormTranslation.endDate,
-                      value: endDateValue,
-                      isSelected: selectedManually == _Selectable.second ||
-                          selectedManually == null && (startDateValue != null && endDateValue == null),
+                  const SizedBox(height: 20),
+
+                  /// add a row showing the weekdays
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: List.generate(
+                        locale.dynamicFormTranslation.weeksShort.length,
+                        (index) => weekText(locale.dynamicFormTranslation.weeksShort[index]),
+                      ),
                     ),
                   ),
                 ],
-              ),
-            ),
+              );
+            },
+            dayBuilder: (context, date) {
+              var textTheme = custom.dayStyle ?? theme.textTheme.bodyLarge;
+              final isInRange = startDate != null &&
+                  endDate != null &&
+                  date.isBefore(endDate!) &&
+                  date.isAfter(startDate!) &&
+                  !date.isSameDay(endDate!) &&
+                  !date.isSameDay(startDate!);
+              final isTile =
+                  startDate != null && date.isSameDay(startDate!) || endDate != null && date.isSameDay(endDate!);
+
+              textTheme = textTheme?.copyWith(
+                color: isTile ? (custom.onAccentColor ?? theme.colorScheme.onSecondary) : null,
+              );
+
+              final isToday = date.isSameDay(DateTime.now());
+
+              return Stack(
+                children: [
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.symmetric(vertical: 4),
+                    decoration: BoxDecoration(
+                      border: isToday
+                          ? Border.all(
+                              color: custom.accentColor ?? Theme.of(context).colorScheme.secondary,
+                            )
+                          : null,
+                      borderRadius: isTile || isToday ? BorderRadius.circular(custom.tileBorderRadius ?? 8) : null,
+                      color: isInRange
+                          ? custom.transparentAccentColor ?? theme.colorScheme.secondary.withOpacity(0.1)
+                          : isTile
+                              ? custom.accentColor ?? theme.colorScheme.secondary
+                              : null,
+                    ),
+                    child: Center(child: Text(date.day.toString(), style: textTheme)),
+                  ),
+                ],
+              );
+            },
+            onDayPressed: (date) {
+              if (selectedManually == _Selectable.second &&
+                  startDate != null &&
+                  (date.isAfter(endDate!) || date.isSameDay(endDate!))) {
+                endDate = date;
+              } else if (endDate == null && startDate != null && date.isBefore(startDate!)) {
+                endDate = startDate;
+                startDate = date;
+              } else if (startDate == null ||
+                  date.isBefore(startDate!) ||
+                  startDate != null && endDate != null ||
+                  startDate != null && date.isSameDay(startDate!)) {
+                startDate = date;
+                endDate = null;
+              } else {
+                // if (endDate == null)
+                endDate ??= date;
+              }
+
+              selectedManually = null;
+              widget.onDatesChanged?.call(startDate, endDate, clear: false);
+              setState(() {});
+              return;
+            },
           ),
-          Expanded(
-            child: PagedVerticalCalendar(
-              listPadding: const EdgeInsets.all(8.0),
-              monthBuilder: (context, month, year) {
-                return Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              DateFormat.MMMM().format(DateTime(year, month)),
-                              style: custom.monthStyle ?? Theme.of(context).textTheme.titleLarge,
-                            ),
-                          ),
-                          Text(
-                            year.toString(),
-                            style: custom.yearStyle ??
-                                Theme.of(context).textTheme.titleLarge!.copyWith(
-                                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
-                                    ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    /// add a row showing the weekdays
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: List.generate(
-                          locale.dynamicFormTranslation.weeksShort.length,
-                          (index) => weekText(locale.dynamicFormTranslation.weeksShort[index]),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-              dayBuilder: (context, date) {
-                var textTheme = custom.dayStyle ?? theme.textTheme.bodyLarge;
-                final isInRange = startDate != null &&
-                    endDate != null &&
-                    date.isBefore(endDate!) &&
-                    date.isAfter(startDate!) &&
-                    !date.isSameDay(endDate!) &&
-                    !date.isSameDay(startDate!);
-                final isTile =
-                    startDate != null && date.isSameDay(startDate!) || endDate != null && date.isSameDay(endDate!);
-
-                textTheme = textTheme?.copyWith(
-                  color: isTile ? (custom.onAccentColor ?? theme.colorScheme.onSecondary) : null,
-                );
-
-                final isToday = date.isSameDay(DateTime.now());
-
-                return Stack(
-                  children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      decoration: BoxDecoration(
-                        border: isToday
-                            ? Border.all(
-                                color: custom.accentColor ?? Theme.of(context).colorScheme.secondary,
-                              )
-                            : null,
-                        borderRadius: isTile || isToday ? BorderRadius.circular(custom.tileBorderRadius ?? 8) : null,
-                        color: isInRange
-                            ? custom.transparentAccentColor ?? theme.colorScheme.secondary.withOpacity(0.1)
-                            : isTile
-                                ? custom.accentColor ?? theme.colorScheme.secondary
-                                : null,
-                      ),
-                      child: Center(child: Text(date.day.toString(), style: textTheme)),
-                    ),
-                  ],
-                );
-              },
-              onDayPressed: (date) {
-                if (selectedManually == _Selectable.second &&
-                    startDate != null &&
-                    (date.isAfter(endDate!) || date.isSameDay(endDate!))) {
-                  endDate = date;
-                } else if (endDate == null && startDate != null && date.isBefore(startDate!)) {
-                  endDate = startDate;
-                  startDate = date;
-                } else if (startDate == null ||
-                    date.isBefore(startDate!) ||
-                    startDate != null && endDate != null ||
-                    startDate != null && date.isSameDay(startDate!)) {
-                  startDate = date;
-                  endDate = null;
-                } else {
-                  // if (endDate == null)
-                  endDate ??= date;
-                }
-
-                selectedManually = null;
-                widget.onDatesChanged?.call(startDate, endDate, clear: false);
-                setState(() {});
-                return;
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

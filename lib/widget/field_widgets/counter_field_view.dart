@@ -39,7 +39,7 @@ class CounterFieldView extends StatelessWidget {
     _onPressed() {
       Navigator.of(context, rootNavigator: true).push(
         BottomSheetRoute(
-          child: SizedBox(
+          builder: (context) => SizedBox(
             height: 240,
             child: Column(
               children: [
@@ -47,8 +47,7 @@ class CounterFieldView extends StatelessWidget {
                   child: CupertinoPicker.builder(
                     itemExtent: 32,
                     childCount: 9007199254740991,
-                    scrollController: FixedExtentScrollController(
-                        initialItem: int.tryParse(controller.text) ?? 0),
+                    scrollController: FixedExtentScrollController(initialItem: int.tryParse(controller.text) ?? 0),
                     onSelectedItemChanged: (index) {
                       controller.text = index.toString();
                       onChanged?.call(CompositeValue(index.toString()));
