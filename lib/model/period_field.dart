@@ -12,8 +12,6 @@ class DatePickerCustomization {
   final Color? transparentAccentColor;
   final Color? onAccentColor;
   final TextStyle? dayStyle;
-  final TextStyle? startDayTextStyleEmpty;
-  final TextStyle? startDayTextStyle;
   final TextStyle? selectedDateTextStyleEmpty;
   final TextStyle? selectedDateTextStyle;
   final TextStyle? monthStyle;
@@ -33,8 +31,6 @@ class DatePickerCustomization {
     this.onAccentColor,
     this.transparentAccentColor,
     this.dayStyle,
-    this.startDayTextStyleEmpty,
-    this.startDayTextStyle,
     this.selectedDateTextStyleEmpty,
     this.selectedDateTextStyle,
     this.monthStyle,

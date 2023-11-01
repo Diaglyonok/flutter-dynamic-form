@@ -383,43 +383,34 @@ class _CalendarPageState extends State<CalendarPage> {
               const SizedBox(
                 width: 8,
               ),
-              SizedBox(
-                width: 100,
-                child: MaterialButton(
-                  onPressed: () {
-                    selectedManually = null;
-                    startDate = null;
-                    endDate = null;
-                    widget.onDatesChanged?.call(startDate, endDate, clear: true);
-                    setState(() {});
-                    //Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    custom.clearButtonText ?? locale.dynamicFormTranslation.clear,
-                    textAlign: TextAlign.left,
-                    style: custom.clearButtonStyle ??
-                        Theme.of(context).textTheme.labelLarge!.copyWith(
-                              color: Theme.of(context).colorScheme.error,
-                            ),
-                  ),
+              MaterialButton(
+                onPressed: () {
+                  selectedManually = null;
+                  startDate = null;
+                  endDate = null;
+                  widget.onDatesChanged?.call(startDate, endDate, clear: true);
+                  setState(() {});
+                  //Navigator.of(context).pop();
+                },
+                child: Text(
+                  custom.clearButtonText ?? locale.dynamicFormTranslation.clear,
+                  textAlign: TextAlign.left,
+                  style: custom.clearButtonStyle ??
+                      Theme.of(context).textTheme.labelLarge!.copyWith(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
                 ),
               ),
               const Spacer(),
-              SizedBox(
-                width: 100,
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    custom.okButtonText ?? locale.dynamicFormTranslation.done,
-                    textAlign: TextAlign.right,
-                    style: custom.okButtonStyle ??
-                        Theme.of(context)
-                            .textTheme
-                            .labelLarge!
-                            .copyWith(color: Theme.of(context).colorScheme.secondary),
-                  ),
+              MaterialButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  custom.okButtonText ?? locale.dynamicFormTranslation.done,
+                  textAlign: TextAlign.right,
+                  style: custom.okButtonStyle ??
+                      Theme.of(context).textTheme.labelLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
                 ),
               ),
               const SizedBox(
