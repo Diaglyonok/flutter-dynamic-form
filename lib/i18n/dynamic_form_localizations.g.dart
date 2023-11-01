@@ -3,9 +3,9 @@
  * Generated file. Do not edit.
  *
  * Locales: 2
- * Strings: 492 (246.0 per locale)
+ * Strings: 494 (247.0 per locale)
  *
- * Built on 2023-03-06 at 23:04 UTC
+ * Built on 2023-11-01 at 12:36 UTC
  */
 
 import 'package:flutter/widgets.dart';
@@ -427,6 +427,7 @@ class _DynamicFormLocalizationsEn {
 		'LI': 'Liechtenstein',
 		'LT': 'Lithuania',
 		'LU': 'Luxembourg',
+		'MD': 'Moldova',
 		'MO': 'Macao',
 		'MK': 'Macedonia',
 		'MG': 'Madagascar',
@@ -693,6 +694,7 @@ class _DynamicFormLocalizationsRu implements _DynamicFormLocalizationsEn {
 		'LI': 'Лихтенштейн',
 		'LT': 'Литва',
 		'LU': 'Люксембург',
+		'MD': 'Молдова',
 		'MO': 'Макао',
 		'MK': 'Македония',
 		'MG': 'Мадагаскар',
@@ -948,6 +950,7 @@ extension on _DynamicFormLocalizationsEn {
 			'countries.LI': 'Liechtenstein',
 			'countries.LT': 'Lithuania',
 			'countries.LU': 'Luxembourg',
+			'countries.MD': 'Moldova',
 			'countries.MO': 'Macao',
 			'countries.MK': 'Macedonia',
 			'countries.MG': 'Madagascar',
@@ -1201,6 +1204,7 @@ extension on _DynamicFormLocalizationsRu {
 			'countries.LI': 'Лихтенштейн',
 			'countries.LT': 'Литва',
 			'countries.LU': 'Люксембург',
+			'countries.MD': 'Молдова',
 			'countries.MO': 'Макао',
 			'countries.MK': 'Македония',
 			'countries.MG': 'Мадагаскар',
