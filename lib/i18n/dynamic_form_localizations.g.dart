@@ -3,9 +3,9 @@
  * Generated file. Do not edit.
  *
  * Locales: 2
- * Strings: 492 (246.0 per locale)
+ * Strings: 536 (268.0 per locale)
  *
- * Built on 2023-03-06 at 23:04 UTC
+ * Built on 2023-11-01 at 07:02 UTC
  */
 
 import 'package:flutter/widgets.dart';
@@ -549,6 +549,7 @@ class _DynamicFormLocalizationsEn {
 	String get wrongFormatText => 'Something wrong with the format';
 	String get fieldDoesNotMatch => 'The value entered does not match';
 	String get returnDateWarning => 'Can\'t be earlier than first date';
+	String get periodDateWarning => 'Can\'t get the period, please fill it correctly';
 	String get selectDate => 'Select date';
 	String get selectTime => 'Select time';
 	String get chooseCountryCode => 'Select or enter country code';
@@ -558,6 +559,31 @@ class _DynamicFormLocalizationsEn {
 	String get selectPeriod => 'Select Period';
 	String get done => 'Done';
 	String get wrongLinkSnack => 'This link is incorrect, try replacing it with the correct one';
+	List<String> get months => [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December',
+	];
+	List<String> get weeksShort => [
+		'Mo',
+		'Tu',
+		'We',
+		'Th',
+		'Fr',
+		'Sa',
+		'Su',
+	];
+	String get startDate => 'Start Date';
+	String get endDate => 'End Date';
 }
 
 // Path: <root>
@@ -815,6 +841,7 @@ class _DynamicFormLocalizationsRu implements _DynamicFormLocalizationsEn {
 	@override String get wrongFormatText => 'Неверный формат данных';
 	@override String get fieldDoesNotMatch => 'Значения не совпадают';
 	@override String get returnDateWarning => 'Не может быть раньше первой даты';
+	@override String get periodDateWarning => 'Неверный формат периода, пожалуйста исправьте и попробуйте снова';
 	@override String get selectDate => 'Выберите дату';
 	@override String get selectTime => 'Выберите время';
 	@override String get chooseCountryCode => 'Выберите или введите код страны';
@@ -824,6 +851,31 @@ class _DynamicFormLocalizationsRu implements _DynamicFormLocalizationsEn {
 	@override String get selectPeriod => 'Выберите период';
 	@override String get done => 'Готово';
 	@override String get wrongLinkSnack => 'Эта ссылка некорректная, вставьте правильную и попробуйте еще раз';
+	@override List<String> get months => [
+		'Январь',
+		'Февраль',
+		'Март',
+		'Апрель',
+		'Май',
+		'Июнь',
+		'Июль',
+		'Август',
+		'Сентябрб',
+		'Октябрь',
+		'Ноябрь',
+		'Декабрь',
+	];
+	@override List<String> get weeksShort => [
+		'Пн',
+		'Вт',
+		'Ср',
+		'Чт',
+		'Пт',
+		'Сб',
+		'Вс',
+	];
+	@override String get startDate => 'Дата начала';
+	@override String get endDate => 'Дата окончания';
 }
 
 /// Flat map(s) containing all translations.
@@ -1069,6 +1121,7 @@ extension on _DynamicFormLocalizationsEn {
 			'wrongFormatText': 'Something wrong with the format',
 			'fieldDoesNotMatch': 'The value entered does not match',
 			'returnDateWarning': 'Can\'t be earlier than first date',
+			'periodDateWarning': 'Can\'t get the period, please fill it correctly',
 			'selectDate': 'Select date',
 			'selectTime': 'Select time',
 			'chooseCountryCode': 'Select or enter country code',
@@ -1078,6 +1131,27 @@ extension on _DynamicFormLocalizationsEn {
 			'selectPeriod': 'Select Period',
 			'done': 'Done',
 			'wrongLinkSnack': 'This link is incorrect, try replacing it with the correct one',
+			'months.0': 'January',
+			'months.1': 'February',
+			'months.2': 'March',
+			'months.3': 'April',
+			'months.4': 'May',
+			'months.5': 'June',
+			'months.6': 'July',
+			'months.7': 'August',
+			'months.8': 'September',
+			'months.9': 'October',
+			'months.10': 'November',
+			'months.11': 'December',
+			'weeksShort.0': 'Mo',
+			'weeksShort.1': 'Tu',
+			'weeksShort.2': 'We',
+			'weeksShort.3': 'Th',
+			'weeksShort.4': 'Fr',
+			'weeksShort.5': 'Sa',
+			'weeksShort.6': 'Su',
+			'startDate': 'Start Date',
+			'endDate': 'End Date',
 		};
 	}
 }
@@ -1322,6 +1396,7 @@ extension on _DynamicFormLocalizationsRu {
 			'wrongFormatText': 'Неверный формат данных',
 			'fieldDoesNotMatch': 'Значения не совпадают',
 			'returnDateWarning': 'Не может быть раньше первой даты',
+			'periodDateWarning': 'Неверный формат периода, пожалуйста исправьте и попробуйте снова',
 			'selectDate': 'Выберите дату',
 			'selectTime': 'Выберите время',
 			'chooseCountryCode': 'Выберите или введите код страны',
@@ -1331,6 +1406,27 @@ extension on _DynamicFormLocalizationsRu {
 			'selectPeriod': 'Выберите период',
 			'done': 'Готово',
 			'wrongLinkSnack': 'Эта ссылка некорректная, вставьте правильную и попробуйте еще раз',
+			'months.0': 'Январь',
+			'months.1': 'Февраль',
+			'months.2': 'Март',
+			'months.3': 'Апрель',
+			'months.4': 'Май',
+			'months.5': 'Июнь',
+			'months.6': 'Июль',
+			'months.7': 'Август',
+			'months.8': 'Сентябрб',
+			'months.9': 'Октябрь',
+			'months.10': 'Ноябрь',
+			'months.11': 'Декабрь',
+			'weeksShort.0': 'Пн',
+			'weeksShort.1': 'Вт',
+			'weeksShort.2': 'Ср',
+			'weeksShort.3': 'Чт',
+			'weeksShort.4': 'Пт',
+			'weeksShort.5': 'Сб',
+			'weeksShort.6': 'Вс',
+			'startDate': 'Дата начала',
+			'endDate': 'Дата окончания',
 		};
 	}
 }

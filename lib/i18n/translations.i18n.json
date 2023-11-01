@@ -238,6 +238,7 @@
     "wrongFormatText": "Something wrong with the format",
     "fieldDoesNotMatch": "The value entered does not match",
     "returnDateWarning": "Can't be earlier than first date",
+    "periodDateWarning": "Can't get the period, please fill it correctly",
     "selectDate": "Select date",
     "selectTime": "Select time",
     "chooseCountryCode": "Select or enter country code",
@@ -246,5 +247,30 @@
     "clear": "Clear",
     "selectPeriod": "Select Period",
     "done": "Done",
-    "wrongLinkSnack": "This link is incorrect, try replacing it with the correct one"
+    "wrongLinkSnack": "This link is incorrect, try replacing it with the correct one",
+    "months": [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ],
+    "weeksShort": [
+        "Mo",
+        "Tu",
+        "We",
+        "Th",
+        "Fr",
+        "Sa",
+        "Su"
+    ],
+    "startDate": "Start Date",
+    "endDate": "End Date"
 }

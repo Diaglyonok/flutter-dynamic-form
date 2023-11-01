@@ -56,27 +56,25 @@ class DynamicTextField extends StatefulWidget {
   }) : super(key: key);
 
   static InputDecoration defaultDecoration(BuildContext context) => InputDecoration(
-        disabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.4)),
-        focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1)),
-        enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.4)),
-        labelStyle: Theme.of(context)
-            .textTheme
-            .caption!
-            .copyWith(color: Theme.of(context).colorScheme.onBackground),
+        disabledBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.4)),
+        focusedBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1)),
+        enabledBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.4)),
+        labelStyle: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.onBackground),
         hintStyle: Theme.of(context)
             .textTheme
-            .caption!
+            .bodySmall!
             .copyWith(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2)),
         counterStyle: Theme.of(context)
             .textTheme
-            .headline6!
+            .titleLarge!
             .copyWith(fontSize: 12, color: Theme.of(context).colorScheme.onBackground),
-        errorStyle: Theme.of(context).textTheme.caption!.copyWith(
+        errorStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
               color: Theme.of(context).colorScheme.error,
             ),
+        errorMaxLines: 3,
         focusedErrorBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: Theme.of(context).colorScheme.error, width: 1),
         ),
@@ -97,8 +95,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
   void Function()? listener;
   @override
   void initState() {
-    currentExtra =
-        widget.field is MultitypeField ? (widget.field as MultitypeField).types.first : null;
+    currentExtra = widget.field is MultitypeField ? (widget.field as MultitypeField).types.first : null;
 
     currentValue = widget.field.value;
 
@@ -123,11 +120,9 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
     if (widget.inputType == null || (widget.field.readOnly)) {
       inputType = TextInputType.text;
     }
-    final style = widget.style?.copyWith(
-            color: widget.field.readOnly
-                ? widget.style?.color?.withOpacity(0.44)
-                : widget.style?.color) ??
-        Theme.of(context).textTheme.headline6!.copyWith(
+    final style = widget.style
+            ?.copyWith(color: widget.field.readOnly ? widget.style?.color?.withOpacity(0.44) : widget.style?.color) ??
+        Theme.of(context).textTheme.titleLarge!.copyWith(
             height: 1.1,
             color: widget.field.readOnly
                 ? Theme.of(context).colorScheme.onBackground.withOpacity(0.44)
@@ -181,9 +176,8 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
                   currentValue = CompositeValue(value, extra: currentExtra);
                   widget.onChanged?.call(currentValue);
                 },
-          scrollPadding: widget.scrollPadding != null
-              ? EdgeInsets.only(bottom: widget.scrollPadding!)
-              : const EdgeInsets.all(20),
+          scrollPadding:
+              widget.scrollPadding != null ? EdgeInsets.only(bottom: widget.scrollPadding!) : const EdgeInsets.all(20),
           onFieldSubmitted: (widget.field.readOnly)
               ? null
               : (term) {
@@ -202,12 +196,11 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
           maxLines: (widget.multiline || widget.field.minLines != null ? null : 1),
           maxLength: widget.field.maxLength,
           decoration: decoration.copyWith(
-            suffixIcon: widget.current == null || !widget.current!.hasFocus || suffixIcon == null
-                ? null
-                : suffixIcon,
+            suffixIcon: widget.current == null || !widget.current!.hasFocus || suffixIcon == null ? null : suffixIcon,
             counterStyle: widget.field.maxLength != null ? decoration.counterStyle : null,
             hintText: widget.hintText,
             labelText: caption,
+            errorMaxLines: 100,
           ),
         ),
       ),

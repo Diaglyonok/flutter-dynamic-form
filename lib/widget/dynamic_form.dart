@@ -118,8 +118,7 @@ class DynamicFormState extends State<DynamicForm> {
       _pinButton = widget.allowPinnedButton;
     }
 
-    final itemsCount =
-        widget.fields.length + (widget.title != null ? 2 : 0) + (widget.submitBtn != null ? 1 : 0);
+    final itemsCount = widget.fields.length + (widget.title != null ? 2 : 0) + (widget.submitBtn != null ? 1 : 0);
 
     return GestureDetector(
       onTap: () {
@@ -145,9 +144,7 @@ class DynamicFormState extends State<DynamicForm> {
                   FocusNode? next;
 
                   final shift = (widget.title != null ? 2 : 0);
-                  final field = index >= shift && index < (nodes.length + shift)
-                      ? widget.fields[index - shift]
-                      : null;
+                  final field = index >= shift && index < (nodes.length + shift) ? widget.fields[index - shift] : null;
 
                   if (field != null &&
                       !NOT_TEXT_TYPES.contains(field.fieldType) &&
@@ -182,8 +179,7 @@ class DynamicFormState extends State<DynamicForm> {
                     switch (index) {
                       case 0:
                         final titleView = Padding(
-                            padding: widget.titlePadding ??
-                                const EdgeInsets.only(left: 20, right: 20, top: 20),
+                            padding: widget.titlePadding ?? const EdgeInsets.only(left: 20, right: 20, top: 20),
                             child: Text(
                               widget.title!,
                               textScaleFactor: 1.0,
@@ -211,8 +207,7 @@ class DynamicFormState extends State<DynamicForm> {
                             : FieldWrapper(
                                 key: ValueKey<String>(field!.fieldId),
                                 child: AbsorbPointer(
-                                    absorbing: field.readOnly,
-                                    child: _generateField(field, current, next, ctxt)));
+                                    absorbing: field.readOnly, child: _generateField(field, current, next, ctxt)));
                     }
                   } else {
                     return (index == itemsCount - 1 && widget.submitBtn != null)
@@ -222,8 +217,7 @@ class DynamicFormState extends State<DynamicForm> {
                         : FieldWrapper(
                             key: ValueKey<String>(field!.fieldId),
                             child: AbsorbPointer(
-                                absorbing: field.readOnly,
-                                child: _generateField(field, current, next, ctxt)),
+                                absorbing: field.readOnly, child: _generateField(field, current, next, ctxt)),
                           );
                   }
                 }),
@@ -285,9 +279,7 @@ class DynamicFormState extends State<DynamicForm> {
   }
 
   void updateField(
-      {required String? id,
-      required CompositeValue value,
-      String Function(CompositeValue)? valueConverter}) {
+      {required String? id, required CompositeValue value, String Function(CompositeValue)? valueConverter}) {
     final field = _findField(widget.fields, id);
 
     if (field != null) {
@@ -348,8 +340,7 @@ class DynamicFormState extends State<DynamicForm> {
           controllers[field.fieldId] = MaskedTextController(mask: '(000) 000-0000')
             ..updateText(field.value?.value ?? '');
           try {
-            controllers[field.fieldId]!.selection =
-                TextSelection.collapsed(offset: field.value?.value.length ?? 0);
+            controllers[field.fieldId]!.selection = TextSelection.collapsed(offset: field.value?.value.length ?? 0);
           } catch (e) {
             //ignore
           }
@@ -368,14 +359,10 @@ class DynamicFormState extends State<DynamicForm> {
         case FieldTypes.DatePeriod:
           field as PeriodField;
           final extra = field.extra;
-          final controllerStart = extra.pickType == PickType.FieldTap
+          final controller = extra.pickType == PickType.FieldTap
               ? TextEditingController(text: field.value?.value)
               : (MaskedTextController(mask: '00/00/0000')..updateText(field.value?.value ?? ''));
-          controllers[field.fieldId + '_start'] = controllerStart;
-          final controllerEnd = extra.pickType == PickType.FieldTap
-              ? TextEditingController(text: field.value?.extra)
-              : (MaskedTextController(mask: '00/00/0000')..updateText(field.value?.extra ?? ''));
-          controllers[field.fieldId + '_end'] = controllerEnd;
+          controllers[field.fieldId] = controller;
           break;
 
         case FieldTypes.RowField:
@@ -411,8 +398,7 @@ class DynamicFormState extends State<DynamicForm> {
     }
 
     final autoUpdateValue = DynamicFormUtils.getAutoUpdateValue(field: field, values: values);
-    if (autoUpdateValue != null &&
-        (values[field.fieldId] == null || (values[field.fieldId]?.autoUpdated ?? false))) {
+    if (autoUpdateValue != null && (values[field.fieldId] == null || (values[field.fieldId]?.autoUpdated ?? false))) {
       values[field.fieldId] = autoUpdateValue.copyWith(autoUpdated: true);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         controllers[field.fieldId]?.text = autoUpdateValue.value;
@@ -540,8 +526,7 @@ class DynamicFormState extends State<DynamicForm> {
       if (i < field.fields.length - 1) {
         currNext = additionalNodes[field.fields[i + 1].fieldId];
       }
-      final fieldWidget = _generateField(
-          e, i == 0 ? current : additionalNodes[e.fieldId], currNext ?? next, context);
+      final fieldWidget = _generateField(e, i == 0 ? current : additionalNodes[e.fieldId], currNext ?? next, context);
       widgetList.add(fieldWidget == null
           ? Container()
           : Expanded(
@@ -567,16 +552,15 @@ class DynamicFormState extends State<DynamicForm> {
   ) {
     final extra = field.extra;
 
-    final startController = controllers[field.fieldId + '_start'] ?? TextEditingController();
-    final endController = controllers[field.fieldId + '_end'] ?? TextEditingController();
+    final startController = controllers[field.fieldId] ?? TextEditingController();
 
     DateTime? startDate;
     DateTime? endDate;
 
     if (values[field.fieldId] != null) {
       try {
-        startDate = (extra.format ?? DateFormat(DynamicFormValidators.datePattern))
-            .parseStrict(values[field.fieldId]!.value);
+        startDate =
+            (extra.format ?? DateFormat(DynamicFormValidators.datePattern)).parseStrict(values[field.fieldId]!.value);
         if (field.extra.allowedDifference != null) {
           startDate = startDate.subtract(field.extra.allowedDifference!);
         }
@@ -586,8 +570,8 @@ class DynamicFormState extends State<DynamicForm> {
       }
 
       try {
-        endDate = (extra.format ?? DateFormat(DynamicFormValidators.datePattern))
-            .parseStrict(values[field.fieldId]!.extra!);
+        endDate =
+            (extra.format ?? DateFormat(DynamicFormValidators.datePattern)).parseStrict(values[field.fieldId]!.extra!);
         if (field.extra.allowedDifference != null) {
           endDate = endDate.add(field.extra.allowedDifference!);
         }
@@ -609,20 +593,20 @@ class DynamicFormState extends State<DynamicForm> {
       field: field,
       current: current,
       next: next,
-      endController: endController,
-      startController: startController,
+      //endController: endController,
+      controller: startController,
       startDate: startDate,
       endDate: endDate,
       style: style,
       decoration: widget.decoration,
       scrollPadding: _pinButton ? 100 : null,
-      startValidators: _commonTextValidators(field, additionals: [
-        //(String? value) => validators?.dateValidator(value, field.compareDate),
-      ]),
-      endValidators: _commonTextValidators(field, additionals: [
-        //(String? value) => validators?.dateValidator(value, field.compareDate),
-        //TODO: add validator for data not earlier
-      ]),
+      validators: _commonTextValidators(
+        field,
+        additionals: [
+          (String? value) => validators?.datePeriodValidator(value, context,
+              pattern: extra.format?.pattern ?? DynamicFormValidators.datePattern),
+        ],
+      ),
       onChanged: (value) => _commonOnChanged(value, field),
     );
   }
@@ -708,9 +692,7 @@ class DynamicFormState extends State<DynamicForm> {
         (String? value) => validators?.dateValidator(
             value,
             field is! DateField ? null : field.compareDate,
-            (field is DateField && field.format != null
-                    ? field.format!
-                    : DateFormat(DynamicFormValidators.datePattern))
+            (field is DateField && field.format != null ? field.format! : DateFormat(DynamicFormValidators.datePattern))
                 .pattern),
       ]),
       controller: controller!,
@@ -841,8 +823,8 @@ class DynamicFormState extends State<DynamicForm> {
               onPressed: () async {
                 final link = controllers[field.fieldId]!.text;
                 if (!(await canLaunchUrlString(link))) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(locale.dynamicFormTranslation.wrongLinkSnack)));
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(locale.dynamicFormTranslation.wrongLinkSnack)));
                   return;
                 }
 
@@ -987,8 +969,7 @@ class DynamicFormState extends State<DynamicForm> {
         validators: _commonTextValidators(
           field,
           additionals: [
-            if (extra != '+')
-              (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
+            if (extra != '+') (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
           ],
         ),
         onChanged: (value) {
@@ -996,8 +977,7 @@ class DynamicFormState extends State<DynamicForm> {
 
           _commonOnChanged(CompositeValue(value!.value, extra: result?.extra), field);
         },
-        controller:
-            extra == '+' ? controllers[field.fieldId + '_simple']! : controllers[field.fieldId]!,
+        controller: extra == '+' ? controllers[field.fieldId + '_simple']! : controllers[field.fieldId]!,
         maskText: field.maskText,
       ),
     );
@@ -1020,8 +1000,7 @@ class DynamicFormState extends State<DynamicForm> {
     );
   }
 
-  Widget _generateNumberField(
-      BuildContext context, Field field, FocusNode? current, FocusNode? next) {
+  Widget _generateNumberField(BuildContext context, Field field, FocusNode? current, FocusNode? next) {
     return DynamicTextField(
       decoration: widget.decoration,
       context: context,
@@ -1085,8 +1064,7 @@ class DynamicFormState extends State<DynamicForm> {
     );
   }
 
-  Widget? _generateColorPickcer(
-      BuildContext context, Field field, FocusNode? current, FocusNode? next) {
+  Widget? _generateColorPickcer(BuildContext context, Field field, FocusNode? current, FocusNode? next) {
     return ColorPicker(
         field: field,
         onChanged: (color) {

@@ -1,10 +1,11 @@
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/bottom_pick_button.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/string_result_field.dart';
 import 'package:intl/intl.dart';
+import 'package:paged_vertical_calendar/paged_vertical_calendar.dart';
+import 'package:paged_vertical_calendar/utils/date_utils.dart';
 
 import '../../flutter_dynamic_form.dart';
 import '../../i18n/dynamic_form_localizations.g.dart' as locale;
@@ -15,16 +16,14 @@ class PeriodFieldView extends StatefulWidget {
   final PeriodField field;
   final FocusNode? current;
   final FocusNode? next;
-  final TextEditingController endController;
-  final TextEditingController startController;
+  final TextEditingController controller;
 
   final DateTime? startDate;
   final DateTime? endDate;
   final TextStyle? style;
   final InputDecoration? decoration;
   final double? scrollPadding;
-  final String? Function(String?)? startValidators;
-  final String? Function(String?)? endValidators;
+  final String? Function(String?)? validators;
 
   final Function(CompositeValue? value) onChanged;
 
@@ -33,16 +32,15 @@ class PeriodFieldView extends StatefulWidget {
     required this.field,
     this.current,
     this.next,
-    required this.endController,
-    required this.startController,
+    //required this.endController,
+    required this.controller,
     this.startDate,
     this.endDate,
     this.style,
     required this.onChanged,
     this.decoration,
     this.scrollPadding,
-    this.startValidators,
-    this.endValidators,
+    this.validators,
   }) : super(key: key);
 
   @override
@@ -55,7 +53,10 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
   FixedExtentScrollController? scrollController = FixedExtentScrollController();
 
   late ScreenResultField first;
-  late ScreenResultField second;
+  //late ScreenResultField second;
+
+  DateTime? start;
+  DateTime? end;
 
   @override
   void initState() {
@@ -67,6 +68,8 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
       int newDaysCount = 0;
       if (start != null && end != null) {
         newDaysCount = end.difference(start).inDays;
+        this.start = start;
+        this.end = end;
       }
       daysCount = widget.field.withDaysNum && start != null && end != null ? newDaysCount : null;
     }
@@ -87,44 +90,24 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
 
   initResultFields() {
     first = ScreenResultField(
-      fieldId: widget.field.fieldId + '_start',
+      fieldId: widget.field.fieldId,
       label: widget.field.label,
       extra: ScreenResultExtra(
         getResult: (context) async {
           await _updatePeriod();
-          return ScreenResultCompositeValue(widget.startController.text);
+          final extra = widget.field.extra;
+          final format = extra.format ?? DateFormat(DynamicFormValidators.datePattern);
+
+          final startValue = start == null ? null : format.format(start!);
+          final endValue = end == null ? null : format.format(end!);
+
+          return ScreenResultCompositeValue(startValue == null ? '' : '$startValue - ${endValue ?? ''}', jsonData: {
+            'start': startValue,
+            'end': endValue,
+          });
         },
       ),
       //extraPrefix: ,
-      required: widget.field.required,
-      readOnly: widget.field.readOnly,
-      minLines: widget.field.minLines,
-      customValidator: widget.field.customValidator,
-      maskText: widget.field.maskText,
-      maxLength: widget.field.maxLength,
-      inputType: widget.field.inputType,
-      options: widget.field.options,
-      confirmField: widget.field.confirmField,
-      value: widget.field.value,
-      dependsOn: widget.field.dependsOn,
-      isCapitalized: widget.field.isCapitalized,
-      validationExpression: widget.field.validationExpression,
-      validationErrorMessage: widget.field.validationErrorMessage,
-      onUpdated: widget.field.onUpdated,
-      infoCallback: widget.field.infoCallback,
-      shouldShowInfo: widget.field.shouldShowInfo,
-      multiline: widget.field.multiline,
-    );
-
-    second = ScreenResultField(
-      fieldId: widget.field.fieldId + '_end',
-      label: widget.field.extra.secondLabel ?? widget.field.label,
-      extra: ScreenResultExtra(
-        getResult: (context) async {
-          await _updatePeriod();
-          return ScreenResultCompositeValue(widget.endController.text);
-        },
-      ),
       required: widget.field.required,
       readOnly: widget.field.readOnly,
       minLines: widget.field.minLines,
@@ -165,37 +148,17 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                 return;
               }
 
-              widget.onChanged(
-                CompositeValue(widget.startController.text, extra: widget.endController.text),
-              );
-            },
-
-            validators: widget.startValidators,
-            controller: widget.startController,
-          ),
-        ),
-        const SizedBox(
-          width: 16,
-        ),
-        Expanded(
-          child: StringResultView(
-            decoration: widget.decoration,
-            field: second,
-            // current: extra.pickType == PickType.FieldTap ? null : widget.current,
-            // next: extra.pickType == PickType.FieldTap ? null : middleNode,
-            style: widget.style,
-            onChanged: (CompositeValue? value) {
-              if (value == null) {
-                widget.onChanged(null);
+              if (value is! ScreenResultCompositeValue) {
                 return;
               }
 
               widget.onChanged(
-                CompositeValue(widget.startController.text, extra: widget.endController.text),
+                CompositeValue(value.jsonData?['start'] ?? '', extra: value.jsonData?['end'] ?? ''),
               );
             },
-            validators: widget.endValidators,
-            controller: widget.endController,
+
+            validators: widget.validators,
+            controller: widget.controller,
           ),
         ),
         AnimatedSize(
@@ -228,41 +191,41 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                                   child: CupertinoPicker.builder(
                                       itemExtent: 32,
                                       childCount: 364,
-                                      scrollController:
-                                          FixedExtentScrollController(initialItem: daysCount! - 1),
+                                      scrollController: FixedExtentScrollController(initialItem: daysCount! - 1),
                                       onSelectedItemChanged: (index) {
                                         daysCount = index + 1;
                                         setState(() {});
 
-                                        if (widget.startController.text.isEmpty) {
+                                        if (widget.controller.text.isEmpty) {
                                           return;
                                         }
 
-                                        final format = extra.format ??
-                                            DateFormat(DynamicFormValidators.datePattern);
+                                        final format = extra.format ?? DateFormat(DynamicFormValidators.datePattern);
 
-                                        final startDate =
-                                            format.safeStrictParse(widget.startController.text);
+                                        //final startDate = format.safeStrictParse(widget.startController.text);
 
-                                        if (startDate == null) {
+                                        if (start == null) {
                                           return;
                                         }
 
-                                        final endDate = startDate.add(Duration(days: daysCount!));
+                                        final endDate = start!.add(Duration(days: daysCount!));
 
                                         String value;
                                         try {
-                                          value = (extra.format ??
-                                                  DateFormat(DynamicFormValidators.datePattern))
+                                          value = (extra.format ?? DateFormat(DynamicFormValidators.datePattern))
                                               .format(endDate);
                                         } catch (e) {
                                           return;
                                         }
 
-                                        updateValue(widget.endController, value);
+                                        end = endDate;
 
-                                        widget.onChanged(CompositeValue(widget.startController.text,
-                                            extra: widget.endController.text));
+                                        updateValue(widget.controller, '${format.format(start!)} - $value');
+
+                                        widget.onChanged(CompositeValue(
+                                          format.format(start!),
+                                          extra: value,
+                                        ));
                                       },
                                       itemBuilder: (context, index) {
                                         return Center(
@@ -290,16 +253,18 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
 
   Future<void> _updatePeriod() async {
     final extra = widget.field.extra;
-    final format = extra.format ?? DateFormat(DynamicFormValidators.datePattern);
 
     await Navigator.of(context).push(
       BottomSheetRoute(
-        child: DatePeriodPicker(
-          customConfig: widget.field.config,
-          onChanged: (start, end, {clear = false}) {
+        child: CalendarPage(
+          customization: extra.customization,
+          onDatesChanged: (start, end, {clear = false}) {
             if (clear) {
-              updateValue(widget.endController, '');
-              updateValue(widget.startController, '');
+              this.start = null;
+              this.end = null;
+              updateValue(widget.controller, '');
+              //updateValue(widget.startController, '');
+
               daysCount = null;
               return;
             }
@@ -313,27 +278,29 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
             try {
               startValue = format.format(start);
             } catch (e) {
-              return null;
+              return;
             }
 
             String? endValue;
             try {
               endValue = end != null ? format.format(end) : null;
             } catch (e) {
-              return null;
+              return;
             }
+
+            this.start = start;
+            this.end = end;
 
             daysCount = end?.difference(start).inDays ?? 0;
 
-            updateValue(widget.endController, endValue ?? '');
-            updateValue(widget.startController, startValue);
+            //updateValue(widget.endController, endValue ?? '');
+            updateValue(widget.controller, '$startValue - ${endValue ?? ''}');
             setState(() {});
 
-            widget.onChanged(
-                CompositeValue(widget.startController.text, extra: widget.endController.text));
+            widget.onChanged(CompositeValue(startValue, extra: endValue));
           },
-          initialStartDate: format.safeStrictParse(widget.startController.text),
-          initialEndDate: format.safeStrictParse(widget.endController.text),
+          initStart: start, //NOT SAFE
+          initEnd: end,
         ),
       ),
     );
@@ -358,124 +325,321 @@ extension _DateFormatExt on DateFormat {
   }
 }
 
-class DatePeriodPicker extends StatefulWidget {
-  final CalendarDatePicker2Config? customConfig;
-  final DateTime? initialStartDate;
-  final DateTime? initialEndDate;
-  final Function(DateTime? start, DateTime? end, {bool clear}) onChanged;
+class CalendarPage extends StatefulWidget {
+  final DateTime? initStart;
+  final DateTime? initEnd;
+  final DatePickerCustomization customization;
 
-  const DatePeriodPicker({
-    Key? key,
-    required this.initialStartDate,
-    required this.initialEndDate,
-    required this.onChanged,
-    this.customConfig,
-  }) : super(key: key);
+  final void Function(DateTime? initStart, DateTime? initEnd, {bool clear})? onDatesChanged;
+
+  const CalendarPage({
+    super.key,
+    required this.initStart,
+    required this.initEnd,
+    required this.customization,
+    this.onDatesChanged,
+  });
 
   @override
-  State<DatePeriodPicker> createState() => _DatePeriodPickerState();
+  State<CalendarPage> createState() => _CalendarPageState();
 }
 
-class _DatePeriodPickerState extends State<DatePeriodPicker> {
+enum _Selectable {
+  first,
+  second,
+}
+
+class _CalendarPageState extends State<CalendarPage> {
+  _Selectable? selectedManually;
+  DateTime? startDate;
+  DateTime? endDate;
+
+  bool get hasChanges {
+    return startDate != widget.initStart || endDate != widget.initEnd;
+  }
+
+  DatePickerCustomization get custom => widget.customization;
+
+  @override
+  void initState() {
+    startDate = widget.initStart;
+    endDate = widget.initEnd;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 320,
+    final theme = Theme.of(context);
+
+    final startDateValue = startDate == null ? null : DateFormat.yMMMd().format(startDate!);
+    final endDateValue = endDate == null ? null : DateFormat.yMMMd().format(endDate!);
+
+    return Material(
+      type: MaterialType.transparency,
       child: Column(
         children: [
-          Material(
-            type: MaterialType.transparency,
-            child: SizedBox(
-              height: 32,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  SizedBox(
-                    width: 80,
-                    child: MaterialButton(
-                      onPressed: () {
-                        widget.onChanged(null, null, clear: true);
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        locale.dynamicFormTranslation.clear,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                              color: Theme.of(context).colorScheme.error,
-                            ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
+          SizedBox(
+            height: 32,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const SizedBox(
+                  width: 16,
+                ),
+                SizedBox(
+                  width: 100,
+                  child: MaterialButton(
+                    onPressed: () {
+                      selectedManually = null;
+                      startDate = null;
+                      endDate = null;
+                      widget.onDatesChanged?.call(startDate, endDate, clear: true);
+                      setState(() {});
+                      //Navigator.of(context).pop();
+                    },
                     child: Text(
-                      locale.dynamicFormTranslation.selectPeriod,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      custom.clearButtonText ?? locale.dynamicFormTranslation.clear,
+                      textAlign: TextAlign.left,
+                      style: custom.clearButtonStyle ??
+                          Theme.of(context).textTheme.labelLarge!.copyWith(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
                     ),
                   ),
-                  SizedBox(
-                    width: 80,
-                    child: MaterialButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
+                ),
+                const Spacer(),
+                SizedBox(
+                  width: 100,
+                  child: MaterialButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      custom.okButtonText ?? locale.dynamicFormTranslation.done,
+                      textAlign: TextAlign.right,
+                      style: custom.okButtonStyle ??
+                          Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .copyWith(color: Theme.of(context).colorScheme.secondary),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 12, left: 28, right: 28),
+            child: SizedBox(
+              height: 48,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _buildDate(
+                      onTap: () {
+                        selectedManually = _Selectable.first;
+                        setState(() {});
                       },
-                      child: Text(
-                        locale.dynamicFormTranslation.done,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelLarge!
-                            .copyWith(color: Theme.of(context).colorScheme.secondary),
-                      ),
+                      name: custom.startDateText ?? locale.dynamicFormTranslation.startDate,
+                      value: startDateValue,
+                      isSelected: selectedManually == _Selectable.first ||
+                          selectedManually == null && (startDateValue == null || endDateValue != null),
                     ),
                   ),
-                  const SizedBox(
-                    width: 16,
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: _buildDate(
+                      onTap: () {
+                        selectedManually = _Selectable.second;
+                        setState(() {});
+                      },
+                      name: custom.endDateText ?? locale.dynamicFormTranslation.endDate,
+                      value: endDateValue,
+                      isSelected: selectedManually == _Selectable.second ||
+                          selectedManually == null && (startDateValue != null && endDateValue == null),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
           Expanded(
-            child: Material(
-              type: MaterialType.transparency,
-              child: CalendarDatePicker2(
-                onValueChanged: (dates) {
-                  final endDate = dates.length > 1 &&
-                          dates[1] != null &&
-                          dates[0] != null &&
-                          DateTime(dates[1]!.year, dates[1]!.month, dates[1]!.day) !=
-                              DateTime(dates[0]!.year, dates[0]!.month, dates[0]!.day)
-                      ? dates[1]
-                      : null;
-                  widget.onChanged(dates[0], endDate, clear: false);
-                },
-                config: (widget.customConfig ??
-                        CalendarDatePicker2Config(
-                          selectedYearTextStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                color: Theme.of(context).colorScheme.onTertiary,
-                              ),
-                          selectedDayHighlightColor: Theme.of(context).colorScheme.tertiary,
-                          selectedDayTextStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                color: Theme.of(context).colorScheme.onTertiary,
-                              ),
-                          calendarType: CalendarDatePicker2Type.range,
-                        ))
-                    .copyWith(
-                  calendarType: CalendarDatePicker2Type.range,
-                ),
-                initialValue: [widget.initialStartDate, widget.initialEndDate],
-              ),
+            child: PagedVerticalCalendar(
+              listPadding: const EdgeInsets.all(8.0),
+              monthBuilder: (context, month, year) {
+                return Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              DateFormat.MMMM().format(DateTime(year, month)),
+                              style: custom.monthStyle ?? Theme.of(context).textTheme.titleLarge,
+                            ),
+                          ),
+                          Text(
+                            year.toString(),
+                            style: custom.yearStyle ??
+                                Theme.of(context).textTheme.titleLarge!.copyWith(
+                                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                                    ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    /// add a row showing the weekdays
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: List.generate(
+                          locale.dynamicFormTranslation.weeksShort.length,
+                          (index) => weekText(locale.dynamicFormTranslation.weeksShort[index]),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+              dayBuilder: (context, date) {
+                var textTheme = custom.dayStyle ?? theme.textTheme.bodyLarge;
+                final isInRange = startDate != null &&
+                    endDate != null &&
+                    date.isBefore(endDate!) &&
+                    date.isAfter(startDate!) &&
+                    !date.isSameDay(endDate!) &&
+                    !date.isSameDay(startDate!);
+                final isTile =
+                    startDate != null && date.isSameDay(startDate!) || endDate != null && date.isSameDay(endDate!);
+
+                textTheme = textTheme?.copyWith(
+                  color: isTile ? (custom.onAccentColor ?? theme.colorScheme.onSecondary) : null,
+                );
+
+                final isToday = date.isSameDay(DateTime.now());
+
+                return Stack(
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      decoration: BoxDecoration(
+                        border: isToday
+                            ? Border.all(
+                                color: custom.accentColor ?? Theme.of(context).colorScheme.secondary,
+                              )
+                            : null,
+                        borderRadius: isTile || isToday ? BorderRadius.circular(custom.tileBorderRadius ?? 8) : null,
+                        color: isInRange
+                            ? custom.transparentAccentColor ?? theme.colorScheme.secondary.withOpacity(0.1)
+                            : isTile
+                                ? custom.accentColor ?? theme.colorScheme.secondary
+                                : null,
+                      ),
+                      child: Center(child: Text(date.day.toString(), style: textTheme)),
+                    ),
+                  ],
+                );
+              },
+              onDayPressed: (date) {
+                if (selectedManually == _Selectable.second &&
+                    startDate != null &&
+                    (date.isAfter(endDate!) || date.isSameDay(endDate!))) {
+                  endDate = date;
+                } else if (endDate == null && startDate != null && date.isBefore(startDate!)) {
+                  endDate = startDate;
+                  startDate = date;
+                } else if (startDate == null ||
+                    date.isBefore(startDate!) ||
+                    startDate != null && endDate != null ||
+                    startDate != null && date.isSameDay(startDate!)) {
+                  startDate = date;
+                  endDate = null;
+                } else {
+                  // if (endDate == null)
+                  endDate ??= date;
+                }
+
+                selectedManually = null;
+                widget.onDatesChanged?.call(startDate, endDate, clear: false);
+                setState(() {});
+                return;
+              },
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildDate({
+    required String name,
+    VoidCallback? onTap,
+    bool isSelected = false,
+    String? value,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                    color: isSelected
+                        ? (custom.accentColor ?? Theme.of(context).colorScheme.secondary)
+                        : Colors.transparent,
+                    width: 2))),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              name,
+              style: value != null
+                  ? (custom.selectedDateTextStyle ?? Theme.of(context).textTheme.bodyLarge)
+                  : (custom.selectedDateTextStyleEmpty ?? Theme.of(context).textTheme.titleMedium),
+            ),
+            const SizedBox(height: 2),
+            if (value != null)
+              Text(value, style: custom.selectedDateValueStyle ?? Theme.of(context).textTheme.titleMedium),
+            const SizedBox(
+              height: 8,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget weekText(String text) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Text(
+        text,
+        style: custom.weekDayStyle ??
+            Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  color: theme.colorScheme.onBackground.withOpacity(0.5),
+                ),
+      ),
+    );
+  }
+}
+
+extension IterableExtension<T> on Iterable<T> {
+  /// The first element satisfying [test], or `null` if there are none.
+  T? firstWhereOrNull(bool Function(T element) test) {
+    for (var element in this) {
+      if (test(element)) return element;
+    }
+    return null;
   }
 }

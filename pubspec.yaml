@@ -30,8 +30,8 @@ dependencies:
     git:
       url: https://github.com/Diaglyonok/dglk_simple_button.git
       ref: cb38449
-  calendar_date_picker2: 0.3.1
-  intl: ^0.18.0
+  paged_vertical_calendar: ^1.1.6
+  intl: ^0.18.1
   auto_size_text: 3.0.0
   flutter_colorpicker: 1.0.3
   url_launcher: ^6.1.10

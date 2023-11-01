@@ -71,7 +71,7 @@ class _StringResultViewState extends State<StringResultView> {
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(
                         prefix!,
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
                               fontSize: 18,
                               color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
                               fontWeight: FontWeight.w500,

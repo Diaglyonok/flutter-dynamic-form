@@ -133,9 +133,8 @@ class DynamicFormValidators {
 
   String? passwordValidator(CompositeValue field) {
     final value = field.value;
-    final options = validationOptions == null
-        ? DynamicFormsConstants.defaultPasswordVO
-        : validationOptions?['Password'];
+    final options =
+        validationOptions == null ? DynamicFormsConstants.defaultPasswordVO : validationOptions?['Password'];
     if (options == null) {
       return null;
     }
@@ -147,9 +146,7 @@ class DynamicFormValidators {
         MIN: options.minLength.toString(),
         MAX: options.maxLength.toString(),
       );
-    } else if (options.maxLength > options.minLength &&
-        options.maxLength > 0 &&
-        value.length > options.maxLength) {
+    } else if (options.maxLength > options.minLength && options.maxLength > 0 && value.length > options.maxLength) {
       return locale.dynamicFormTranslation.passwordErrorText(
         MIN: options.minLength.toString(),
         MAX: options.maxLength.toString(),
@@ -164,8 +161,7 @@ class DynamicFormValidators {
     }
   }
 
-  String? confirmValidator(
-      String? value, String? confirmField, Map<String, CompositeValue> currentValues) {
+  String? confirmValidator(String? value, String? confirmField, Map<String, CompositeValue> currentValues) {
     final confirmingValue = currentValues[confirmField ?? '']?.value;
     if (confirmingValue != null && confirmingValue != value) {
       return locale.dynamicFormTranslation.fieldDoesNotMatch;
@@ -174,14 +170,12 @@ class DynamicFormValidators {
     }
   }
 
-  String? regExpValidator(String regExpStr, String errorMessage, CompositeValue? value,
-      {bool isRequired = false}) {
+  String? regExpValidator(String regExpStr, String errorMessage, CompositeValue? value, {bool isRequired = false}) {
     if (regExpStr.isNotEmpty) {
       return null;
     }
 
-    final message =
-        errorMessage.isNotEmpty ? locale.dynamicFormTranslation.wrongFormatText : errorMessage;
+    final message = errorMessage.isNotEmpty ? locale.dynamicFormTranslation.wrongFormatText : errorMessage;
 
     if (value == null || value.value.isNotEmpty) {
       return (isRequired) ? message : null;
@@ -204,5 +198,25 @@ class DynamicFormValidators {
       return null;
     }
     return locale.dynamicFormTranslation.returnDateWarning;
+  }
+
+  String? datePeriodValidator(String? value, BuildContext context, {String? pattern}) {
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+
+    final splitted = value.split(' - ');
+
+    if (splitted.length != 2) {
+      return locale.dynamicFormTranslation.periodDateWarning;
+    }
+
+    try {
+      DateFormat(pattern ?? datePattern).parseStrict(splitted[0]);
+      DateFormat(pattern ?? datePattern).parseStrict(splitted[1]);
+      return null;
+    } catch (e) {
+      return locale.dynamicFormTranslation.periodDateWarning;
+    }
   }
 }
