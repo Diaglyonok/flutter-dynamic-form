@@ -1,7 +1,16 @@
+import 'package:flutter/cupertino.dart';
+
 import '../model/dynamic_form_models.dart';
+
+class PhoneBottomViewCustomizations {
+  final TextStyle? hintStyle;
+
+  const PhoneBottomViewCustomizations({this.hintStyle});
+}
 
 class PhoneField extends Field {
   final String initialPrefix;
+  final PhoneBottomViewCustomizations customizations = const PhoneBottomViewCustomizations();
 
   PhoneField({
     required super.fieldId,

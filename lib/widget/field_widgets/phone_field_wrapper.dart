@@ -139,6 +139,7 @@ const countryPhoneCodes = <String, String>{
   'MX': '+52',
   'FM': '+691',
   'MC': '+377',
+  'MD': '+373',
   'MN': '+976',
   'MS': '+1',
   'MA': '+212',
@@ -270,10 +271,10 @@ class _PhoneFieldWrapperState extends State<PhoneFieldWrapper> {
           text: current!,
           style: widget.style,
           child: SearchCountryBottomView(
+            custom: widget.field!.customizations,
             onChanged: (code) {
               current = code;
               setState(() {});
-
               widget.onExtraChanged?.call(code);
             },
           ),
@@ -288,7 +289,8 @@ class _PhoneFieldWrapperState extends State<PhoneFieldWrapper> {
 
 class SearchCountryBottomView extends StatefulWidget {
   final Function(String extra) onChanged;
-  const SearchCountryBottomView({Key? key, required this.onChanged}) : super(key: key);
+  final PhoneBottomViewCustomizations custom;
+  const SearchCountryBottomView({Key? key, required this.onChanged, required this.custom}) : super(key: key);
 
   @override
   State<SearchCountryBottomView> createState() => _SearchCountryBottomViewState();
@@ -361,6 +363,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: context.t.chooseCountryCode,
+                            hintStyle: widget.custom.hintStyle,
                           ),
                           onChanged: (text) {
                             textStreamController.add(text);

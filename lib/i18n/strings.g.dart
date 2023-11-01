@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 536 (268 per locale)
+/// Strings: 538 (269 per locale)
 ///
-/// Built on 2023-11-01 at 10:20 UTC
+/// Built on 2023-11-01 at 12:29 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -267,6 +267,7 @@ class _StringsEn implements BaseTranslations<AppLocale, _StringsEn> {
 		'LI': 'Liechtenstein',
 		'LT': 'Lithuania',
 		'LU': 'Luxembourg',
+		'MD': 'Moldova',
 		'MO': 'Macao',
 		'MK': 'Macedonia',
 		'MG': 'Madagascar',
@@ -568,6 +569,7 @@ class _StringsRu implements _StringsEn {
 		'LI': 'Лихтенштейн',
 		'LT': 'Литва',
 		'LU': 'Люксембург',
+		'MD': 'Молдова',
 		'MO': 'Макао',
 		'MK': 'Македония',
 		'MG': 'Мадагаскар',
@@ -849,6 +851,7 @@ extension on _StringsEn {
 			case 'countries.LI': return 'Liechtenstein';
 			case 'countries.LT': return 'Lithuania';
 			case 'countries.LU': return 'Luxembourg';
+			case 'countries.MD': return 'Moldova';
 			case 'countries.MO': return 'Macao';
 			case 'countries.MK': return 'Macedonia';
 			case 'countries.MG': return 'Madagascar';
@@ -1125,6 +1128,7 @@ extension on _StringsRu {
 			case 'countries.LI': return 'Лихтенштейн';
 			case 'countries.LT': return 'Литва';
 			case 'countries.LU': return 'Люксембург';
+			case 'countries.MD': return 'Молдова';
 			case 'countries.MO': return 'Макао';
 			case 'countries.MK': return 'Македония';
 			case 'countries.MG': return 'Мадагаскар';
