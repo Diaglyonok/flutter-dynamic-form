@@ -257,6 +257,8 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
       BottomSheetRoute(
         titleBoxHeight: 20,
         builder: (context) => CalendarPage(
+          minDate: widget.field.minDate,
+          maxDate: widget.field.maxDate,
           locale: (extra.format ??
                   DateFormat(
                       DynamicFormValidators.datePattern, TranslationProvider.of(context).flutterLocale.toString()))
@@ -332,6 +334,10 @@ extension _DateFormatExt on DateFormat {
 class CalendarPage extends StatefulWidget {
   final DateTime? initStart;
   final DateTime? initEnd;
+
+  final DateTime? minDate;
+  final DateTime? maxDate;
+
   final DatePickerCustomization customization;
   final String locale;
 
@@ -344,6 +350,8 @@ class CalendarPage extends StatefulWidget {
     required this.customization,
     this.onDatesChanged,
     required this.locale,
+    this.minDate,
+    this.maxDate,
   });
 
   @override
@@ -411,6 +419,12 @@ class _CalendarPageState extends State<CalendarPage> {
               const Spacer(),
               MaterialButton(
                 onPressed: () {
+                  final a = startDate != null;
+                  final b = endDate != null;
+
+                  if (a == b) {
+                    widget.onDatesChanged?.call(startDate, endDate, clear: false);
+                  }
                   Navigator.of(context).pop();
                 },
                 child: Text(
@@ -463,6 +477,8 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
         Expanded(
           child: PagedVerticalCalendar(
+            minDate: widget.minDate,
+            maxDate: widget.maxDate,
             listPadding: const EdgeInsets.all(8.0),
             monthBuilder: (context, month, year) {
               return Column(
@@ -515,8 +531,15 @@ class _CalendarPageState extends State<CalendarPage> {
               final isTile =
                   startDate != null && date.isSameDay(startDate!) || endDate != null && date.isSameDay(endDate!);
 
+              final isDisabled = widget.minDate != null && date.isBefore(widget.minDate!) ||
+                  widget.maxDate != null && date.isAfter(widget.maxDate!);
+
               textTheme = textTheme?.copyWith(
-                color: isTile ? (custom.onAccentColor ?? theme.colorScheme.onSecondary) : null,
+                color: isDisabled
+                    ? theme.colorScheme.onBackground.withOpacity(0.3)
+                    : isTile
+                        ? (custom.onAccentColor ?? theme.colorScheme.onSecondary)
+                        : null,
               );
 
               final isToday = date.isSameDay(DateTime.now());
@@ -545,6 +568,13 @@ class _CalendarPageState extends State<CalendarPage> {
               );
             },
             onDayPressed: (date) {
+              final isDisabled = widget.minDate != null && date.isBefore(widget.minDate!) ||
+                  widget.maxDate != null && date.isAfter(widget.maxDate!);
+
+              if (isDisabled) {
+                return;
+              }
+
               if (selectedManually == _Selectable.second &&
                   startDate != null &&
                   (date.isAfter(endDate!) || date.isSameDay(endDate!))) {
@@ -564,7 +594,7 @@ class _CalendarPageState extends State<CalendarPage> {
               }
 
               selectedManually = null;
-              widget.onDatesChanged?.call(startDate, endDate, clear: false);
+
               setState(() {});
               return;
             },

@@ -44,19 +44,13 @@ class DatePickerCustomization {
 }
 
 class PeriodExtra {
-  final String? secondLabel;
-  final CupertinoDatePickerMode? type;
   final DateFormat? format;
-  final PickType? pickType;
   final Duration? allowedDifference;
   final String? daysBottomSheetTitle;
   final DatePickerCustomization customization;
 
   PeriodExtra({
     this.daysBottomSheetTitle,
-    this.pickType,
-    this.secondLabel,
-    this.type,
     this.format,
     this.allowedDifference,
     this.customization = const DatePickerCustomization(),
@@ -66,11 +60,15 @@ class PeriodExtra {
 class PeriodField extends Field {
   final PeriodExtra extra;
   final bool withDaysNum;
+  final DateTime? minDate;
+  final DateTime? maxDate;
 
   PeriodField({
     required super.fieldId,
     required this.extra,
     required super.label,
+    this.minDate,
+    this.maxDate,
     this.withDaysNum = false,
     super.minLines,
     super.required = false,

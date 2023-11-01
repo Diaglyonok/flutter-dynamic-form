@@ -355,10 +355,12 @@ class DynamicFormState extends State<DynamicForm> {
           break;
         case FieldTypes.DatePeriod:
           field as PeriodField;
-          final extra = field.extra;
-          final controller = extra.pickType == PickType.FieldTap
-              ? TextEditingController(text: field.value?.value)
-              : (MaskedTextController(mask: '00/00/0000')..updateText(field.value?.value ?? ''));
+          String value = '';
+
+          if (field.value?.value != null && field.value?.extra != null) {
+            value = '${field.value!.value} - ${field.value!.extra}';
+          }
+          final controller = TextEditingController(text: value);
           controllers[field.fieldId] = controller;
           break;
 

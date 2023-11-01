@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:dglk_flutter_dev_kit/simple_button/simple_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dynamic_form/flutter_dynamic_form.dart';
 import 'package:flutter_dynamic_form/i18n/strings.g.dart';
@@ -186,12 +185,11 @@ class _MyAppState extends State<MyApp> {
       PeriodField(
         fieldId: 'date_period',
         label: 'Period label 1',
+        minDate: DateTime.now().subtract(const Duration(days: 20)),
+        maxDate: DateTime.now().add(const Duration(days: 20)),
         withDaysNum: true,
         extra: PeriodExtra(
           daysBottomSheetTitle: 'Select',
-          secondLabel: 'Period label 2',
-          type: CupertinoDatePickerMode.date,
-          pickType: PickType.FieldTap,
           format: format,
         ),
       ),
