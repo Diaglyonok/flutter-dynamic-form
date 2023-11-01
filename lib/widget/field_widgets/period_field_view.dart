@@ -477,8 +477,9 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
         Expanded(
           child: PagedVerticalCalendar(
-            minDate: widget.minDate,
-            maxDate: widget.maxDate,
+            minDate: widget.minDate?.subtract(const Duration(days: 1)),
+            maxDate: widget.maxDate?.add(const Duration(days: 1)),
+            initialDate: calculateMiddleDate(widget.minDate, widget.maxDate),
             listPadding: const EdgeInsets.all(8.0),
             monthBuilder: (context, month, year) {
               return Column(
@@ -666,4 +667,33 @@ extension IterableExtension<T> on Iterable<T> {
     }
     return null;
   }
+}
+
+DateTime? calculateMiddleDate(DateTime? date1, DateTime? date2) {
+  if (date1 == null && date2 == null) {
+    return null;
+  }
+  if (date1 == null) {
+    final now = DateTime.now();
+    if (now.isBefore(date2!)) {
+      return null;
+    } else {
+      return date2;
+    }
+  }
+
+  if (date2 == null) {
+    final now = DateTime.now();
+    if (now.isAfter(date1)) {
+      return null;
+    } else {
+      return date1;
+    }
+  }
+
+  Duration difference = date2.difference(date1);
+  Duration middleDuration = difference ~/ 2; // ~/ - оператор целочисленного деления
+  DateTime middleDate = date1.add(middleDuration).removeTime();
+
+  return middleDate;
 }
