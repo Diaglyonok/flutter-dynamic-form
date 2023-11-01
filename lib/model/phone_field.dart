@@ -10,7 +10,7 @@ class PhoneBottomViewCustomizations {
 
 class PhoneField extends Field {
   final String initialPrefix;
-  final PhoneBottomViewCustomizations customizations = const PhoneBottomViewCustomizations();
+  final PhoneBottomViewCustomizations customizations;
 
   PhoneField({
     required super.fieldId,
@@ -34,6 +34,7 @@ class PhoneField extends Field {
     super.infoCallback,
     super.shouldShowInfo,
     super.multiline,
+    this.customizations = const PhoneBottomViewCustomizations(),
   }) : super(
           fieldType: FieldTypes.Phone,
           value: value ?? CompositeValue('', extra: initialPrefix),
