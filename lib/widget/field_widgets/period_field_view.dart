@@ -189,7 +189,9 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                                 Expanded(
                                   child: CupertinoPicker.builder(
                                       itemExtent: 32,
-                                      childCount: 364,
+                                      childCount: widget.field.maxDate != null && start != null
+                                          ? start!.difference(widget.field.maxDate!).inDays.abs()
+                                          : 364,
                                       scrollController: FixedExtentScrollController(initialItem: daysCount! - 1),
                                       onSelectedItemChanged: (index) {
                                         daysCount = index + 1;
