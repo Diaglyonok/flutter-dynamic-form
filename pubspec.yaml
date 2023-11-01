@@ -35,6 +35,8 @@ dependencies:
   auto_size_text: 3.0.0
   flutter_colorpicker: 1.0.3
   url_launcher: ^6.1.10
+  slang: ^3.25.0
+  slang_flutter: ^3.25.0
   flutter:
     sdk: flutter
 
@@ -43,7 +45,6 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
-  fast_i18n: 5.12.3
   build_runner: any
   flutter_test:
     sdk: flutter

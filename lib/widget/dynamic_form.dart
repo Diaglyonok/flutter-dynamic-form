@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dynamic_form/i18n/strings.g.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
 import 'package:flutter_dynamic_form/model/row_field.dart';
 import 'package:flutter_dynamic_form/utils/replacement_formatter.dart';
@@ -14,7 +15,6 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../flutter_dynamic_form.dart';
-import '../i18n/dynamic_form_localizations.g.dart' as locale;
 import '../logic/dynamic_form_validators.dart';
 import '../model/link_field.dart';
 import '../utils/form_utils.dart';
@@ -94,6 +94,7 @@ class DynamicFormState extends State<DynamicForm> {
   @override
   void initState() {
     super.initState();
+
     validators = DynamicFormValidators(
       widget.validationOptions,
       allowFullZip: _allowFullZip,
@@ -110,10 +111,6 @@ class DynamicFormState extends State<DynamicForm> {
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.useBaseLocale) {
-      locale.LocaleSettings.useDeviceLocale();
-    }
-
     if (widget.fields.length < MediaQuery.of(context).size.height / averageFieldHeight) {
       _pinButton = widget.allowPinnedButton;
     }
@@ -823,8 +820,7 @@ class DynamicFormState extends State<DynamicForm> {
               onPressed: () async {
                 final link = controllers[field.fieldId]!.text;
                 if (!(await canLaunchUrlString(link))) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(locale.dynamicFormTranslation.wrongLinkSnack)));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.t.wrongLinkSnack)));
                   return;
                 }
 

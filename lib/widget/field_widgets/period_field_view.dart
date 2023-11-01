@@ -1,14 +1,15 @@
 import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dynamic_form/i18n/strings.g.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/bottom_pick_button.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/string_result_field.dart';
 import 'package:intl/intl.dart';
 import 'package:paged_vertical_calendar/paged_vertical_calendar.dart';
 import 'package:paged_vertical_calendar/utils/date_utils.dart';
+import 'package:slang/builder/utils/string_extensions.dart';
 
 import '../../flutter_dynamic_form.dart';
-import '../../i18n/dynamic_form_localizations.g.dart' as locale;
 import '../../logic/dynamic_form_validators.dart';
 import '../../utils/masked_text_controller.dart';
 
@@ -256,6 +257,10 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
       BottomSheetRoute(
         titleBoxHeight: 20,
         builder: (context) => CalendarPage(
+          locale: (extra.format ??
+                  DateFormat(
+                      DynamicFormValidators.datePattern, TranslationProvider.of(context).flutterLocale.toString()))
+              .locale,
           customization: extra.customization,
           onDatesChanged: (start, end, {clear = false}) {
             if (clear) {
@@ -328,6 +333,7 @@ class CalendarPage extends StatefulWidget {
   final DateTime? initStart;
   final DateTime? initEnd;
   final DatePickerCustomization customization;
+  final String locale;
 
   final void Function(DateTime? initStart, DateTime? initEnd, {bool clear})? onDatesChanged;
 
@@ -337,6 +343,7 @@ class CalendarPage extends StatefulWidget {
     required this.initEnd,
     required this.customization,
     this.onDatesChanged,
+    required this.locale,
   });
 
   @override
@@ -370,8 +377,8 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final startDateValue = startDate == null ? null : DateFormat.yMMMd().format(startDate!);
-    final endDateValue = endDate == null ? null : DateFormat.yMMMd().format(endDate!);
+    final startDateValue = startDate == null ? null : DateFormat.yMMMd(widget.locale).format(startDate!);
+    final endDateValue = endDate == null ? null : DateFormat.yMMMd(widget.locale).format(endDate!);
 
     return Column(
       children: [
@@ -393,7 +400,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   //Navigator.of(context).pop();
                 },
                 child: Text(
-                  custom.clearButtonText ?? locale.dynamicFormTranslation.clear,
+                  custom.clearButtonText ?? context.t.clear,
                   textAlign: TextAlign.left,
                   style: custom.clearButtonStyle ??
                       Theme.of(context).textTheme.labelLarge!.copyWith(
@@ -407,7 +414,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   Navigator.of(context).pop();
                 },
                 child: Text(
-                  custom.okButtonText ?? locale.dynamicFormTranslation.done,
+                  custom.okButtonText ?? context.t.done,
                   textAlign: TextAlign.right,
                   style: custom.okButtonStyle ??
                       Theme.of(context).textTheme.labelLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
@@ -431,7 +438,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       selectedManually = _Selectable.first;
                       setState(() {});
                     },
-                    name: custom.startDateText ?? locale.dynamicFormTranslation.startDate,
+                    name: custom.startDateText ?? context.t.startDate,
                     value: startDateValue,
                     isSelected: selectedManually == _Selectable.first ||
                         selectedManually == null && (startDateValue == null || endDateValue != null),
@@ -444,7 +451,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       selectedManually = _Selectable.second;
                       setState(() {});
                     },
-                    name: custom.endDateText ?? locale.dynamicFormTranslation.endDate,
+                    name: custom.endDateText ?? context.t.endDate,
                     value: endDateValue,
                     isSelected: selectedManually == _Selectable.second ||
                         selectedManually == null && (startDateValue != null && endDateValue == null),
@@ -467,7 +474,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       children: [
                         Expanded(
                           child: Text(
-                            DateFormat.MMMM().format(DateTime(year, month)),
+                            DateFormat.MMMM(widget.locale).format(DateTime(year, month)).capitalize(),
                             style: custom.monthStyle ?? Theme.of(context).textTheme.titleLarge,
                           ),
                         ),
@@ -489,8 +496,8 @@ class _CalendarPageState extends State<CalendarPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: List.generate(
-                        locale.dynamicFormTranslation.weeksShort.length,
-                        (index) => weekText(locale.dynamicFormTranslation.weeksShort[index]),
+                        context.t.weeksShort.length,
+                        (index) => weekText(context.t.weeksShort[index]),
                       ),
                     ),
                   ),

@@ -2,12 +2,10 @@
 targets:
   $default:
     builders:
-      fast_i18n:
+      slang_build_runner:
         options:
           string_interpolation: braces
-
-          enum_name: DynamicFormAppLocale
-          translate_var: dynamicFormTranslation
-          output_file_name: dynamic_form_localizations.g.dart
+          enum_name: AppLocale
+          translate_var: t
           maps:
             - countries

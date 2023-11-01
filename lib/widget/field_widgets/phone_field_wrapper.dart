@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:dglk_simple_button/dglk_simple_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dynamic_form/i18n/strings.g.dart';
 
 import '../../flutter_dynamic_form.dart';
-import '../../i18n/dynamic_form_localizations.g.dart' as locale;
 import '../field_widgets/bottom_pick_button.dart';
 
 const countryPhoneCodes = <String, String>{
@@ -242,8 +242,7 @@ class PhoneFieldWrapper extends StatefulWidget {
   final Widget child;
   final Function(String extra)? onExtraChanged;
   final TextStyle style;
-  const PhoneFieldWrapper(
-      {Key? key, this.field, required this.child, this.onExtraChanged, required this.style})
+  const PhoneFieldWrapper({Key? key, this.field, required this.child, this.onExtraChanged, required this.style})
       : super(key: key);
 
   @override
@@ -361,7 +360,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                           cursorColor: Theme.of(context).colorScheme.secondary,
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: locale.dynamicFormTranslation.chooseCountryCode,
+                            hintText: context.t.chooseCountryCode,
                           ),
                           onChanged: (text) {
                             textStreamController.add(text);
@@ -401,9 +400,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                 child: StreamBuilder<String>(
                     stream: textStreamController.stream,
                     builder: (context, snapshot) {
-                      if (snapshot.data != null &&
-                          snapshot.data!.isNotEmpty &&
-                          checkCode(snapshot.data!)) {
+                      if (snapshot.data != null && snapshot.data!.isNotEmpty && checkCode(snapshot.data!)) {
                         return Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -414,7 +411,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                   widget.onChanged(snapshot.data!);
                                   Navigator.of(context).pop();
                                 },
-                                title: locale.dynamicFormTranslation.useInputtedCode,
+                                title: context.t.useInputtedCode,
                               ),
                               const SizedBox(
                                 height: 8,
@@ -434,16 +431,14 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                       if (snapshot.data != null &&
                           countryPhoneCodes.keys
                               .where((key) =>
-                                  locale.dynamicFormTranslation.countries[key] != null &&
-                                  locale.dynamicFormTranslation.countries[key]!
-                                      .toLowerCase()
-                                      .contains(snapshot.data!.toLowerCase()))
+                                  context.t.countries[key] != null &&
+                                  context.t.countries[key]!.toLowerCase().contains(snapshot.data!.toLowerCase()))
                               .isEmpty) {
                         return Center(
                           child: Padding(
                             padding: const EdgeInsets.all(40.0),
                             child: Text(
-                              locale.dynamicFormTranslation.nothingFoundCountryCode,
+                              context.t.nothingFoundCountryCode,
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     color: Theme.of(context).colorScheme.onBackground,
@@ -458,11 +453,9 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                         children: [
                           for (var key in countryPhoneCodes.keys)
                             if (countryPhoneCodes[key] != null &&
-                                locale.dynamicFormTranslation.countries[key] != null &&
+                                context.t.countries[key] != null &&
                                 (snapshot.data == null ||
-                                    locale.dynamicFormTranslation.countries[key]!
-                                        .toLowerCase()
-                                        .contains(snapshot.data!.toLowerCase())))
+                                    context.t.countries[key]!.toLowerCase().contains(snapshot.data!.toLowerCase())))
                               Column(
                                 children: [
                                   Row(
@@ -484,25 +477,15 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                                     constraints: const BoxConstraints(minWidth: 48),
                                                     child: Text(
                                                       '${countryPhoneCodes[key]!}${key == countryPhoneCodes.keys.first ? '' : ':'}',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyMedium!
-                                                          .copyWith(
-                                                              color: Theme.of(context)
-                                                                  .colorScheme
-                                                                  .onBackground,
-                                                              fontWeight: FontWeight.bold),
+                                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                                          color: Theme.of(context).colorScheme.onBackground,
+                                                          fontWeight: FontWeight.bold),
                                                     ),
                                                   ),
                                                   Text(
-                                                    locale.dynamicFormTranslation.countries[key]!,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyLarge!
-                                                        .copyWith(
-                                                          color: Theme.of(context)
-                                                              .colorScheme
-                                                              .onBackground,
+                                                    context.t.countries[key]!,
+                                                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                                          color: Theme.of(context).colorScheme.onBackground,
                                                         ),
                                                   ),
                                                 ],
@@ -516,8 +499,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                   Container(
                                     width: 240,
                                     height: 0.5,
-                                    color:
-                                        Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                                    color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
                                   ),
                                 ],
                               )

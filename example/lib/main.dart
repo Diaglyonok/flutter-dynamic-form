@@ -4,15 +4,21 @@ import 'package:dglk_flutter_dev_kit/simple_button/simple_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dynamic_form/flutter_dynamic_form.dart';
+import 'package:flutter_dynamic_form/i18n/strings.g.dart';
 import 'package:flutter_dynamic_form/model/auto_calculate_field.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
 import 'package:flutter_dynamic_form/model/row_field.dart';
 import 'package:hello_example/date_formatter.dart';
 import 'package:hello_example/theme.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:jiffy/jiffy.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  LocaleSettings.setLocale(AppLocale.ru);
+  await initializeDateFormatting();
+
+  runApp(TranslationProvider(child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -86,8 +92,7 @@ class _MyAppState extends State<MyApp> {
       PasswordField(
         onUpdated: (value) {
           if (value?.value == 'autoFill') {
-            key.currentState
-                ?.updateField(value: CompositeValue('top kek, its working'), id: 'text_example');
+            key.currentState?.updateField(value: CompositeValue('top kek, its working'), id: 'text_example');
           }
         },
         fieldId: 'password_example',
@@ -315,17 +320,17 @@ class _MyAppState extends State<MyApp> {
                   color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
                 ),
               ),
-              labelStyle: Theme.of(context).textTheme.caption!.copyWith(
+              labelStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                     fontSize: 15,
                     fontWeight: FontWeight.w400,
                   ),
-              hintStyle: Theme.of(context).textTheme.caption!.copyWith(
+              hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                     fontSize: 15,
                     fontWeight: FontWeight.w400,
                   ),
-              errorStyle: Theme.of(context).textTheme.caption!.copyWith(
+              errorStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
                     color: Theme.of(context).colorScheme.error,
                     fontSize: 15,
                     fontWeight: FontWeight.w400,
@@ -337,7 +342,7 @@ class _MyAppState extends State<MyApp> {
                 borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
               ),
             ),
-            commonStyle: Theme.of(context).textTheme.headline6!.copyWith(
+            commonStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                   color: Theme.of(context).colorScheme.onSurface,
