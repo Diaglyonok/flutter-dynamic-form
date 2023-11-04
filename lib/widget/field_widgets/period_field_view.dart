@@ -481,7 +481,7 @@ class _CalendarPageState extends State<CalendarPage> {
           child: PagedVerticalCalendar(
             minDate: widget.minDate?.subtract(const Duration(days: 1)),
             maxDate: widget.maxDate?.add(const Duration(days: 1)),
-            initialDate: calculateMiddleDate(widget.minDate, widget.maxDate),
+            initialDate: endDate ?? calculateMiddleDate(widget.minDate, widget.maxDate),
             listPadding: const EdgeInsets.all(8.0),
             monthBuilder: (context, month, year) {
               return Column(
@@ -673,12 +673,12 @@ extension IterableExtension<T> on Iterable<T> {
 
 DateTime? calculateMiddleDate(DateTime? date1, DateTime? date2) {
   if (date1 == null && date2 == null) {
-    return null;
+    return null; //today displayed
   }
   if (date1 == null) {
     final now = DateTime.now();
     if (now.isBefore(date2!)) {
-      return null;
+      return null; //today displayed
     } else {
       return date2;
     }
@@ -687,7 +687,7 @@ DateTime? calculateMiddleDate(DateTime? date1, DateTime? date2) {
   if (date2 == null) {
     final now = DateTime.now();
     if (now.isAfter(date1)) {
-      return null;
+      return null; //today displayed
     } else {
       return date1;
     }
