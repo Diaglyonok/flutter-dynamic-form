@@ -390,6 +390,7 @@ class _CalendarPageState extends State<CalendarPage> {
     final startDateValue = startDate == null ? null : DateFormat.yMMMd(widget.locale).format(startDate!);
     final endDateValue = endDate == null ? null : DateFormat.yMMMd(widget.locale).format(endDate!);
 
+    final clearDisabled = startDate == null && endDate == null;
     return Column(
       children: [
         SizedBox(
@@ -401,20 +402,20 @@ class _CalendarPageState extends State<CalendarPage> {
                 width: 8,
               ),
               MaterialButton(
-                onPressed: () {
-                  selectedManually = null;
-                  startDate = null;
-                  endDate = null;
-                  widget.onDatesChanged?.call(startDate, endDate, clear: true);
-                  setState(() {});
-                  //Navigator.of(context).pop();
-                },
+                onPressed: clearDisabled
+                    ? null
+                    : () {
+                        selectedManually = null;
+                        startDate = null;
+                        endDate = null;
+                        setState(() {});
+                      },
                 child: Text(
                   custom.clearButtonText ?? context.t.clear,
                   textAlign: TextAlign.left,
                   style: custom.clearButtonStyle ??
                       Theme.of(context).textTheme.labelLarge!.copyWith(
-                            color: Theme.of(context).colorScheme.error,
+                            color: Theme.of(context).colorScheme.error.withOpacity(clearDisabled ? 0.4 : 1.0),
                           ),
                 ),
               ),
@@ -425,7 +426,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   final b = endDate != null;
 
                   if (a == b) {
-                    widget.onDatesChanged?.call(startDate, endDate, clear: false);
+                    widget.onDatesChanged?.call(startDate, endDate, clear: !a && !b);
                   }
                   Navigator.of(context).pop();
                 },
