@@ -188,6 +188,7 @@ class _MyAppState extends State<MyApp> {
         minDate: DateTime.now().subtract(const Duration(days: 20)),
         maxDate: DateTime.now().add(const Duration(days: 20)),
         withDaysNum: true,
+        value: CompositeValue('8.9.2023', extra: '01.10.2023'),
         extra: PeriodExtra(
           daysBottomSheetTitle: 'Select',
           format: format,

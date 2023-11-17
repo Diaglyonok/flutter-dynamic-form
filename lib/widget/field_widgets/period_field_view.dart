@@ -383,6 +383,22 @@ class _CalendarPageState extends State<CalendarPage> {
     super.initState();
   }
 
+  _getInitialDate() {
+    final min = widget.minDate;
+    final max = widget.maxDate;
+    if (min == null && max == null) {
+      return endDate;
+    }
+
+    if (endDate != null &&
+        (min == null || endDate!.isAtSameMomentAs(min) || endDate!.isAfter(min)) &&
+        (max == null || endDate!.isAtSameMomentAs(max) || endDate!.isBefore(max))) {
+      return endDate!;
+    }
+
+    return calculateMiddleDate(widget.minDate, widget.maxDate);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -482,10 +498,13 @@ class _CalendarPageState extends State<CalendarPage> {
           child: PagedVerticalCalendar(
             minDate: widget.minDate?.subtract(const Duration(days: 1)),
             maxDate: widget.maxDate?.add(const Duration(days: 1)),
-            initialDate: endDate ?? calculateMiddleDate(widget.minDate, widget.maxDate),
+            initialDate: _getInitialDate(),
             listPadding: const EdgeInsets.all(8.0),
+            addAutomaticKeepAlives: true,
+            invisibleMonthsThreshold: 3,
             monthBuilder: (context, month, year) {
               return Column(
+                key: ValueKey(month.toString() + year.toString()),
                 children: [
                   const SizedBox(height: 20),
                   Padding(
