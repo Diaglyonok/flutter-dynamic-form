@@ -134,6 +134,7 @@ class DateFieldView extends StatelessWidget {
                           onDateTimeChanged: onDateTimeChanged,
                         )
                       : CupertinoDatePicker(
+                          use24hFormat: true,
                           mode: type,
                           onDateTimeChanged: onDateTimeChanged,
                           initialDateTime: _getCurrentTime(),
