@@ -1,12 +1,14 @@
 import 'dart:developer';
 
-import 'package:dglk_flutter_dev_kit/simple_button/simple_button.dart';
+import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
+import 'package:dglk_simple_button/dglk_simple_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dynamic_form/flutter_dynamic_form.dart';
 import 'package:flutter_dynamic_form/i18n/strings.g.dart';
 import 'package:flutter_dynamic_form/model/auto_calculate_field.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
 import 'package:flutter_dynamic_form/model/row_field.dart';
+import 'package:flutter_dynamic_form/widget/field_widgets/period_field_view.dart';
 import 'package:hello_example/date_formatter.dart';
 import 'package:hello_example/theme.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -190,9 +192,29 @@ class _MyAppState extends State<MyApp> {
         withDaysNum: true,
         value: CompositeValue('6.02.2024', extra: '09.02.2024'),
         extra: PeriodExtra(
-          daysBottomSheetTitle: 'Select',
-          format: format,
-        ),
+            daysBottomSheetTitle: 'Select',
+            format: format,
+            customPickerFunction: (context, {required onChanged, initStart, initEnd}) async {
+              await Navigator.of(context).push(
+                BottomSheetRoute(
+                  titleBoxHeight: 20,
+                  builder: (context) => CalendarPage(
+                    closedPeriods: [
+                      CalendarPeriodsConfig(
+                        color: Colors.red,
+                        startDate: DateTime.now().subtract(const Duration(days: 10)),
+                        endDate: DateTime.now().subtract(const Duration(days: 3)),
+                      )
+                    ],
+                    customization: const DatePickerCustomization(),
+                    locale: format.locale,
+                    onDatesChanged: onChanged,
+                    initStart: initStart, //NOT SAFE
+                    initEnd: initEnd,
+                  ),
+                ),
+              );
+            }),
       ),
       Field(
         fieldId: 'time',
@@ -297,66 +319,67 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: ThemeDataGetter().theme,
       home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Dynamic form example app'),
+        appBar: AppBar(
+          title: const Text('Dynamic form example app'),
+        ),
+        body: DynamicForm(
+          key: key,
+          fields: fields!,
+          decoration: InputDecoration(
+            disabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+              ),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+              ),
+            ),
+            labelStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+            hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+            errorStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color: Theme.of(context).colorScheme.error,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+            focusedErrorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
+            ),
+            errorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
+            ),
           ),
-          body: DynamicForm(
-            key: key,
-            fields: fields!,
-            decoration: InputDecoration(
-              disabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
-                ),
+          commonStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
-                ),
-              ),
-              labelStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                  ),
-              hintStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                  ),
-              errorStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: Theme.of(context).colorScheme.error,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                  ),
-              focusedErrorBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
-              ),
-              errorBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
-              ),
+          submitBtn: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SimpleButton(
+              title: 'Validate',
+              callback: () {
+                final values = key.currentState?.getValues();
+                log(values.toString());
+              },
             ),
-            commonStyle: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-            submitBtn: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SimpleButton(
-                title: 'Validate',
-                callback: () {
-                  final values = key.currentState?.getValues();
-                  log(values.toString());
-                },
-              ),
-            ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

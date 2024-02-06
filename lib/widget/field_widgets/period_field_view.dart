@@ -255,64 +255,69 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
   Future<void> _updatePeriod() async {
     final extra = widget.field.extra;
 
-    await Navigator.of(context).push(
-      BottomSheetRoute(
-        titleBoxHeight: 20,
-        builder: (context) => CalendarPage(
-          closedPeriodsFuture: extra.closedPeriodsFuture,
-          minDate: widget.field.minDate,
-          maxDate: widget.field.maxDate,
-          locale: (extra.format ??
-                  DateFormat(
-                      DynamicFormValidators.datePattern, TranslationProvider.of(context).flutterLocale.toString()))
-              .locale,
-          customization: extra.customization,
-          onDatesChanged: (start, end, {clear = false}) {
-            if (clear) {
-              this.start = null;
-              this.end = null;
-              updateValue(widget.controller, '');
-              //updateValue(widget.startController, '');
+    void _onChanged(DateTime? start, DateTime? end, {bool clear = false}) {
+      if (clear) {
+        this.start = null;
+        this.end = null;
+        updateValue(widget.controller, '');
+        //updateValue(widget.startController, '');
 
-              daysCount = null;
-              return;
-            }
+        daysCount = null;
+        return;
+      }
 
-            if (start == null) {
-              return;
-            }
+      if (start == null) {
+        return;
+      }
 
-            final format = extra.format ?? DateFormat(DynamicFormValidators.datePattern);
-            String startValue;
-            try {
-              startValue = format.format(start);
-            } catch (e) {
-              return;
-            }
+      final format = extra.format ?? DateFormat(DynamicFormValidators.datePattern);
+      String startValue;
+      try {
+        startValue = format.format(start);
+      } catch (e) {
+        return;
+      }
 
-            String? endValue;
-            try {
-              endValue = end != null ? format.format(end) : null;
-            } catch (e) {
-              return;
-            }
+      String? endValue;
+      try {
+        endValue = end != null ? format.format(end) : null;
+      } catch (e) {
+        return;
+      }
 
-            this.start = start;
-            this.end = end;
+      this.start = start;
+      this.end = end;
 
-            daysCount = end?.difference(start).inDays ?? 0;
+      daysCount = end?.difference(start).inDays ?? 0;
 
-            //updateValue(widget.endController, endValue ?? '');
-            updateValue(widget.controller, '$startValue - ${endValue ?? ''}');
-            setState(() {});
+      //updateValue(widget.endController, endValue ?? '');
+      updateValue(widget.controller, '$startValue - ${endValue ?? ''}');
+      setState(() {});
 
-            widget.onChanged(CompositeValue(startValue, extra: endValue));
-          },
-          initStart: start, //NOT SAFE
-          initEnd: end,
+      widget.onChanged(CompositeValue(startValue, extra: endValue));
+    }
+
+    if (extra.customPickerFunction != null) {
+      await extra.customPickerFunction!(context, onChanged: _onChanged, initStart: start, initEnd: end);
+    } else {
+      await Navigator.of(context).push(
+        BottomSheetRoute(
+          titleBoxHeight: 20,
+          builder: (context) => CalendarPage(
+            minDate: widget.field.minDate,
+            maxDate: widget.field.maxDate,
+            locale: (extra.format ??
+                    DateFormat(
+                        DynamicFormValidators.datePattern, TranslationProvider.of(context).flutterLocale.toString()))
+                .locale,
+            customization: extra.customization,
+            onDatesChanged: _onChanged,
+            initStart: start, //NOT SAFE
+            initEnd: end,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
 
@@ -341,7 +346,7 @@ class CalendarPage extends StatefulWidget {
   final DateTime? minDate;
   final DateTime? maxDate;
 
-  final Future<List<CalendarPeriodsConfig>>? closedPeriodsFuture;
+  final List<CalendarPeriodsConfig>? closedPeriods;
 
   final DatePickerCustomization customization;
   final String locale;
@@ -353,7 +358,7 @@ class CalendarPage extends StatefulWidget {
     required this.initStart,
     required this.initEnd,
     required this.customization,
-    this.closedPeriodsFuture,
+    this.closedPeriods,
     this.onDatesChanged,
     required this.locale,
     this.minDate,
@@ -411,279 +416,271 @@ class _CalendarPageState extends State<CalendarPage> {
     final endDateValue = endDate == null ? null : DateFormat.yMMMd(widget.locale).format(endDate!);
 
     final clearDisabled = startDate == null && endDate == null;
-    return maybeFutureWrapper(
-      future: widget.closedPeriodsFuture,
-      builder: (data) {
-        return Column(
-          children: [
-            SizedBox(
-              height: 32,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  MaterialButton(
-                    onPressed: clearDisabled
-                        ? null
-                        : () {
-                            selectedManually = null;
-                            startDate = null;
-                            endDate = null;
-                            setState(() {});
-                          },
-                    child: Text(
-                      custom.clearButtonText ?? context.t.clear,
-                      textAlign: TextAlign.left,
-                      style: custom.clearButtonStyle ??
-                          Theme.of(context).textTheme.labelLarge!.copyWith(
-                                color: Theme.of(context).colorScheme.error.withOpacity(clearDisabled ? 0.4 : 1.0),
-                              ),
-                    ),
-                  ),
-                  const Spacer(),
-                  MaterialButton(
-                    onPressed: () {
-                      final a = startDate != null;
-                      final b = endDate != null;
-
-                      if (a == b) {
-                        widget.onDatesChanged?.call(startDate, endDate, clear: !a && !b);
-                      }
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      custom.okButtonText ?? context.t.done,
-                      textAlign: TextAlign.right,
-                      style: custom.okButtonStyle ??
-                          Theme.of(context)
-                              .textTheme
-                              .labelLarge!
-                              .copyWith(color: Theme.of(context).colorScheme.secondary),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                ],
+    return Column(
+      children: [
+        SizedBox(
+          height: 32,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              const SizedBox(
+                width: 8,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8, left: 28, right: 28),
-              child: SizedBox(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: _buildDate(
-                        onTap: () {
-                          selectedManually = _Selectable.first;
-                          setState(() {});
-                        },
-                        name: custom.startDateText ?? context.t.startDate,
-                        value: startDateValue,
-                        isSelected: selectedManually == _Selectable.first ||
-                            selectedManually == null && (startDateValue == null || endDateValue != null),
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: _buildDate(
-                        onTap: () {
-                          selectedManually = _Selectable.second;
-                          setState(() {});
-                        },
-                        name: custom.endDateText ?? context.t.endDate,
-                        value: endDateValue,
-                        isSelected: selectedManually == _Selectable.second ||
-                            selectedManually == null && (startDateValue != null && endDateValue == null),
-                      ),
-                    ),
-                  ],
+              MaterialButton(
+                onPressed: clearDisabled
+                    ? null
+                    : () {
+                        selectedManually = null;
+                        startDate = null;
+                        endDate = null;
+                        setState(() {});
+                      },
+                child: Text(
+                  custom.clearButtonText ?? context.t.clear,
+                  textAlign: TextAlign.left,
+                  style: custom.clearButtonStyle ??
+                      Theme.of(context).textTheme.labelLarge!.copyWith(
+                            color: Theme.of(context).colorScheme.error.withOpacity(clearDisabled ? 0.4 : 1.0),
+                          ),
                 ),
               ),
-            ),
-            Expanded(
-              child: PagedVerticalCalendar(
-                minDate: widget.minDate?.subtract(const Duration(days: 1)),
-                maxDate: widget.maxDate?.add(const Duration(days: 1)),
-                initialDate: _getInitialDate(),
-                listPadding: const EdgeInsets.all(8.0),
-                addAutomaticKeepAlives: true,
-                invisibleMonthsThreshold: 3,
-                monthBuilder: (context, month, year) {
-                  return Column(
-                    key: ValueKey(month.toString() + year.toString()),
-                    children: [
-                      const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                DateFormat.MMMM(widget.locale).format(DateTime(year, month)).capitalize(),
-                                style: custom.monthStyle ?? Theme.of(context).textTheme.titleLarge,
-                              ),
-                            ),
-                            Text(
-                              year.toString(),
-                              style: custom.yearStyle ??
-                                  Theme.of(context).textTheme.titleLarge!.copyWith(
-                                        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
-                                      ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
+              const Spacer(),
+              MaterialButton(
+                onPressed: () {
+                  final a = startDate != null;
+                  final b = endDate != null;
 
-                      /// add a row showing the weekdays
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: List.generate(
-                            context.t.weeksShort.length,
-                            (index) => weekText(context.t.weeksShort[index]),
+                  if (a == b) {
+                    widget.onDatesChanged?.call(startDate, endDate, clear: !a && !b);
+                  }
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  custom.okButtonText ?? context.t.done,
+                  textAlign: TextAlign.right,
+                  style: custom.okButtonStyle ??
+                      Theme.of(context).textTheme.labelLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
+                ),
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8, left: 28, right: 28),
+          child: SizedBox(
+            child: Row(
+              children: [
+                Expanded(
+                  child: _buildDate(
+                    onTap: () {
+                      selectedManually = _Selectable.first;
+                      setState(() {});
+                    },
+                    name: custom.startDateText ?? context.t.startDate,
+                    value: startDateValue,
+                    isSelected: selectedManually == _Selectable.first ||
+                        selectedManually == null && (startDateValue == null || endDateValue != null),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: _buildDate(
+                    onTap: () {
+                      selectedManually = _Selectable.second;
+                      setState(() {});
+                    },
+                    name: custom.endDateText ?? context.t.endDate,
+                    value: endDateValue,
+                    isSelected: selectedManually == _Selectable.second ||
+                        selectedManually == null && (startDateValue != null && endDateValue == null),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: PagedVerticalCalendar(
+            minDate: widget.minDate?.subtract(const Duration(days: 1)),
+            maxDate: widget.maxDate?.add(const Duration(days: 1)),
+            initialDate: _getInitialDate(),
+            listPadding: const EdgeInsets.all(8.0),
+            addAutomaticKeepAlives: true,
+            invisibleMonthsThreshold: 3,
+            monthBuilder: (context, month, year) {
+              return Column(
+                key: ValueKey(month.toString() + year.toString()),
+                children: [
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            DateFormat.MMMM(widget.locale).format(DateTime(year, month)).capitalize(),
+                            style: custom.monthStyle ?? Theme.of(context).textTheme.titleLarge,
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                },
-                dayBuilder: (context, date) {
-                  var textTheme = custom.dayStyle ?? theme.textTheme.bodyLarge;
-                  final isInRange = startDate != null &&
-                      endDate != null &&
-                      date.isBefore(endDate!) &&
-                      date.isAfter(startDate!) &&
-                      !date.isSameDay(endDate!) &&
-                      !date.isSameDay(startDate!);
-                  final isTile =
-                      startDate != null && date.isSameDay(startDate!) || endDate != null && date.isSameDay(endDate!);
-
-                  final isDisabled = widget.minDate != null && date.isBefore(widget.minDate!) ||
-                      widget.maxDate != null && date.isAfter(widget.maxDate!);
-
-                  textTheme = textTheme?.copyWith(
-                    color: isDisabled
-                        ? theme.colorScheme.onBackground.withOpacity(0.3)
-                        : isTile
-                            ? (custom.onAccentColor ?? theme.colorScheme.onSecondary)
-                            : null,
-                  );
-
-                  final isToday = date.isSameDay(DateTime.now());
-
-                  bool isInPeriodsRange = false;
-                  bool isPeriodsRangeStart = false;
-                  bool isPeriodsRangeEnd = false;
-                  Color? periodColor;
-
-                  if (data != null) {
-                    // closed periods:
-
-                    for (final config in data) {
-                      isInPeriodsRange = date.isBefore(config.endDate) &&
-                          date.isAfter(config.startDate) &&
-                          !date.isSameDay(config.endDate) &&
-                          !date.isSameDay(config.startDate);
-
-                      isPeriodsRangeStart = date.isSameDay(config.startDate);
-                      isPeriodsRangeEnd = date.isSameDay(config.endDate);
-
-                      if (isInPeriodsRange || isPeriodsRangeStart || isPeriodsRangeEnd) {
-                        periodColor = config.color;
-                        textTheme = custom.closedDaysTextStyle ?? textTheme;
-                        break;
-                      }
-                    }
-                  }
-
-                  _dayColor() {
-                    if (isInRange) {
-                      return custom.transparentAccentColor ?? theme.colorScheme.secondary.withOpacity(0.1);
-                    }
-
-                    if (periodColor != null) {
-                      return periodColor;
-                    }
-
-                    if (isTile) {
-                      return custom.accentColor ?? theme.colorScheme.secondary;
-                    }
-
-                    return null;
-                  }
-
-                  return Stack(
-                    children: [
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        margin: const EdgeInsets.symmetric(vertical: 4),
-                        decoration: BoxDecoration(
-                          border: isToday
-                              ? Border.all(
-                                  color: custom.accentColor ?? Theme.of(context).colorScheme.secondary,
-                                )
-                              : null,
-                          borderRadius: isPeriodsRangeStart
-                              ? BorderRadius.only(
-                                  topLeft: Radius.circular(custom.tileBorderRadius ?? 8),
-                                  bottomLeft: Radius.circular(custom.tileBorderRadius ?? 8),
-                                )
-                              : isPeriodsRangeEnd
-                                  ? BorderRadius.only(
-                                      topRight: Radius.circular(custom.tileBorderRadius ?? 8),
-                                      bottomRight: Radius.circular(custom.tileBorderRadius ?? 8),
-                                    )
-                                  : isTile || isToday
-                                      ? BorderRadius.circular(custom.tileBorderRadius ?? 8)
-                                      : null,
-                          color: _dayColor(),
+                        Text(
+                          year.toString(),
+                          style: custom.yearStyle ??
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                                  ),
                         ),
-                        child: Center(child: Text(date.day.toString(), style: textTheme)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  /// add a row showing the weekdays
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: List.generate(
+                        context.t.weeksShort.length,
+                        (index) => weekText(context.t.weeksShort[index]),
                       ),
-                    ],
-                  );
-                },
-                onDayPressed: (date) {
-                  final isDisabled = widget.minDate != null && date.isBefore(widget.minDate!) ||
-                      widget.maxDate != null && date.isAfter(widget.maxDate!);
+                    ),
+                  ),
+                ],
+              );
+            },
+            dayBuilder: (context, date) {
+              var textTheme = custom.dayStyle ?? theme.textTheme.bodyLarge;
+              final isInRange = startDate != null &&
+                  endDate != null &&
+                  date.isBefore(endDate!) &&
+                  date.isAfter(startDate!) &&
+                  !date.isSameDay(endDate!) &&
+                  !date.isSameDay(startDate!);
+              final isTile =
+                  startDate != null && date.isSameDay(startDate!) || endDate != null && date.isSameDay(endDate!);
 
-                  if (isDisabled) {
-                    return;
+              final isDisabled = widget.minDate != null && date.isBefore(widget.minDate!) ||
+                  widget.maxDate != null && date.isAfter(widget.maxDate!);
+
+              textTheme = textTheme?.copyWith(
+                color: isDisabled
+                    ? theme.colorScheme.onBackground.withOpacity(0.3)
+                    : isTile
+                        ? (custom.onAccentColor ?? theme.colorScheme.onSecondary)
+                        : null,
+              );
+
+              final isToday = date.isSameDay(DateTime.now());
+
+              bool isInPeriodsRange = false;
+              bool isPeriodsRangeStart = false;
+              bool isPeriodsRangeEnd = false;
+              Color? periodColor;
+
+              if (widget.closedPeriods != null) {
+                // closed periods:
+
+                for (final config in widget.closedPeriods!) {
+                  isInPeriodsRange = date.isBefore(config.endDate) &&
+                      date.isAfter(config.startDate) &&
+                      !date.isSameDay(config.endDate) &&
+                      !date.isSameDay(config.startDate);
+
+                  isPeriodsRangeStart = date.isSameDay(config.startDate);
+                  isPeriodsRangeEnd = date.isSameDay(config.endDate);
+
+                  if (isInPeriodsRange || isPeriodsRangeStart || isPeriodsRangeEnd) {
+                    periodColor = config.color;
+                    textTheme = custom.closedDaysTextStyle ?? textTheme;
+                    break;
                   }
+                }
+              }
 
-                  if (selectedManually == _Selectable.second &&
-                      startDate != null &&
-                      (date.isAfter(endDate!) || date.isSameDay(endDate!))) {
-                    endDate = date;
-                  } else if (endDate == null && startDate != null && date.isBefore(startDate!)) {
-                    endDate = startDate;
-                    startDate = date;
-                  } else if (startDate == null ||
-                      date.isBefore(startDate!) ||
-                      startDate != null && endDate != null ||
-                      startDate != null && date.isSameDay(startDate!)) {
-                    startDate = date;
-                    endDate = null;
-                  } else {
-                    // if (endDate == null)
-                    endDate ??= date;
-                  }
+              _dayColor() {
+                if (isInRange) {
+                  return custom.transparentAccentColor ?? theme.colorScheme.secondary.withOpacity(0.1);
+                }
 
-                  selectedManually = null;
+                if (periodColor != null) {
+                  return periodColor;
+                }
 
-                  setState(() {});
-                  return;
-                },
-              ),
-            ),
-          ],
-        );
-      },
+                if (isTile) {
+                  return custom.accentColor ?? theme.colorScheme.secondary;
+                }
+
+                return null;
+              }
+
+              return Stack(
+                children: [
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.symmetric(vertical: 4),
+                    decoration: BoxDecoration(
+                      border: isToday
+                          ? Border.all(
+                              color: custom.accentColor ?? Theme.of(context).colorScheme.secondary,
+                            )
+                          : null,
+                      borderRadius: isPeriodsRangeStart
+                          ? BorderRadius.only(
+                              topLeft: Radius.circular(custom.tileBorderRadius ?? 8),
+                              bottomLeft: Radius.circular(custom.tileBorderRadius ?? 8),
+                            )
+                          : isPeriodsRangeEnd
+                              ? BorderRadius.only(
+                                  topRight: Radius.circular(custom.tileBorderRadius ?? 8),
+                                  bottomRight: Radius.circular(custom.tileBorderRadius ?? 8),
+                                )
+                              : isTile || isToday
+                                  ? BorderRadius.circular(custom.tileBorderRadius ?? 8)
+                                  : null,
+                      color: _dayColor(),
+                    ),
+                    child: Center(child: Text(date.day.toString(), style: textTheme)),
+                  ),
+                ],
+              );
+            },
+            onDayPressed: (date) {
+              final isDisabled = widget.minDate != null && date.isBefore(widget.minDate!) ||
+                  widget.maxDate != null && date.isAfter(widget.maxDate!);
+
+              if (isDisabled) {
+                return;
+              }
+
+              if (selectedManually == _Selectable.second &&
+                  startDate != null &&
+                  (date.isAfter(endDate!) || date.isSameDay(endDate!))) {
+                endDate = date;
+              } else if (endDate == null && startDate != null && date.isBefore(startDate!)) {
+                endDate = startDate;
+                startDate = date;
+              } else if (startDate == null ||
+                  date.isBefore(startDate!) ||
+                  startDate != null && endDate != null ||
+                  startDate != null && date.isSameDay(startDate!)) {
+                startDate = date;
+                endDate = null;
+              } else {
+                // if (endDate == null)
+                endDate ??= date;
+              }
+
+              selectedManually = null;
+
+              setState(() {});
+              return;
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -737,29 +734,6 @@ class _CalendarPageState extends State<CalendarPage> {
                   color: theme.colorScheme.onBackground.withOpacity(0.5),
                 ),
       ),
-    );
-  }
-
-  Widget maybeFutureWrapper(
-      {required Future<List<CalendarPeriodsConfig>>? future,
-      required Widget Function(List<CalendarPeriodsConfig>? data) builder}) {
-    if (future == null) {
-      return builder(null);
-    }
-
-    return FutureBuilder<List<CalendarPeriodsConfig>>(
-      future: future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting || snapshot.connectionState == ConnectionState.active) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-          );
-        }
-
-        return builder(snapshot.data);
-      },
     );
   }
 }

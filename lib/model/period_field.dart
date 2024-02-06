@@ -50,10 +50,15 @@ class PeriodExtra {
   final Duration? allowedDifference;
   final String? daysBottomSheetTitle;
   final DatePickerCustomization customization;
-  final Future<List<CalendarPeriodsConfig>>? closedPeriodsFuture;
+  final Future<void> Function(
+    BuildContext context, {
+    required void Function(DateTime? start, DateTime? end, {bool clear}) onChanged,
+    required DateTime? initStart,
+    required DateTime? initEnd,
+  })? customPickerFunction;
 
   PeriodExtra({
-    this.closedPeriodsFuture,
+    this.customPickerFunction,
     this.daysBottomSheetTitle,
     this.format,
     this.allowedDifference,
