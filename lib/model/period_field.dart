@@ -20,6 +20,7 @@ class DatePickerCustomization {
   final TextStyle? clearButtonStyle;
   final TextStyle? selectedDateValueStyle;
   final TextStyle? weekDayStyle;
+  final TextStyle? closedDaysTextStyle;
   final double? tileBorderRadius;
 
   const DatePickerCustomization({
@@ -40,6 +41,7 @@ class DatePickerCustomization {
     this.selectedDateValueStyle,
     this.weekDayStyle,
     this.tileBorderRadius,
+    this.closedDaysTextStyle,
   });
 }
 
@@ -48,13 +50,23 @@ class PeriodExtra {
   final Duration? allowedDifference;
   final String? daysBottomSheetTitle;
   final DatePickerCustomization customization;
+  final Future<List<CalendarPeriodsConfig>>? closedPeriodsFuture;
 
   PeriodExtra({
+    this.closedPeriodsFuture,
     this.daysBottomSheetTitle,
     this.format,
     this.allowedDifference,
     this.customization = const DatePickerCustomization(),
   });
+}
+
+class CalendarPeriodsConfig {
+  final Color color;
+  final DateTime startDate;
+  final DateTime endDate;
+
+  CalendarPeriodsConfig({required this.color, required this.startDate, required this.endDate});
 }
 
 class PeriodField extends Field {

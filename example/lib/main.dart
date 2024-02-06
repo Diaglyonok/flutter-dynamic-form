@@ -185,10 +185,10 @@ class _MyAppState extends State<MyApp> {
       PeriodField(
         fieldId: 'date_period',
         label: 'Period label 1',
-        minDate: DateTime.now().subtract(const Duration(days: 20)),
-        maxDate: DateTime.now().add(const Duration(days: 20)),
+        // minDate: DateTime.now().subtract(const Duration(days: 20)),
+        // maxDate: DateTime.now().add(const Duration(days: 20)),
         withDaysNum: true,
-        value: CompositeValue('8.9.2023', extra: '01.10.2023'),
+        value: CompositeValue('6.02.2024', extra: '09.02.2024'),
         extra: PeriodExtra(
           daysBottomSheetTitle: 'Select',
           format: format,
