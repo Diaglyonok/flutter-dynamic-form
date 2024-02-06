@@ -605,10 +605,6 @@ class _CalendarPageState extends State<CalendarPage> {
                   return custom.transparentAccentColor ?? theme.colorScheme.secondary.withOpacity(0.1);
                 }
 
-                if (periodColor != null) {
-                  return periodColor;
-                }
-
                 if (isTile) {
                   return custom.accentColor ?? theme.colorScheme.secondary;
                 }
@@ -627,23 +623,33 @@ class _CalendarPageState extends State<CalendarPage> {
                               color: custom.accentColor ?? Theme.of(context).colorScheme.secondary,
                             )
                           : null,
-                      borderRadius: isPeriodsRangeStart
-                          ? BorderRadius.only(
-                              topLeft: Radius.circular(custom.tileBorderRadius ?? 8),
-                              bottomLeft: Radius.circular(custom.tileBorderRadius ?? 8),
-                            )
-                          : isPeriodsRangeEnd
+                      borderRadius: isTile || isToday
+                          ? BorderRadius.circular(custom.tileBorderRadius ?? 8)
+                          : isPeriodsRangeStart
                               ? BorderRadius.only(
-                                  topRight: Radius.circular(custom.tileBorderRadius ?? 8),
-                                  bottomRight: Radius.circular(custom.tileBorderRadius ?? 8),
+                                  topLeft: Radius.circular(custom.tileBorderRadius ?? 8),
+                                  bottomLeft: Radius.circular(custom.tileBorderRadius ?? 8),
                                 )
-                              : isTile || isToday
-                                  ? BorderRadius.circular(custom.tileBorderRadius ?? 8)
+                              : isPeriodsRangeEnd
+                                  ? BorderRadius.only(
+                                      topRight: Radius.circular(custom.tileBorderRadius ?? 8),
+                                      bottomRight: Radius.circular(custom.tileBorderRadius ?? 8),
+                                    )
                                   : null,
                       color: _dayColor(),
                     ),
                     child: Center(child: Text(date.day.toString(), style: textTheme)),
                   ),
+                  if (periodColor != null)
+                    custom.busyPeriodIconBuilder?.call(periodColor, isPeriodsRangeStart, isPeriodsRangeEnd) ??
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: CircleAvatar(
+                            radius: 6,
+                            backgroundColor: periodColor,
+                          ),
+                        ),
                 ],
               );
             },

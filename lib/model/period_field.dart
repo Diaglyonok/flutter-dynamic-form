@@ -22,8 +22,10 @@ class DatePickerCustomization {
   final TextStyle? weekDayStyle;
   final TextStyle? closedDaysTextStyle;
   final double? tileBorderRadius;
+  final Widget Function(Color color, bool isStart, bool isEnd)? busyPeriodIconBuilder;
 
   const DatePickerCustomization({
+    this.busyPeriodIconBuilder,
     this.okButtonText,
     this.clearButtonText,
     this.startDateText,
