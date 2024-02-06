@@ -595,6 +595,15 @@ class _CalendarPageState extends State<CalendarPage> {
                   if (isInPeriodsRange || isPeriodsRangeStart || isPeriodsRangeEnd) {
                     periodColor = config.color;
                     textTheme = custom.closedDaysTextStyle ?? textTheme;
+
+                    if (isPeriodsRangeStart && isPeriodsRangeEnd) {
+                      break;
+                    }
+
+                    if (isPeriodsRangeStart || isPeriodsRangeEnd) {
+                      continue;
+                    }
+
                     break;
                   }
                 }
