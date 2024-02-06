@@ -202,11 +202,51 @@ class _MyAppState extends State<MyApp> {
                     closedPeriods: [
                       CalendarPeriodsConfig(
                         color: Colors.red,
-                        startDate: DateTime.now().subtract(const Duration(days: 10)),
+                        startDate: DateTime.now().subtract(const Duration(days: 12)),
+                        endDate: DateTime.now().subtract(const Duration(days: 6)),
+                      ),
+                      CalendarPeriodsConfig(
+                        color: Colors.red,
+                        startDate: DateTime.now().subtract(const Duration(days: 6)),
                         endDate: DateTime.now().subtract(const Duration(days: 3)),
                       )
                     ],
-                    customization: const DatePickerCustomization(),
+                    customization: DatePickerCustomization(
+                      busyPeriodIconBuilder: (color, isStart, isEnd) {
+                        if (!isStart && !isEnd) {
+                          return Positioned(
+                            left: 0,
+                            right: 0,
+                            top: 16,
+                            child: Container(
+                              color: color,
+                              height: 2,
+                            ),
+                          );
+                        }
+
+                        if (isStart && isEnd) {
+                          return Positioned(
+                            top: 4,
+                            right: isStart ? 0 : null,
+                            left: isEnd ? 0 : null,
+                            child: const Row(
+                              children: [
+                                RotatedBox(quarterTurns: 2, child: Icon(Icons.fork_right)),
+                                Spacer(),
+                                Icon(Icons.fork_right)
+                              ],
+                            ),
+                          );
+                        }
+
+                        return Positioned(
+                            top: 4,
+                            right: isStart ? 0 : null,
+                            left: isEnd ? 0 : null,
+                            child: RotatedBox(quarterTurns: isStart ? 0 : 2, child: const Icon(Icons.fork_right)));
+                      },
+                    ),
                     locale: format.locale,
                     onDatesChanged: onChanged,
                     initStart: initStart, //NOT SAFE

@@ -593,13 +593,15 @@ class _CalendarPageState extends State<CalendarPage> {
                     isPeriodsRangeStart = date.isSameDay(config.startDate);
                   }
 
-                  isPeriodsRangeEnd = date.isSameDay(config.endDate);
+                  if (!isPeriodsRangeEnd) {
+                    isPeriodsRangeEnd = date.isSameDay(config.endDate);
+                  }
 
                   if (isInPeriodsRange || isPeriodsRangeStart || isPeriodsRangeEnd) {
                     periodColor = config.color;
                     textTheme = custom.closedDaysTextStyle ?? textTheme;
 
-                    if (isPeriodsRangeStart && !isPeriodsRangeEnd) {
+                    if (isPeriodsRangeStart && !isPeriodsRangeEnd || isPeriodsRangeEnd && !isPeriodsRangeStart) {
                       continue;
                     }
 
