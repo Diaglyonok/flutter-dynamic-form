@@ -11,6 +11,7 @@ class DatePickerCustomization {
   final Color? accentColor;
   final Color? transparentAccentColor;
   final Color? onAccentColor;
+  final Color? busyDayColor;
   final TextStyle? dayStyle;
   final TextStyle? selectedDateTextStyleEmpty;
   final TextStyle? selectedDateTextStyle;
@@ -25,7 +26,6 @@ class DatePickerCustomization {
   final Widget Function(Color color, bool isStart, bool isEnd)? busyPeriodIconBuilder;
 
   const DatePickerCustomization({
-    this.busyPeriodIconBuilder,
     this.okButtonText,
     this.clearButtonText,
     this.startDateText,
@@ -43,7 +43,9 @@ class DatePickerCustomization {
     this.selectedDateValueStyle,
     this.weekDayStyle,
     this.tileBorderRadius,
+    this.busyDayColor,
     this.closedDaysTextStyle,
+    this.busyPeriodIconBuilder,
   });
 }
 

@@ -208,7 +208,7 @@ class _MyAppState extends State<MyApp> {
                       CalendarPeriodsConfig(
                         color: Colors.red,
                         startDate: DateTime.now().subtract(const Duration(days: 6)),
-                        endDate: DateTime.now().subtract(const Duration(days: 3)),
+                        endDate: DateTime.now().subtract(const Duration(days: 1)),
                       )
                     ],
                     customization: DatePickerCustomization(

@@ -599,7 +599,14 @@ class _CalendarPageState extends State<CalendarPage> {
 
                   if (isInPeriodsRange || isPeriodsRangeStart || isPeriodsRangeEnd) {
                     periodColor = config.color;
-                    textTheme = custom.closedDaysTextStyle ?? textTheme;
+
+                    final style = (custom.closedDaysTextStyle ?? textTheme);
+
+                    if (isPeriodsRangeStart && isPeriodsRangeEnd || isInPeriodsRange) {
+                      textTheme = style?.copyWith(
+                        color: style.color?.withOpacity(0.45),
+                      );
+                    }
 
                     if (isPeriodsRangeStart && !isPeriodsRangeEnd || isPeriodsRangeEnd && !isPeriodsRangeStart) {
                       continue;
@@ -617,6 +624,10 @@ class _CalendarPageState extends State<CalendarPage> {
 
                 if (isTile) {
                   return custom.accentColor ?? theme.colorScheme.secondary;
+                }
+
+                if (periodColor != null) {
+                  return custom.busyDayColor ?? theme.colorScheme.onBackground.withOpacity(0.04);
                 }
 
                 return null;
