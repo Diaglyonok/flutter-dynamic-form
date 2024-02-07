@@ -685,6 +685,9 @@ class _CalendarPageState extends State<CalendarPage> {
               if (widget.closedPeriods != null) {
                 // closed periods:
 
+                bool isPeriodsRangeStart = false;
+                bool isPeriodsRangeEnd = false;
+
                 for (final config in widget.closedPeriods!) {
                   final isInPeriodsRange = date.isBefore(config.endDate) &&
                       date.isAfter(config.startDate) &&
@@ -693,6 +696,24 @@ class _CalendarPageState extends State<CalendarPage> {
 
                   if (isInPeriodsRange) {
                     return;
+                  }
+
+                  if (!isPeriodsRangeStart) {
+                    isPeriodsRangeStart = date.isSameDay(config.startDate);
+                  }
+
+                  if (!isPeriodsRangeEnd) {
+                    isPeriodsRangeEnd = date.isSameDay(config.endDate);
+                  }
+
+                  if (isInPeriodsRange || isPeriodsRangeStart || isPeriodsRangeEnd) {
+                    if (isPeriodsRangeStart && isPeriodsRangeEnd || isInPeriodsRange) {
+                      return;
+                    }
+
+                    if (isPeriodsRangeStart && !isPeriodsRangeEnd || isPeriodsRangeEnd && !isPeriodsRangeStart) {
+                      continue;
+                    }
                   }
                 }
               }
