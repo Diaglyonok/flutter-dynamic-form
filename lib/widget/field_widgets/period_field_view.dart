@@ -682,6 +682,21 @@ class _CalendarPageState extends State<CalendarPage> {
                 return;
               }
 
+              if (widget.closedPeriods != null) {
+                // closed periods:
+
+                for (final config in widget.closedPeriods!) {
+                  final isInPeriodsRange = date.isBefore(config.endDate) &&
+                      date.isAfter(config.startDate) &&
+                      !date.isSameDay(config.endDate) &&
+                      !date.isSameDay(config.startDate);
+
+                  if (isInPeriodsRange) {
+                    return;
+                  }
+                }
+              }
+
               if (selectedManually == _Selectable.second &&
                   startDate != null &&
                   (date.isAfter(endDate!) || date.isSameDay(endDate!))) {
