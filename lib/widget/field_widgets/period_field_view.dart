@@ -408,6 +408,14 @@ class _CalendarPageState extends State<CalendarPage> {
     return calculateMiddleDate(widget.minDate, widget.maxDate);
   }
 
+  bool isButtonAvailable(DateTime? startDate, DateTime? endDate) {
+    if (custom.actionButtonAvailable != null) {
+      return custom.actionButtonAvailable!(startDate, endDate);
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -446,20 +454,30 @@ class _CalendarPageState extends State<CalendarPage> {
               ),
               const Spacer(),
               MaterialButton(
-                onPressed: () {
-                  final a = startDate != null;
-                  final b = endDate != null;
+                onPressed: isButtonAvailable(startDate, endDate)
+                    ? () {
+                        final a = startDate != null;
+                        final b = endDate != null;
 
-                  if (a == b) {
-                    widget.onDatesChanged?.call(startDate, endDate, clear: !a && !b);
-                  }
-                  Navigator.of(context).pop();
-                },
+                        Navigator.of(context).pop();
+
+                        if (a == b) {
+                          widget.onDatesChanged?.call(startDate, endDate, clear: !a && !b);
+                        }
+                      }
+                    : null,
                 child: Text(
                   custom.okButtonText ?? context.t.done,
                   textAlign: TextAlign.right,
-                  style: custom.okButtonStyle ??
-                      Theme.of(context).textTheme.labelLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),
+                  style: (custom.okButtonStyle ??
+                          Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .copyWith(color: Theme.of(context).colorScheme.secondary))
+                      .copyWith(
+                    color: (custom.okButtonStyle?.color ?? Theme.of(context).colorScheme.secondary)
+                        .withOpacity(isButtonAvailable(startDate, endDate) ? 1.0 : 0.5),
+                  ),
                 ),
               ),
               const SizedBox(
