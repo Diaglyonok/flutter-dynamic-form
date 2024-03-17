@@ -95,7 +95,9 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
   void Function()? listener;
   @override
   void initState() {
-    currentExtra = widget.field is MultitypeField ? (widget.field as MultitypeField).types.first : null;
+    currentExtra = widget.field is MultitypeField
+        ? (widget.field.value?.extra ?? (widget.field as MultitypeField).types.first)
+        : null;
 
     currentValue = widget.field.value;
 
