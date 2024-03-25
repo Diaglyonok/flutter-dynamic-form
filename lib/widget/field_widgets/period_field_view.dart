@@ -64,15 +64,22 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
     final format = widget.field.extra.format;
 
     if (format != null) {
-      final start = format.safeStrictParse(widget.field.value?.value);
-      final end = format.safeStrictParse(widget.field.value?.extra);
+      var start = format.safeStrictParse(widget.field.value?.value);
+      var end = format.safeStrictParse(widget.field.value?.extra);
+
+      if (widget.field.useUtc) {
+        start = start?.dateOnly();
+        end = end?.dateOnly();
+      }
+
       int newDaysCount = 0;
       if (start != null && end != null) {
         newDaysCount = end.difference(start).inDays;
         this.start = start;
         this.end = end;
       }
-      daysCount = widget.field.withDaysNum && start != null && end != null ? newDaysCount : null;
+
+      daysCount = widget.field.withDaysNum && this.start != null && this.end != null ? newDaysCount : null;
     }
 
     middleNode = FocusNode(debugLabel: widget.field.label);
@@ -288,7 +295,12 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
       this.start = start;
       this.end = end;
 
-      daysCount = end?.difference(start).inDays ?? 0;
+      if (widget.field.useUtc) {
+        this.start = this.start!.dateOnly();
+        this.end = this.end?.dateOnly();
+      }
+
+      daysCount = this.end?.difference(this.start!).inDays ?? 0;
 
       //updateValue(widget.endController, endValue ?? '');
       updateValue(widget.controller, '$startValue - ${endValue ?? ''}');
@@ -389,6 +401,7 @@ class _CalendarPageState extends State<CalendarPage> {
   void initState() {
     startDate = widget.initStart;
     endDate = widget.initEnd;
+
     super.initState();
   }
 
@@ -856,4 +869,14 @@ DateTime? calculateMiddleDate(DateTime? date1, DateTime? date2) {
   DateTime middleDate = date1.add(middleDuration).removeTime();
 
   return middleDate;
+}
+
+extension on DateTime {
+  DateTime dateOnly() {
+    return DateTime.utc(
+      year,
+      month,
+      day,
+    );
+  }
 }

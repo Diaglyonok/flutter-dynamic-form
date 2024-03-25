@@ -85,6 +85,7 @@ class PeriodField extends Field {
   final bool withDaysNum;
   final DateTime? minDate;
   final DateTime? maxDate;
+  final bool useUtc;
 
   PeriodField({
     required super.fieldId,
@@ -93,6 +94,7 @@ class PeriodField extends Field {
     this.minDate,
     this.maxDate,
     this.withDaysNum = false,
+    this.useUtc = false,
     super.minLines,
     super.required = false,
     super.readOnly = false,
