@@ -10,6 +10,7 @@ class MultitypeField extends Field {
     required super.fieldType,
     required this.types,
     this.translations,
+    super.getFormatters,
     super.required = false,
     super.readOnly = false,
     super.customValidator,
