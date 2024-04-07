@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
 import 'package:dglk_simple_button/dglk_simple_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_form/flutter_dynamic_form.dart';
 import 'package:flutter_dynamic_form/i18n/strings.g.dart';
 import 'package:flutter_dynamic_form/model/auto_calculate_field.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
 import 'package:flutter_dynamic_form/model/row_field.dart';
+import 'package:flutter_dynamic_form/utils/plus_text_formatter.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/period_field_view.dart';
 import 'package:hello_example/date_formatter.dart';
 import 'package:hello_example/theme.dart';
@@ -74,6 +76,12 @@ class _MyAppState extends State<MyApp> {
         required: true,
         fieldType: FieldTypes.Text,
         label: "Conditioned Field",
+        getFormatters: (context) {
+          final result = <TextInputFormatter>[
+            PlusTextFormatter(),
+          ];
+          return result;
+        },
       ),
       RowField(
         fieldId: 'arrival_row',
@@ -186,10 +194,6 @@ class _MyAppState extends State<MyApp> {
         initialPrefix: '+',
         fieldId: 'phone_example',
         label: 'Phone Text',
-        // value: CompositeValue(
-        //   "9811206081".replaceAll(RegExp('[^0-9]'), ''),
-        //   extra: '+7',
-        // ),
       ),
       Field(
         fieldId: 'simple_num_fueld',

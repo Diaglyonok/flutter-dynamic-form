@@ -1,13 +1,15 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+
 class DynamicFormsConstants {
   static String defaultSpecSymbols = '~!@#\$%^&*()';
   static String loginUserInputRegex = '[\\[\\]0-9a-zA-Z`"\'/!?@^_#%&\$*+-.,:;(){}|<>=~]';
-  static String passwordRegexpWithSpecialSymbols =
-      '^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z!~@#\$%^&*()]{8,32}';
+  static String passwordRegexpWithSpecialSymbols = '^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z!~@#\$%^&*()]{8,32}';
 
-  static ValidationOptions defaultPasswordVO = ValidationOptions(
-      minLength: 8, maxLength: 32, regexp: '^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,32}');
+  static ValidationOptions defaultPasswordVO =
+      ValidationOptions(minLength: 8, maxLength: 32, regexp: '^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,32}');
   static ValidationOptions defaultPhoneVO = ValidationOptions(maxLength: 10, minLength: 10);
 }
 
@@ -70,6 +72,7 @@ class Field {
   final List<Option>? options;
   final String? confirmField;
 
+  final List<TextInputFormatter>? Function(BuildContext context)? getFormatters;
   final CompositeValue? value;
   final List<DependsOnValue>? dependsOn;
   final bool? isCapitalized;
@@ -86,6 +89,7 @@ class Field {
     required this.fieldId,
     required this.fieldType,
     required this.label,
+    this.getFormatters,
     this.minLines,
     this.infoCallback,
     this.shouldShowInfo,
@@ -108,8 +112,7 @@ class Field {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Field && fieldId == other.fieldId && value?.value == other.value?.value;
+      identical(this, other) || other is Field && fieldId == other.fieldId && value?.value == other.value?.value;
 
   Field withValue(CompositeValue value) {
     return Field(
@@ -131,6 +134,7 @@ class Field {
         validationExpression: validationExpression,
         validationErrorMessage: validationErrorMessage,
         value: value,
+        getFormatters: getFormatters,
         multiline: multiline);
   }
 
@@ -154,6 +158,7 @@ class Field {
       validationExpression: validationExpression,
       validationErrorMessage: validationErrorMessage,
       multiline: multiline,
+      getFormatters: getFormatters,
     );
   }
 }

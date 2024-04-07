@@ -146,6 +146,9 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
                 },
               )
             : null);
+
+    final formatters = widget.field.getFormatters?.call(context);
+
     return MultitypeFieldWrapper(
       style: style,
       field: widget.field.readOnly
@@ -186,7 +189,12 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
                   widget.current?.unfocus();
                   if (widget.next != null) FocusScope.of(context).requestFocus(widget.next);
                 },
-          inputFormatters: widget.formatters,
+          inputFormatters: widget.formatters == null && formatters == null
+              ? null
+              : [
+                  ...(widget.formatters ?? []),
+                  ...(formatters ?? []),
+                ],
           cursorColor: Theme.of(context).colorScheme.secondary,
           textCapitalization: widget.capitalize || (widget.field.isCapitalized ?? false)
               ? TextCapitalization.words
