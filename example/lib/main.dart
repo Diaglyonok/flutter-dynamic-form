@@ -63,6 +63,18 @@ class _MyAppState extends State<MyApp> {
         fieldId: 'checkbox_example',
         label: 'Checkbox Example',
       ),
+      Field(
+        dependsOn: [
+          DependsOnValue(
+            fieldId: 'checkbox_example',
+            conditionValue: 'true',
+          )
+        ],
+        fieldId: 'cond_field',
+        required: true,
+        fieldType: FieldTypes.Text,
+        label: "Conditioned Field",
+      ),
       RowField(
         fieldId: 'arrival_row',
         fields: [

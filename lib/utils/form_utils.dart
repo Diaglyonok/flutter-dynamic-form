@@ -40,7 +40,8 @@ class DynamicFormUtils {
       final dependsOnValue = field.dependsOn![i];
       result = result &&
           (values[dependsOnValue.fieldId]?.value == dependsOnValue.conditionValue ||
-              values[dependsOnValue.fieldId]?.extra == dependsOnValue.conditionExtra);
+              values[dependsOnValue.fieldId]?.extra == dependsOnValue.conditionExtra &&
+                  dependsOnValue.conditionExtra != null);
     }
 
     return result;

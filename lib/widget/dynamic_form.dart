@@ -12,7 +12,6 @@ import 'package:flutter_dynamic_form/utils/plus_text_formatter.dart';
 import 'package:flutter_dynamic_form/utils/replacement_formatter.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/color_picker.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/period_field_view.dart';
-import 'package:flutter_multi_formatter/formatters/phone_input_formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -173,6 +172,10 @@ class DynamicFormState extends State<DynamicForm> {
                     }
                   }
 
+                  if (field == null) {
+                    return const SizedBox();
+                  }
+
                   if (widget.title != null) {
                     switch (index) {
                       case 0:
@@ -198,25 +201,39 @@ class DynamicFormState extends State<DynamicForm> {
                           height: 32,
                         );
                       default:
+                        final fieldWidget = _generateField(field, current, next, ctxt);
                         return (index == itemsCount - 1 && widget.submitBtn != null)
                             ? _pinButton
                                 ? Container(height: 40)
                                 : (widget.submitBtn ?? Container())
-                            : FieldWrapper(
-                                key: ValueKey<String>(field!.fieldId),
-                                child: AbsorbPointer(
-                                    absorbing: field.readOnly, child: _generateField(field, current, next, ctxt)));
+                            : fieldWidget == null
+                                ? const SizedBox()
+                                : FieldWrapper(
+                                    withBottomPadding: field.fieldType != FieldTypes.CheckBox,
+                                    key: ValueKey<String>(field.fieldId),
+                                    child: AbsorbPointer(
+                                      absorbing: field.readOnly,
+                                      child: fieldWidget,
+                                    ),
+                                  );
                     }
                   } else {
+                    final fieldWidget = _generateField(field, current, next, ctxt);
+
                     return (index == itemsCount - 1 && widget.submitBtn != null)
                         ? _pinButton
                             ? Container(height: 40)
                             : (widget.submitBtn ?? Container())
-                        : FieldWrapper(
-                            key: ValueKey<String>(field!.fieldId),
-                            child: AbsorbPointer(
-                                absorbing: field.readOnly, child: _generateField(field, current, next, ctxt)),
-                          );
+                        : fieldWidget == null
+                            ? const SizedBox()
+                            : FieldWrapper(
+                                key: ValueKey<String>(field.fieldId),
+                                withBottomPadding: field.fieldType != FieldTypes.CheckBox,
+                                child: AbsorbPointer(
+                                  absorbing: field.readOnly,
+                                  child: fieldWidget,
+                                ),
+                              );
                   }
                 }),
           ),
@@ -530,7 +547,7 @@ class DynamicFormState extends State<DynamicForm> {
       }
       final fieldWidget = _generateField(e, i == 0 ? current : additionalNodes[e.fieldId], currNext ?? next, context);
       widgetList.add(fieldWidget == null
-          ? Container()
+          ? const SizedBox()
           : Expanded(
               child: fieldWidget,
             ));
@@ -848,6 +865,7 @@ class DynamicFormState extends State<DynamicForm> {
       style: widget.commonStyle,
       onChanged: (value) {
         values[field.fieldId] = CompositeValue(value.toString());
+        _commonOnChanged(values[field.fieldId]!, field);
       },
     );
   }
