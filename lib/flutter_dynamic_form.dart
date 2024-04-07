@@ -1,3 +1,5 @@
+export 'package:flutter_multi_formatter/formatters/phone_input_formatter.dart';
+
 export 'logic/form_builder_constants.dart';
 export 'model/color_field.dart';
 export 'model/date_field.dart';
