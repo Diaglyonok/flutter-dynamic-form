@@ -8,9 +8,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_form/i18n/strings.g.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
 import 'package:flutter_dynamic_form/model/row_field.dart';
+import 'package:flutter_dynamic_form/utils/plus_text_formatter.dart';
 import 'package:flutter_dynamic_form/utils/replacement_formatter.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/color_picker.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/period_field_view.dart';
+import 'package:flutter_multi_formatter/formatters/phone_input_formatter.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -25,7 +27,6 @@ import '../widget/field_widgets/string_result_field.dart';
 import 'field_widgets/counter_field_view.dart';
 import 'field_widgets/date.dart';
 import 'field_widgets/field_wrapper.dart';
-import 'field_widgets/phone_field_wrapper.dart';
 import 'field_widgets/text_field.dart';
 
 ///Counted by screen height divided by [maxFieldsForPinnedButton]
@@ -334,15 +335,17 @@ class DynamicFormState extends State<DynamicForm> {
           controllers[field.fieldId] = controller;
           break;
         case FieldTypes.Phone:
-          controllers[field.fieldId] = MaskedTextController(mask: '(000) 000-0000')
-            ..updateText(field.value?.value ?? '');
+          final phone = formatAsPhoneNumber(
+                (field.value?.extra ?? '') + (field.value?.value ?? ''),
+              ) ??
+              '';
+
+          controllers[field.fieldId] = TextEditingController(text: phone);
           try {
-            controllers[field.fieldId]!.selection = TextSelection.collapsed(offset: field.value?.value.length ?? 0);
+            controllers[field.fieldId]!.selection = TextSelection.collapsed(offset: phone.length);
           } catch (e) {
             //ignore
           }
-
-          controllers[field.fieldId + '_simple'] = TextEditingController(text: field.value?.value);
           break;
 
         case FieldTypes.RadioOptions:
@@ -938,46 +941,33 @@ class DynamicFormState extends State<DynamicForm> {
 
     final extra = values[field.fieldId]?.extra;
 
-    return PhoneFieldWrapper(
-      field: field is PhoneField ? field : null,
+    return DynamicTextField(
+      decoration: widget.decoration,
+      context: context,
+      field: field,
+      label: field.label,
+      multiline: field.multiline,
+      next: next,
+      current: current,
+      scrollPadding: _pinButton ? 100 : null,
       style: style,
-      onExtraChanged: (extra) {
+      required: field.required,
+      formatters: [
+        PhoneInputFormatter(
+          onCountrySelected: (_) {},
+          allowEndlessPhone: false,
+        ),
+        PlusTextFormatter(),
+      ],
+      inputType: TextInputType.phone,
+      validators: _commonTextValidators(field),
+      onChanged: (value) {
         final result = values[field.fieldId];
 
-        if (result?.extra == '+' && extra != '+') {
-          controllers[field.fieldId]!.clear();
-        } else if (result?.extra != '+' && extra == '+') {
-          controllers[field.fieldId + '_simple']!.clear();
-        }
-
-        _commonOnChanged(CompositeValue(result?.value ?? '', extra: extra), field);
+        _commonOnChanged(CompositeValue(value!.value, extra: result?.extra), field);
       },
-      child: DynamicTextField(
-        decoration: widget.decoration,
-        context: context,
-        field: field,
-        label: field.label,
-        multiline: field.multiline,
-        next: next,
-        current: current,
-        scrollPadding: _pinButton ? 100 : null,
-        style: style,
-        required: field.required,
-        inputType: TextInputType.phone,
-        validators: _commonTextValidators(
-          field,
-          additionals: [
-            if (extra != '+') (value) => validators?.phoneValidator(controllers[field.fieldId]?.text ?? value),
-          ],
-        ),
-        onChanged: (value) {
-          final result = values[field.fieldId];
-
-          _commonOnChanged(CompositeValue(value!.value, extra: result?.extra), field);
-        },
-        controller: extra == '+' ? controllers[field.fieldId + '_simple']! : controllers[field.fieldId]!,
-        maskText: field.maskText,
-      ),
+      controller: controllers[field.fieldId]!,
+      maskText: field.maskText,
     );
   }
 

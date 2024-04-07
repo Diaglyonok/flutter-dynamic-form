@@ -171,13 +171,13 @@ class _MyAppState extends State<MyApp> {
         label: 'Read Only Test',
       ),
       PhoneField(
-        initialPrefix: '+7',
+        initialPrefix: '+',
         fieldId: 'phone_example',
         label: 'Phone Text',
-        value: CompositeValue(
-          "9811206081".replaceAll(RegExp('[^0-9]'), ''),
-          extra: '+7',
-        ),
+        // value: CompositeValue(
+        //   "9811206081".replaceAll(RegExp('[^0-9]'), ''),
+        //   extra: '+7',
+        // ),
       ),
       Field(
         fieldId: 'simple_num_fueld',

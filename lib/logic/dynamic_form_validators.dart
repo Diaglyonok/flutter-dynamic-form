@@ -104,15 +104,6 @@ class DynamicFormValidators {
       return null;
     }
 
-    final options = validationOptions == null
-        ? DynamicFormsConstants.defaultPhoneVO
-        : validationOptions?['Phone'] ?? DynamicFormsConstants.defaultPhoneVO;
-
-    value = value.replaceAll(RegExp(r'[-+()\.\s]'), '');
-
-    if (value.length != options.minLength) {
-      return t.invalidPhoneNumber;
-    }
     return null;
   }
 
