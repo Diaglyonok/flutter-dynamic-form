@@ -172,10 +172,6 @@ class DynamicFormState extends State<DynamicForm> {
                     }
                   }
 
-                  if (field == null) {
-                    return const SizedBox();
-                  }
-
                   if (widget.title != null) {
                     switch (index) {
                       case 0:
@@ -201,7 +197,7 @@ class DynamicFormState extends State<DynamicForm> {
                           height: 32,
                         );
                       default:
-                        final fieldWidget = _generateField(field, current, next, ctxt);
+                        final fieldWidget = field == null ? null : _generateField(field, current, next, ctxt);
                         return (index == itemsCount - 1 && widget.submitBtn != null)
                             ? _pinButton
                                 ? Container(height: 40)
@@ -209,7 +205,7 @@ class DynamicFormState extends State<DynamicForm> {
                             : fieldWidget == null
                                 ? const SizedBox()
                                 : FieldWrapper(
-                                    withBottomPadding: field.fieldType != FieldTypes.CheckBox,
+                                    withBottomPadding: field!.fieldType != FieldTypes.CheckBox,
                                     key: ValueKey<String>(field.fieldId),
                                     child: AbsorbPointer(
                                       absorbing: field.readOnly,
@@ -218,7 +214,7 @@ class DynamicFormState extends State<DynamicForm> {
                                   );
                     }
                   } else {
-                    final fieldWidget = _generateField(field, current, next, ctxt);
+                    final fieldWidget = field == null ? null : _generateField(field, current, next, ctxt);
 
                     return (index == itemsCount - 1 && widget.submitBtn != null)
                         ? _pinButton
@@ -227,7 +223,7 @@ class DynamicFormState extends State<DynamicForm> {
                         : fieldWidget == null
                             ? const SizedBox()
                             : FieldWrapper(
-                                key: ValueKey<String>(field.fieldId),
+                                key: ValueKey<String>(field!.fieldId),
                                 withBottomPadding: field.fieldType != FieldTypes.CheckBox,
                                 child: AbsorbPointer(
                                   absorbing: field.readOnly,
