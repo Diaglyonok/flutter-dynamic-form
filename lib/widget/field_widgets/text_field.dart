@@ -192,8 +192,8 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
           inputFormatters: widget.formatters == null && formatters == null
               ? null
               : [
-                  ...(widget.formatters ?? []),
                   ...(formatters ?? []),
+                  ...(widget.formatters ?? []),
                 ],
           cursorColor: Theme.of(context).colorScheme.secondary,
           textCapitalization: widget.capitalize || (widget.field.isCapitalized ?? false)
