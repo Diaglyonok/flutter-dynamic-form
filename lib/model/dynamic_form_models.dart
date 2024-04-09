@@ -73,6 +73,7 @@ class Field {
   final String? confirmField;
 
   final List<TextInputFormatter>? Function(BuildContext context)? getFormatters;
+  final Widget Function(BuildContext context)? suffixIconBuilder;
   final CompositeValue? value;
   final List<DependsOnValue>? dependsOn;
   final bool? isCapitalized;
@@ -97,6 +98,7 @@ class Field {
     this.required = false,
     this.readOnly = false,
     this.multiline = false,
+    this.suffixIconBuilder,
     this.customValidator,
     this.maskText,
     this.maxLength,
@@ -121,6 +123,7 @@ class Field {
         readOnly: readOnly,
         minLines: minLines,
         label: label,
+        suffixIconBuilder: suffixIconBuilder,
         maskText: maskText,
         infoCallback: infoCallback,
         shouldShowInfo: shouldShowInfo,
@@ -146,6 +149,7 @@ class Field {
       readOnly: readOnly,
       label: newLabel ?? label,
       maskText: maskText,
+      suffixIconBuilder: suffixIconBuilder,
       shouldShowInfo: shouldShowInfo,
       maxLength: maxLength,
       inputType: inputType,

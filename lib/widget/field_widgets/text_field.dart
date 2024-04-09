@@ -145,7 +145,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
                   widget.onChanged?.call(null);
                 },
               )
-            : null);
+            : widget.field.suffixIconBuilder?.call(context));
 
     final formatters = widget.field.getFormatters?.call(context);
 
