@@ -151,8 +151,9 @@ class DynamicFormState extends State<DynamicForm> {
                     if (index < (nodes.length + shift - 1)) {
                       var k = 1;
                       Field? nextField = widget.fields[(index - shift + k).toInt()];
-                      while (nextField != null && nextField.fieldType == FieldTypes.Label ||
-                          !DynamicFormUtils.checkShouldShow(field: nextField!, values: values)) {
+                      while (nextField != null &&
+                          (nextField.fieldType == FieldTypes.Label ||
+                              !DynamicFormUtils.checkShouldShow(field: nextField, values: values))) {
                         k++;
                         if (index + k < (nodes.length + shift - 1)) {
                           nextField = widget.fields[index - shift + k];
