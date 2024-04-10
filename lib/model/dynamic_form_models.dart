@@ -75,7 +75,7 @@ class Field {
   final List<TextInputFormatter>? Function(BuildContext context)? getFormatters;
   final Widget Function(BuildContext context)? suffixIconBuilder;
   final CompositeValue? value;
-  final List<DependsOnValue>? dependsOn;
+  final List<DependsOn>? dependsOn;
   final bool? isCapitalized;
   final bool multiline;
   final String? validationExpression;
@@ -197,18 +197,41 @@ class CompositeValue {
   }
 }
 
-class DependsOnValue {
+abstract class DependsOn {
   final String? fieldId;
+
+  DependsOn({
+    this.fieldId,
+  });
+
+  bool Function(String value, String? extra) get condition;
+}
+
+class DependsOnValue extends DependsOn {
   final String? conditionValue;
   final String? conditionExtra;
-  final bool? conditionValueNonEmpty;
 
   DependsOnValue({
-    this.fieldId,
+    super.fieldId,
     this.conditionValue,
     this.conditionExtra,
-    this.conditionValueNonEmpty,
   });
+
+  @override
+  bool Function(String value, String? extra) get condition => (String value, String? extra) {
+        return value == conditionValue || extra == conditionExtra && conditionExtra != null;
+      };
+}
+
+class DependsOnNonEmpty extends DependsOn {
+  DependsOnNonEmpty({
+    super.fieldId,
+  });
+
+  @override
+  bool Function(String value, String? extra) get condition => (String value, String? extra) {
+        return (value.isNotEmpty);
+      };
 }
 
 class KeyValue {
