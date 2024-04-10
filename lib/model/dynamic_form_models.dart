@@ -201,11 +201,13 @@ class DependsOnValue {
   final String? fieldId;
   final String? conditionValue;
   final String? conditionExtra;
+  final bool? conditionValueNonEmpty;
 
   DependsOnValue({
     this.fieldId,
     this.conditionValue,
     this.conditionExtra,
+    this.conditionValueNonEmpty,
   });
 }
 
