@@ -35,8 +35,8 @@ class _CheckboxFieldState extends State<CheckboxField> {
       Expanded(
         child: Text(
           widget.field.label,
-          style: (widget.style ?? Theme.of(context).textTheme.labelLarge)
-              ?.copyWith(fontWeight: FontWeight.w500),
+          style: widget.field.customTextStyle ??
+              (widget.style ?? Theme.of(context).textTheme.labelLarge)?.copyWith(fontWeight: FontWeight.w500),
         ),
       ),
       Padding(

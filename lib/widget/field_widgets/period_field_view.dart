@@ -149,7 +149,7 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
             field: first,
             // current: extra.pickType == PickType.FieldTap ? null : widget.current,
             // next: extra.pickType == PickType.FieldTap ? null : middleNode,
-            style: widget.style,
+            style: widget.field.customTextStyle ?? widget.style,
             onChanged: (CompositeValue? value) {
               if (value == null) {
                 widget.onChanged(null);
@@ -179,7 +179,7 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                   )
                 : BottomPickButton(
                     text: daysCount.toString(),
-                    style: widget.style?.copyWith(fontSize: 18),
+                    style: widget.field.customTextStyle ?? widget.style?.copyWith(fontSize: 18),
                     rightArrow: true,
                     customOnTap: () {
                       Navigator.of(context).push(
@@ -191,7 +191,7 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                                 if (extra.daysBottomSheetTitle != null)
                                   Text(
                                     extra.daysBottomSheetTitle!,
-                                    style: widget.style,
+                                    style: widget.field.customTextStyle ?? widget.style,
                                   ),
                                 Expanded(
                                   child: CupertinoPicker.builder(
@@ -239,9 +239,10 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                                         return Center(
                                             child: Text(
                                           (index + 1).toString(),
-                                          style: widget.style?.copyWith(
-                                            fontSize: 18,
-                                          ),
+                                          style: widget.field.customTextStyle ??
+                                              widget.style?.copyWith(
+                                                fontSize: 18,
+                                              ),
                                         ));
                                       }),
                                 ),

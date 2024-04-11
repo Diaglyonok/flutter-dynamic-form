@@ -56,9 +56,10 @@ class CounterFieldView extends StatelessWidget {
                       return Center(
                           child: Text(
                         index.toString(),
-                        style: style?.copyWith(
-                          fontSize: 18,
-                        ),
+                        style: field.customTextStyle ??
+                            style?.copyWith(
+                              fontSize: 18,
+                            ),
                       ));
                     },
                   ),

@@ -81,6 +81,7 @@ class Field {
   final String? validationExpression;
   final String? validationErrorMessage;
   final String? Function(String? value)? customValidator;
+  final TextStyle? customTextStyle;
 
   final Function(CompositeValue?)? onUpdated;
   final Function()? infoCallback;
@@ -90,6 +91,7 @@ class Field {
     required this.fieldId,
     required this.fieldType,
     required this.label,
+    this.customTextStyle,
     this.getFormatters,
     this.minLines,
     this.infoCallback,
@@ -118,6 +120,7 @@ class Field {
 
   Field withValue(CompositeValue value) {
     return Field(
+        customTextStyle: customTextStyle,
         fieldId: fieldId,
         required: required,
         readOnly: readOnly,
@@ -143,6 +146,7 @@ class Field {
 
   Field copyWith({int? parentId, List<Field>? children, String? newLabel}) {
     return Field(
+      customTextStyle: customTextStyle,
       fieldId: fieldId,
       required: required,
       infoCallback: infoCallback,

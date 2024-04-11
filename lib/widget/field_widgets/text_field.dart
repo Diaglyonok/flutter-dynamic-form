@@ -122,7 +122,8 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
     if (widget.inputType == null || (widget.field.readOnly)) {
       inputType = TextInputType.text;
     }
-    final style = widget.style
+    final style = widget.field.customTextStyle ??
+        widget.style
             ?.copyWith(color: widget.field.readOnly ? widget.style?.color?.withOpacity(0.44) : widget.style?.color) ??
         Theme.of(context).textTheme.titleLarge!.copyWith(
             height: 1.1,
