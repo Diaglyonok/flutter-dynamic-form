@@ -17,16 +17,21 @@ class MultitypeFieldWrapper extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<MultitypeFieldWrapper> createState() => _MultitypeFieldWrapperState();
+  State<MultitypeFieldWrapper> createState() => MultitypeFieldWrapperState();
 }
 
-class _MultitypeFieldWrapperState extends State<MultitypeFieldWrapper> {
+class MultitypeFieldWrapperState extends State<MultitypeFieldWrapper> {
   String? current;
 
   @override
   void initState() {
     current = widget.field?.value?.extra ?? widget.field?.types.first;
     super.initState();
+  }
+
+  void updateExtra(String extra) {
+    current = extra;
+    setState(() {});
   }
 
   @override
@@ -41,9 +46,7 @@ class _MultitypeFieldWrapperState extends State<MultitypeFieldWrapper> {
           child: widget.child,
         ),
         BottomPickButton(
-          text: widget.field!.translations != null
-              ? widget.field!.translations![current!]!
-              : current!,
+          text: widget.field!.translations != null ? widget.field!.translations![current!]! : current!,
           style: widget.style.copyWith(fontSize: 18),
           rightArrow: true,
           child: MultitypeBottomView(
@@ -114,16 +117,10 @@ class _MultitypeBottomViewState extends State<MultitypeBottomView> {
                                 height: 32,
                                 decoration: widget.items[i] == widget.current
                                     ? BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary
-                                            .withOpacity(0.1),
+                                        color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary
-                                              .withOpacity(0.3),
+                                          color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
                                         ),
                                       )
                                     : null,
@@ -133,7 +130,7 @@ class _MultitypeBottomViewState extends State<MultitypeBottomView> {
                                         ? widget.translations![widget.items[i]]!
                                         : widget.items[i],
                                     textAlign: TextAlign.center,
-                                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                           color: Theme.of(context).colorScheme.onBackground,
                                         ),
                                   ),

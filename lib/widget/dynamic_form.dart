@@ -303,6 +303,10 @@ class DynamicFormState extends State<DynamicForm> {
         controller?.text = valueString;
       }
 
+      if (field is MultitypeField && value.extra != null) {
+        field.keyField.currentState?.updateExtra(value.extra!);
+      }
+
       _commonOnChanged(value, field);
     }
   }

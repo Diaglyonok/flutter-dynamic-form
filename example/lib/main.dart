@@ -113,7 +113,8 @@ class _MyAppState extends State<MyApp> {
       PasswordField(
         onUpdated: (value) {
           if (value?.value == 'autoFill') {
-            key.currentState?.updateField(value: CompositeValue('top kek, its working'), id: 'text_example');
+            //key.currentState?.updateField(value: CompositeValue('top kek, its working'), id: 'text_example');
+            key.currentState?.updateField(value: CompositeValue('100', extra: 'night'), id: 'price');
           }
         },
         fieldId: 'password_example',

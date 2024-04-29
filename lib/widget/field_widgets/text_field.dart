@@ -152,6 +152,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
 
     return MultitypeFieldWrapper(
       style: style,
+      key: widget.field is MultitypeField ? (widget.field as MultitypeField).keyField : null,
       field: widget.field.readOnly
           ? null
           : widget.field is MultitypeField

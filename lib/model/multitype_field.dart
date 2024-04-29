@@ -1,8 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_dynamic_form/widget/field_widgets/multitype_wrapper.dart';
+
 import '../model/dynamic_form_models.dart';
 
 class MultitypeField extends Field {
   final List<String> types;
   final Map<String, String>? translations;
+
+  final GlobalKey<MultitypeFieldWrapperState> keyField = GlobalKey<MultitypeFieldWrapperState>();
 
   MultitypeField({
     required super.fieldId,
