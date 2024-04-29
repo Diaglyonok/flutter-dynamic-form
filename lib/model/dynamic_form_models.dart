@@ -87,6 +87,8 @@ class Field {
   final Function()? infoCallback;
   final bool Function(CompositeValue?)? shouldShowInfo;
 
+  final bool withBottomPadding;
+
   Field({
     required this.fieldId,
     required this.fieldType,
@@ -112,6 +114,7 @@ class Field {
     this.value,
     this.validationExpression,
     this.validationErrorMessage,
+    this.withBottomPadding = true,
   });
 
   @override

@@ -29,5 +29,6 @@ class PasswordField extends Field {
     super.infoCallback,
     super.shouldShowInfo,
     super.multiline,
+    super.withBottomPadding = true,
   }) : super(fieldType: FieldTypes.Password);
 }

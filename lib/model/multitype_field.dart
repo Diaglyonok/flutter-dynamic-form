@@ -30,5 +30,6 @@ class MultitypeField extends Field {
     super.onUpdated,
     super.shouldShowInfo,
     super.multiline,
+    super.withBottomPadding = true,
   });
 }
