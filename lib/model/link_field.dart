@@ -30,6 +30,7 @@ class LinkField extends Field {
     super.shouldShowInfo,
     super.multiline,
     super.withBottomPadding = true,
+    super.wrapper,
   }) : super(
           fieldType: FieldTypes.Link,
         );

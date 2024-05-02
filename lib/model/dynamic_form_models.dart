@@ -86,6 +86,7 @@ class Field {
   final Function(CompositeValue?)? onUpdated;
   final Function()? infoCallback;
   final bool Function(CompositeValue?)? shouldShowInfo;
+  final Widget Function({required BuildContext context, required Widget child})? wrapper;
 
   final bool withBottomPadding;
 
@@ -102,6 +103,7 @@ class Field {
     this.required = false,
     this.readOnly = false,
     this.multiline = false,
+    this.wrapper,
     this.suffixIconBuilder,
     this.customValidator,
     this.maskText,
@@ -123,28 +125,30 @@ class Field {
 
   Field withValue(CompositeValue value) {
     return Field(
-        customTextStyle: customTextStyle,
-        fieldId: fieldId,
-        required: required,
-        readOnly: readOnly,
-        minLines: minLines,
-        label: label,
-        suffixIconBuilder: suffixIconBuilder,
-        maskText: maskText,
-        infoCallback: infoCallback,
-        shouldShowInfo: shouldShowInfo,
-        maxLength: maxLength,
-        inputType: inputType,
-        confirmField: confirmField,
-        isCapitalized: isCapitalized,
-        fieldType: fieldType,
-        options: options,
-        dependsOn: dependsOn,
-        validationExpression: validationExpression,
-        validationErrorMessage: validationErrorMessage,
-        value: value,
-        getFormatters: getFormatters,
-        multiline: multiline);
+      customTextStyle: customTextStyle,
+      fieldId: fieldId,
+      required: required,
+      readOnly: readOnly,
+      minLines: minLines,
+      label: label,
+      suffixIconBuilder: suffixIconBuilder,
+      maskText: maskText,
+      infoCallback: infoCallback,
+      shouldShowInfo: shouldShowInfo,
+      maxLength: maxLength,
+      inputType: inputType,
+      confirmField: confirmField,
+      isCapitalized: isCapitalized,
+      fieldType: fieldType,
+      options: options,
+      dependsOn: dependsOn,
+      validationExpression: validationExpression,
+      validationErrorMessage: validationErrorMessage,
+      value: value,
+      getFormatters: getFormatters,
+      wrapper: wrapper,
+      multiline: multiline,
+    );
   }
 
   Field copyWith({int? parentId, List<Field>? children, String? newLabel}) {

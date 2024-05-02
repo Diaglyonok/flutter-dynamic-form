@@ -51,6 +51,12 @@ class _MyAppState extends State<MyApp> {
         label: "Email",
       ),
       ScreenResultField(
+        wrapper: ({required context, required child}) {
+          return Container(
+            color: Colors.red,
+            child: child,
+          );
+        },
         fieldId: 'screen_res_example',
         label: 'Delayed result',
         extra: ScreenResultExtra(

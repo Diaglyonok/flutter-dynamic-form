@@ -91,6 +91,7 @@ class DynamicFormState extends State<DynamicForm> {
   final List<FocusNode> nodes = [];
   final Map<String, FocusNode> additionalNodes = {};
   void Function()? focusListener;
+
   @override
   void initState() {
     super.initState();
@@ -206,7 +207,8 @@ class DynamicFormState extends State<DynamicForm> {
                             : fieldWidget == null
                                 ? const SizedBox()
                                 : FieldWrapper(
-                                    withBottomPadding: field!.fieldType != FieldTypes.CheckBox,
+                                    field: field!,
+                                    withBottomPadding: field.fieldType != FieldTypes.CheckBox,
                                     key: ValueKey<String>(field.fieldId),
                                     child: AbsorbPointer(
                                       absorbing: field.readOnly,
@@ -224,7 +226,8 @@ class DynamicFormState extends State<DynamicForm> {
                         : fieldWidget == null
                             ? const SizedBox()
                             : FieldWrapper(
-                                key: ValueKey<String>(field!.fieldId),
+                                field: field!,
+                                key: ValueKey<String>(field.fieldId),
                                 withBottomPadding: field.fieldType != FieldTypes.CheckBox,
                                 child: AbsorbPointer(
                                   absorbing: field.readOnly,

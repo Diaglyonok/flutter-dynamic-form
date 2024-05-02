@@ -25,6 +25,7 @@ class ColorField extends Field {
     super.shouldShowInfo,
     super.multiline,
     super.withBottomPadding = true,
+    super.wrapper,
   }) : super(
           required: false,
           readOnly: false,

@@ -36,6 +36,7 @@ class PhoneField extends Field {
     super.multiline,
     this.customizations = const PhoneBottomViewCustomizations(),
     super.withBottomPadding = true,
+    super.wrapper,
   }) : super(
           fieldType: FieldTypes.Phone,
           value: value ?? CompositeValue('', extra: initialPrefix),

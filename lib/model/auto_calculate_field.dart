@@ -27,5 +27,6 @@ class AutoCalculateField extends Field {
     super.shouldShowInfo,
     super.multiline,
     super.withBottomPadding = true,
+    super.wrapper,
   });
 }

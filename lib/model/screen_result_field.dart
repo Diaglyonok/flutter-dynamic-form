@@ -45,5 +45,6 @@ class ScreenResultField extends Field {
     super.shouldShowInfo,
     super.multiline,
     super.withBottomPadding = true,
+    super.wrapper,
   }) : super(fieldType: FieldTypes.ScreenResult);
 }

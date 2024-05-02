@@ -24,5 +24,6 @@ class RowField extends Field {
     super.infoCallback,
     super.multiline,
     super.withBottomPadding = true,
+    super.wrapper,
   }) : super(fieldType: FieldTypes.RowField, label: '');
 }
