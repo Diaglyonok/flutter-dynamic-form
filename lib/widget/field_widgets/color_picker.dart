@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_dynamic_form/model/dynamic_form_models.dart';
+import 'package:flutter_dynamic_form/widget/external/color_picker/src/palette.dart';
 
 import '../../model/color_field.dart';
 
@@ -48,10 +48,9 @@ class _ColorPickerState extends State<ColorPicker> {
               width: 24,
             ),
             CircleAvatar(
-              backgroundColor:
-                  widget.field is ColorField && (widget.field as ColorField).modifier != null
-                      ? (widget.field as ColorField).modifier!.call(color)
-                      : color,
+              backgroundColor: widget.field is ColorField && (widget.field as ColorField).modifier != null
+                  ? (widget.field as ColorField).modifier!.call(color)
+                  : color,
               radius: 24,
             ),
             const SizedBox(
