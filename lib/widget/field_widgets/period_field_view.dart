@@ -2,12 +2,12 @@ import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dynamic_form/i18n/strings.g.dart';
+import 'package:flutter_dynamic_form/utils/string_ext.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/bottom_pick_button.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/string_result_field.dart';
 import 'package:intl/intl.dart';
 import 'package:paged_vertical_calendar/paged_vertical_calendar.dart';
 import 'package:paged_vertical_calendar/utils/date_utils.dart';
-import 'package:slang/builder/utils/string_extensions.dart';
 
 import '../../flutter_dynamic_form.dart';
 import '../../logic/dynamic_form_validators.dart';
@@ -561,7 +561,7 @@ class _CalendarPageState extends State<CalendarPage> {
                           year.toString(),
                           style: custom.yearStyle ??
                               Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                                   ),
                         ),
                       ],
@@ -599,7 +599,7 @@ class _CalendarPageState extends State<CalendarPage> {
 
               textTheme = textTheme?.copyWith(
                 color: isDisabled
-                    ? theme.colorScheme.onBackground.withOpacity(0.3)
+                    ? theme.colorScheme.onSurface.withOpacity(0.3)
                     : isTile
                         ? (custom.onAccentColor ?? theme.colorScheme.onSecondary)
                         : null,
@@ -659,7 +659,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 }
 
                 if (periodColor != null) {
-                  return custom.busyDayColor ?? theme.colorScheme.onBackground.withOpacity(0.04);
+                  return custom.busyDayColor ?? theme.colorScheme.onSurface.withOpacity(0.04);
                 }
 
                 return null;
@@ -826,7 +826,7 @@ class _CalendarPageState extends State<CalendarPage> {
         text,
         style: custom.weekDayStyle ??
             Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: theme.colorScheme.onBackground.withOpacity(0.5),
+                  color: theme.colorScheme.onSurface.withOpacity(0.5),
                 ),
       ),
     );

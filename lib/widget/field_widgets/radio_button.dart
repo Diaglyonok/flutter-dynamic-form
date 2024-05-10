@@ -41,10 +41,7 @@ class _RadioButtonState extends State<RadioButton> {
           ),
         if (widget.title.isNotEmpty)
           Text(widget.title,
-              style: Theme.of(context)
-                  .textTheme
-                  .caption!
-                  .copyWith(color: Theme.of(context).colorScheme.onBackground)),
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.onSurface)),
         const SizedBox(
           height: 8,
         ),
@@ -114,7 +111,7 @@ class ToggleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.button!.copyWith(fontSize: 16);
+    TextStyle textStyle = Theme.of(context).textTheme.labelLarge!.copyWith(fontSize: 16);
     var borderRadius = BorderRadius.circular(borderRadiusValue);
     Widget selectedWidget = AnimatedContainer(
       duration: const Duration(milliseconds: 400),
@@ -134,8 +131,8 @@ class ToggleButton extends StatelessWidget {
           child: Material(
             type: MaterialType.transparency,
             child: InkWell(
-              splashColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
-              highlightColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
+              splashColor: Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              highlightColor: Theme.of(context).colorScheme.surface.withOpacity(0.2),
               borderRadius: borderRadius,
               onTap: () {
                 onChange(false);
@@ -159,8 +156,7 @@ class ToggleButton extends StatelessWidget {
                             textAlign: TextAlign.center,
                             semanticsLabel: textSelected,
                             textScaleFactor: 1.0,
-                            style: textStyle.copyWith(
-                                color: Theme.of(context).colorScheme.onSecondary),
+                            style: textStyle.copyWith(color: Theme.of(context).colorScheme.onSecondary),
                           ),
                         ),
                     ],
@@ -175,9 +171,7 @@ class ToggleButton extends StatelessWidget {
     Widget notSelectedWidget = AnimatedContainer(
       duration: const Duration(milliseconds: 400),
       decoration: BoxDecoration(
-        color: unselectedOutline
-            ? Colors.transparent
-            : Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+        color: unselectedOutline ? Colors.transparent : Theme.of(context).colorScheme.secondary.withOpacity(0.1),
         border: unselectedOutline
             ? Border.all(
                 color: Theme.of(context).colorScheme.secondary,
@@ -192,8 +186,8 @@ class ToggleButton extends StatelessWidget {
           child: Material(
             type: MaterialType.transparency,
             child: InkWell(
-              splashColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
-              highlightColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
+              splashColor: Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              highlightColor: Theme.of(context).colorScheme.surface.withOpacity(0.2),
               borderRadius: borderRadius,
               onTap: () {
                 onChange(true);
@@ -217,8 +211,7 @@ class ToggleButton extends StatelessWidget {
                             textAlign: TextAlign.center,
                             textScaleFactor: 1.0,
                             semanticsLabel: textUnselected ?? textSelected,
-                            style:
-                                textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
+                            style: textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
                     ],
@@ -231,8 +224,7 @@ class ToggleButton extends StatelessWidget {
       ),
     );
 
-    return ToggleWidget(
-        notSelectedWidet: notSelectedWidget, selectedWidget: selectedWidget, selected: selected);
+    return ToggleWidget(notSelectedWidet: notSelectedWidget, selectedWidget: selectedWidget, selected: selected);
   }
 }
 
