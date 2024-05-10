@@ -9,7 +9,7 @@ class DynamicFormsConstants {
   static String passwordRegexpWithSpecialSymbols = '^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z!~@#\$%^&*()]{8,32}';
 
   static ValidationOptions defaultPasswordVO =
-      ValidationOptions(minLength: 8, maxLength: 32, regexp: '^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{8,32}');
+      ValidationOptions(minLength: 8, maxLength: 32, regexp: r'^(?=.*[a-zA-Z])(?=.*\d).{8,}$');
   static ValidationOptions defaultPhoneVO = ValidationOptions(maxLength: 10, minLength: 10);
 }
 

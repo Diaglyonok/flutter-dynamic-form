@@ -744,7 +744,7 @@ class DynamicFormState extends State<DynamicForm> {
           onChanged: (value) => _commonOnChanged(value, field),
           controller: controllers[field.fieldId]!,
           validators: _commonTextValidators(field, additionals: [
-            if (field is! PasswordField || !field.disableFormatting)
+            if (field is! PasswordField || /*field is PasswordField && */ !field.disableValidation)
               (String? value) => validators?.passwordValidator(CompositeValue(value ?? '')),
           ]),
         ),

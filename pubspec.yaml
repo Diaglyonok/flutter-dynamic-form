@@ -31,7 +31,7 @@ dependencies:
       url: https://github.com/Diaglyonok/dglk_simple_button.git
       ref: cb38449
   paged_vertical_calendar: ^1.1.6
-  intl: ^0.18.1
+  intl: any
   auto_size_text: 3.0.0
   flutter_colorpicker: 1.0.3
   flutter_multi_formatter: ^2.12.4

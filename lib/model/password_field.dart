@@ -4,12 +4,12 @@ import '../model/dynamic_form_models.dart';
 
 class PasswordField extends Field {
   final Widget? Function(BuildContext context, PasswordField field)? forgotPasswordBuilder;
-  final bool disableFormatting;
+  final bool disableValidation;
 
   PasswordField({
     required super.fieldId,
     required super.label,
-    this.disableFormatting = false,
+    this.disableValidation = false,
     this.forgotPasswordBuilder,
     super.required = false,
     super.readOnly = false,

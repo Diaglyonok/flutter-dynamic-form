@@ -229,7 +229,7 @@
         "ZM": "Zambia",
         "ZW": "Zimbabwe"
     },
-    "passwordErrorText": "Your password must be between {MIN} and {MAX} characters and contain at least one number and one letter",
+    "passwordErrorText": "Your password must be least {MIN} characters length and contain at least one number and one letter",
     "useridErrorText": "Login length should be greater than {MIN} characters",
     "invalidPhoneNumber": "Phone number is not valid",
     "invalidTime": "Time is not valid",
