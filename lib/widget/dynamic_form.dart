@@ -609,8 +609,8 @@ class DynamicFormState extends State<DynamicForm> {
             height: 1.1,
             fontSize: 16,
             color: field.readOnly
-                ? Theme.of(context).colorScheme.onBackground.withOpacity(0.44)
-                : Theme.of(context).colorScheme.onBackground);
+                ? Theme.of(context).colorScheme.onSurface.withOpacity(0.44)
+                : Theme.of(context).colorScheme.onSurface);
 
     return PeriodFieldView(
       field: field,
@@ -817,7 +817,7 @@ class DynamicFormState extends State<DynamicForm> {
                           ? field.customCloseIcon
                           : Icon(
                               Icons.close,
-                              color: Theme.of(context).colorScheme.onBackground.withOpacity(0.32),
+                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.32),
                             ),
                       onPressed: () {
                         controllers[field.fieldId]!.clear();
@@ -840,7 +840,7 @@ class DynamicFormState extends State<DynamicForm> {
                     ? field.customOpenIcon
                     : Icon(
                         Icons.open_in_new,
-                        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.32),
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.32),
                       ),
               ),
               onPressed: () async {
@@ -958,8 +958,8 @@ class DynamicFormState extends State<DynamicForm> {
         Theme.of(context).textTheme.titleLarge!.copyWith(
             height: 1.1,
             color: field.readOnly
-                ? Theme.of(context).colorScheme.onBackground.withOpacity(0.44)
-                : Theme.of(context).colorScheme.onBackground);
+                ? Theme.of(context).colorScheme.onSurface.withOpacity(0.44)
+                : Theme.of(context).colorScheme.onSurface);
 
     final extra = values[field.fieldId]?.extra;
 
@@ -976,8 +976,8 @@ class DynamicFormState extends State<DynamicForm> {
       required: field.required,
       formatters: [
         PhoneInputFormatter(
-          onCountrySelected: (_) {},
-          allowEndlessPhone: false,
+          onCountrySelected: (c) {},
+          allowEndlessPhone: true,
         ),
         PlusTextFormatter(),
       ],
