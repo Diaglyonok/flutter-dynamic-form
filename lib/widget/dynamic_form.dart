@@ -358,6 +358,7 @@ class DynamicFormState extends State<DynamicForm> {
         case FieldTypes.Phone:
           final phone = formatAsPhoneNumber(
                 (field.value?.extra ?? '') + (field.value?.value ?? ''),
+                allowEndlessPhone: true,
               ) ??
               '';
 
