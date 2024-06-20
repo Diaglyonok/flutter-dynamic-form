@@ -57,20 +57,20 @@ class DynamicTextField extends StatefulWidget {
 
   static InputDecoration defaultDecoration(BuildContext context) => InputDecoration(
         disabledBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.4)),
+            UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onSurface, width: 0.4)),
         focusedBorder:
             UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1)),
         enabledBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 0.4)),
-        labelStyle: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.onBackground),
+            UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onSurface, width: 0.4)),
+        labelStyle: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.onSurface),
         hintStyle: Theme.of(context)
             .textTheme
             .bodySmall!
-            .copyWith(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2)),
+            .copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2)),
         counterStyle: Theme.of(context)
             .textTheme
             .titleLarge!
-            .copyWith(fontSize: 12, color: Theme.of(context).colorScheme.onBackground),
+            .copyWith(fontSize: 12, color: Theme.of(context).colorScheme.onSurface),
         errorStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
               color: Theme.of(context).colorScheme.error,
             ),
@@ -128,8 +128,8 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
         Theme.of(context).textTheme.titleLarge!.copyWith(
             height: 1.1,
             color: widget.field.readOnly
-                ? Theme.of(context).colorScheme.onBackground.withOpacity(0.44)
-                : Theme.of(context).colorScheme.onBackground);
+                ? Theme.of(context).colorScheme.onSurface.withOpacity(0.44)
+                : Theme.of(context).colorScheme.onSurface);
     final caption = (widget.label) + (widget.required ? ' *' : '');
 
     final decoration = (widget.decoration ?? DynamicTextField.defaultDecoration(context));
@@ -175,7 +175,11 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
           autocorrect: false,
           controller: widget.controller,
           keyboardType: inputType ?? widget.inputType,
-          textInputAction: widget.next == null ? TextInputAction.done : TextInputAction.next,
+          textInputAction: widget.multiline
+              ? TextInputAction.newline
+              : widget.next == null
+                  ? TextInputAction.done
+                  : TextInputAction.next,
           validator: widget.field.readOnly ? null : widget.validators,
           onChanged: widget.field.readOnly
               ? null
