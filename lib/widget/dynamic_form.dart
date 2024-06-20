@@ -358,6 +358,7 @@ class DynamicFormState extends State<DynamicForm> {
         case FieldTypes.Phone:
           final phone = formatAsPhoneNumber(
                 (field.value?.extra ?? '') + (field.value?.value ?? ''),
+                allowEndlessPhone: true,
               ) ??
               '';
 
@@ -976,8 +977,8 @@ class DynamicFormState extends State<DynamicForm> {
       required: field.required,
       formatters: [
         PhoneInputFormatter(
-          onCountrySelected: (_) {},
-          allowEndlessPhone: false,
+          onCountrySelected: (c) {},
+          allowEndlessPhone: true,
         ),
         PlusTextFormatter(),
       ],
