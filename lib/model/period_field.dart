@@ -91,6 +91,7 @@ class PeriodField extends Field {
     required super.fieldId,
     required this.extra,
     required super.label,
+    super.onEdittingComplete,
     this.minDate,
     this.maxDate,
     this.withDaysNum = false,

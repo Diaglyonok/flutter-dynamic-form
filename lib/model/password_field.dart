@@ -31,5 +31,6 @@ class PasswordField extends Field {
     super.multiline,
     super.withBottomPadding = true,
     super.wrapper,
+    super.onEdittingComplete,
   }) : super(fieldType: FieldTypes.Password);
 }

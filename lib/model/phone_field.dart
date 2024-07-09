@@ -17,6 +17,7 @@ class PhoneField extends Field {
     super.required = false,
     super.readOnly = false,
     required super.label,
+    super.onEdittingComplete,
     super.customValidator,
     super.minLines,
     super.maskText,

@@ -169,6 +169,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
         shouldShow: widget.field.shouldShowInfo?.call(currentValue) ?? true,
         infoCallback: widget.field.infoCallback,
         child: TextFormField(
+          onEditingComplete: widget.field.onEdittingComplete,
           focusNode: widget.current,
           key: ValueKey<String>(widget.field.fieldId),
           enabled: !widget.field.readOnly,

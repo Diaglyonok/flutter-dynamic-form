@@ -8,6 +8,7 @@ class AutoCalculateField extends Field {
     required super.fieldType,
     required super.label,
     required this.calculate,
+    super.onEdittingComplete,
     super.minLines,
     super.required = false,
     super.readOnly = false,

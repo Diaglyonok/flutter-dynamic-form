@@ -62,6 +62,7 @@ class Field {
   final bool required;
   final bool readOnly;
   final int? minLines;
+  final void Function()? onEdittingComplete;
 
   final FieldTypes fieldType;
   final String label;
@@ -117,6 +118,7 @@ class Field {
     this.validationExpression,
     this.validationErrorMessage,
     this.withBottomPadding = true,
+    this.onEdittingComplete,
   });
 
   @override

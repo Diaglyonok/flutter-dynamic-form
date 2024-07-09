@@ -25,6 +25,7 @@ class ScreenResultField extends Field {
     required super.fieldId,
     required super.label,
     required this.extra,
+    super.onEdittingComplete,
     this.extraPrefix = false,
     super.required = false,
     super.readOnly = false,

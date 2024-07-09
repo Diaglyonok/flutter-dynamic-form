@@ -31,6 +31,7 @@ class LinkField extends Field {
     super.multiline,
     super.withBottomPadding = true,
     super.wrapper,
+    super.onEdittingComplete,
   }) : super(
           fieldType: FieldTypes.Link,
         );
