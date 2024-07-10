@@ -316,17 +316,20 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
       await Navigator.of(context).push(
         BottomSheetRoute(
           titleBoxHeight: 20,
-          builder: (context) => CalendarPage(
-            minDate: widget.field.minDate,
-            maxDate: widget.field.maxDate,
-            locale: (extra.format ??
-                    DateFormat(
-                        DynamicFormValidators.datePattern, TranslationProvider.of(context).flutterLocale.toString()))
-                .locale,
-            customization: extra.customization,
-            onDatesChanged: _onChanged,
-            initStart: start, //NOT SAFE
-            initEnd: end,
+          builder: (context) => ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: extra.maxWidth ?? double.infinity),
+            child: CalendarPage(
+              minDate: widget.field.minDate,
+              maxDate: widget.field.maxDate,
+              locale: (extra.format ??
+                      DateFormat(
+                          DynamicFormValidators.datePattern, TranslationProvider.of(context).flutterLocale.toString()))
+                  .locale,
+              customization: extra.customization,
+              onDatesChanged: _onChanged,
+              initStart: start, //NOT SAFE
+              initEnd: end,
+            ),
           ),
         ),
       );

@@ -56,6 +56,7 @@ class PeriodExtra {
   final Duration? allowedDifference;
   final String? daysBottomSheetTitle;
   final DatePickerCustomization customization;
+  final double? maxWidth;
   final Future<void> Function(
     BuildContext context, {
     required void Function(DateTime? start, DateTime? end, {bool clear}) onChanged,
@@ -66,6 +67,7 @@ class PeriodExtra {
   PeriodExtra({
     this.customPickerFunction,
     this.daysBottomSheetTitle,
+    this.maxWidth,
     this.format,
     this.allowedDifference,
     this.customization = const DatePickerCustomization(),
