@@ -29,7 +29,7 @@ dependencies:
   dglk_simple_button:
     git:
       url: https://github.com/Diaglyonok/dglk_simple_button.git
-      ref: cb38449
+      ref: 812a711
   jiffy: 5.0.1
   flutter_dynamic_form:
     path: ../

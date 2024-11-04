@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dynamic_form/utils/colored_cupertino_handles.dart';
 import 'utils.dart';
 
 /// Palette types for color picker area widget.
@@ -985,6 +986,7 @@ class _ColorPickerInputState extends State<ColorPickerInput> {
         SizedBox(
           width: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14) * 10,
           child: TextField(
+            selectionControls: getControls(context),
             enabled: !widget.disable,
             controller: textEditingController,
             inputFormatters: [

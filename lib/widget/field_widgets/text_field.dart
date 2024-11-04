@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dynamic_form/utils/colored_cupertino_handles.dart';
 
 import '../../model/auto_calculate_field.dart';
 import '../../model/dynamic_form_models.dart';
@@ -169,6 +170,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
         shouldShow: widget.field.shouldShowInfo?.call(currentValue) ?? true,
         infoCallback: widget.field.infoCallback,
         child: TextFormField(
+          selectionControls: getControls(context),
           onEditingComplete: widget.field.onEdittingComplete,
           focusNode: widget.current,
           key: ValueKey<String>(widget.field.fieldId),

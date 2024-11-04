@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dglk_simple_button/dglk_simple_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dynamic_form/i18n/strings.g.dart';
+import 'package:flutter_dynamic_form/utils/colored_cupertino_handles.dart';
 
 import '../../flutter_dynamic_form.dart';
 import '../field_widgets/bottom_pick_button.dart';
@@ -332,7 +333,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
       child: Padding(
         padding: MediaQuery.of(context).viewInsets,
         child: Container(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           constraints: const BoxConstraints(maxHeight: 420),
           child: Column(
             children: [
@@ -340,7 +341,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
                   ),
                   child: Row(
@@ -351,12 +352,13 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                         child: Center(
                           child: Icon(
                             Icons.search,
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
                       ),
                       Expanded(
                         child: TextField(
+                          selectionControls: getControls(context),
                           focusNode: focusNode,
                           keyboardType: TextInputType.text,
                           cursorColor: Theme.of(context).colorScheme.secondary,
@@ -388,7 +390,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                 padding: const EdgeInsets.only(),
                                 icon: Icon(
                                   Icons.close,
-                                  color: Theme.of(context).colorScheme.onBackground,
+                                  color: Theme.of(context).colorScheme.onSurface,
                                 ),
                               ),
                             ),
@@ -444,7 +446,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                               context.t.nothingFoundCountryCode,
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: Theme.of(context).colorScheme.onBackground,
+                                    color: Theme.of(context).colorScheme.onSurface,
                                   ),
                             ),
                           ),
@@ -481,14 +483,14 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                                     child: Text(
                                                       '${countryPhoneCodes[key]!}${key == countryPhoneCodes.keys.first ? '' : ':'}',
                                                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                                          color: Theme.of(context).colorScheme.onBackground,
+                                                          color: Theme.of(context).colorScheme.onSurface,
                                                           fontWeight: FontWeight.bold),
                                                     ),
                                                   ),
                                                   Text(
                                                     context.t.countries[key]!,
                                                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                                          color: Theme.of(context).colorScheme.onBackground,
+                                                          color: Theme.of(context).colorScheme.onSurface,
                                                         ),
                                                   ),
                                                 ],
@@ -502,7 +504,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                   Container(
                                     width: 240,
                                     height: 0.5,
-                                    color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                                   ),
                                 ],
                               )
