@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -86,6 +87,6 @@ class ColoredCupertinoControlls extends CupertinoTextSelectionControls {
   }
 }
 
-TextSelectionControls getControls(BuildContext context) => Platform.isIOS
+TextSelectionControls getControls(BuildContext context) => !kIsWeb && Platform.isIOS
     ? ColoredCupertinoControlls(Theme.of(context).colorScheme.secondary)
     : MaterialTextSelectionControls();
