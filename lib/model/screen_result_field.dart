@@ -28,6 +28,7 @@ class ScreenResultField extends Field {
     super.onEdittingComplete,
     this.extraPrefix = false,
     super.required = false,
+    super.suffixIconBuilder,
     super.readOnly = false,
     super.minLines,
     super.customValidator,
