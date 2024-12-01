@@ -294,24 +294,31 @@ class DynamicFormState extends State<DynamicForm> {
   }
 
   void updateField(
-      {required String? id, required CompositeValue value, String Function(CompositeValue)? valueConverter}) {
+      {required String? id, required CompositeValue? value, String Function(CompositeValue)? valueConverter}) {
     final field = _findField(widget.fields, id);
 
-    if (field != null) {
-      final controller = controllers[id];
-      final valueString = valueConverter?.call(value) ?? value.value;
-      if (controller is MaskedTextController) {
-        controller.updateText(valueString);
-      } else {
-        controller?.text = valueString;
-      }
-
-      if (field is MultitypeField && value.extra != null) {
-        field.keyField.currentState?.updateExtra(value.extra!);
-      }
-
-      _commonOnChanged(value, field);
+    if (field == null) {
+      return;
     }
+
+    if (value == null) {
+      _commonOnChanged(value, field);
+      return;
+    }
+
+    final controller = controllers[id];
+    final valueString = valueConverter?.call(value) ?? value.value;
+    if (controller is MaskedTextController) {
+      controller.updateText(valueString);
+    } else {
+      controller?.text = valueString;
+    }
+
+    if (field is MultitypeField && value.extra != null) {
+      field.keyField.currentState?.updateExtra(value.extra!);
+    }
+
+    _commonOnChanged(value, field);
   }
 
   Map<String, CompositeValue>? getValues({bool withValidate = true}) {
