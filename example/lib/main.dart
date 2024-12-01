@@ -57,6 +57,10 @@ class _MyAppState extends State<MyApp> {
             child: child,
           );
         },
+        suffixIconBuilder: (context) => IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.close),
+        ),
         fieldId: 'screen_res_example',
         label: 'Delayed result',
         extra: ScreenResultExtra(

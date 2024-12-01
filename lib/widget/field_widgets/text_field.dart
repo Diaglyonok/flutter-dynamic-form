@@ -215,7 +215,11 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
           maxLines: (widget.multiline || widget.field.minLines != null ? null : 1),
           maxLength: widget.field.maxLength,
           decoration: decoration.copyWith(
-            suffixIcon: widget.current == null || !widget.current!.hasFocus || suffixIcon == null ? null : suffixIcon,
+            suffixIcon: widget.current == null ||
+                    !widget.current!.hasFocus && widget.field.fieldType != FieldTypes.ScreenResult ||
+                    suffixIcon == null
+                ? null
+                : suffixIcon,
             counterStyle: widget.field.maxLength != null ? decoration.counterStyle : null,
             hintText: widget.hintText,
             labelText: caption,
