@@ -301,12 +301,14 @@ class DynamicFormState extends State<DynamicForm> {
       return;
     }
 
+    final controller = controllers[id];
+
     if (value == null) {
+      controller?.text = '';
       _commonOnChanged(value, field);
       return;
     }
 
-    final controller = controllers[id];
     final valueString = valueConverter?.call(value) ?? value.value;
     if (controller is MaskedTextController) {
       controller.updateText(valueString);
