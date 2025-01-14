@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_form/flutter_dynamic_form.dart';
 import 'package:flutter_dynamic_form/i18n/strings.g.dart';
 import 'package:flutter_dynamic_form/model/auto_calculate_field.dart';
+import 'package:flutter_dynamic_form/model/link_field.dart';
+import 'package:flutter_dynamic_form/model/link_list_field.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
 import 'package:flutter_dynamic_form/model/row_field.dart';
 import 'package:flutter_dynamic_form/utils/plus_text_formatter.dart';
@@ -49,6 +51,22 @@ class _MyAppState extends State<MyApp> {
         required: true,
         fieldType: FieldTypes.Email,
         label: "Email",
+      ),
+      LinkField(
+        fieldId: 'link',
+        label: "Link",
+      ),
+      LinksListField(
+        fieldId: 'links_list',
+        initialFields: [
+          LinkField(
+            fieldId: 'link1',
+            label: "Link 1",
+            required: true,
+          ),
+        ],
+        label: 'List',
+        required: true,
       ),
       ScreenResultField(
         wrapper: ({required context, required child}) {
@@ -290,9 +308,8 @@ class _MyAppState extends State<MyApp> {
         value: CompositeValue('12:30'),
         label: 'Time',
       ),
-      Field(
+      LinkField(
         fieldId: 'link',
-        fieldType: FieldTypes.Link,
         label: 'Link',
       ),
       DateField(

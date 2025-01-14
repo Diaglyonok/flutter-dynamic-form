@@ -135,17 +135,14 @@ class DynamicFormValidators {
     if (value.length < options.minLength) {
       return t.passwordErrorText(
         MIN: options.minLength.toString(),
-        MAX: options.maxLength.toString(),
       );
     } else if (options.maxLength > options.minLength && options.maxLength > 0 && value.length > options.maxLength) {
       return t.passwordErrorText(
         MIN: options.minLength.toString(),
-        MAX: options.maxLength.toString(),
       );
     } else if (regExp != null && !(regExp.hasMatch(value))) {
       return t.passwordErrorText(
         MIN: options.minLength.toString(),
-        MAX: options.maxLength.toString(),
       );
     } else {
       return null;

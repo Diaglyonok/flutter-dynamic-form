@@ -273,5 +273,7 @@
         "Su"
     ],
     "startDate": "Start Date",
-    "endDate": "End Date"
+    "endDate": "End Date",
+    "addLink": "Add link",
+    "link": "Link"
 }

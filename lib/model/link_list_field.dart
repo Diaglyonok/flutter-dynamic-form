@@ -1,20 +1,19 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_dynamic_form/model/dynamic_form_models.dart';
+import 'package:flutter_dynamic_form/model/link_field.dart';
 
-import '../model/dynamic_form_models.dart';
+class LinksListField extends Field {
+  final List<LinkField> initialFields;
+  final Widget? addButton;
 
-class LinkField extends Field {
-  final Widget? customCloseIcon;
-  final Widget? customOpenIcon;
-
-  LinkField({
-    this.customCloseIcon,
-    this.customOpenIcon,
+  LinksListField({
+    required this.initialFields,
     required super.fieldId,
+    this.addButton,
     super.required = false,
     super.readOnly = false,
     required super.label,
     super.customValidator,
-    super.customTextStyle,
     super.minLines,
     super.maskText,
     super.maxLength,
@@ -34,6 +33,6 @@ class LinkField extends Field {
     super.wrapper,
     super.onEdittingComplete,
   }) : super(
-          fieldType: FieldTypes.Link,
+          fieldType: FieldTypes.LinksList,
         );
 }

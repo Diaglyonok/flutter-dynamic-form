@@ -5,15 +5,15 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dynamic_form/i18n/strings.g.dart';
+import 'package:flutter_dynamic_form/model/link_list_field.dart';
 import 'package:flutter_dynamic_form/model/password_field.dart';
 import 'package:flutter_dynamic_form/model/row_field.dart';
 import 'package:flutter_dynamic_form/utils/plus_text_formatter.dart';
 import 'package:flutter_dynamic_form/utils/replacement_formatter.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/color_picker.dart';
+import 'package:flutter_dynamic_form/widget/field_widgets/list_links_field_view.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/period_field_view.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../flutter_dynamic_form.dart';
 import '../logic/dynamic_form_validators.dart';
@@ -344,6 +344,7 @@ class DynamicFormState extends State<DynamicForm> {
         case FieldTypes.Name:
         case FieldTypes.ScreenResult:
         case FieldTypes.Link:
+        case FieldTypes.LinksList:
         case FieldTypes.Email:
           controllers[field.fieldId] = TextEditingController(text: field.value?.value);
           break;
@@ -480,6 +481,8 @@ class DynamicFormState extends State<DynamicForm> {
         return _generateCounter(context, field, current, next);
       case FieldTypes.Link:
         return _generateLinkField(context, field, current, next);
+      case FieldTypes.LinksList:
+        return _generateLinksListField(context, field, current, next);
     }
   }
 
@@ -794,77 +797,35 @@ class DynamicFormState extends State<DynamicForm> {
     FocusNode? current,
     FocusNode? next,
   ) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: DynamicTextField(
-              decoration: widget.decoration,
-              multiline: field.multiline,
-              context: context,
-              label: field.label,
-              field: field,
-              capitalize: true,
-              style: widget.commonStyle,
-              next: next,
-              current: current,
-              inputType: TextInputType.url,
-              scrollPadding: _pinButton ? 100 : null,
-              required: field.required,
-              validators: _commonTextValidators(field),
-              onChanged: (value) => _commonOnChanged(value, field),
-              controller: controllers[field.fieldId]!,
-              suffixIcon: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: MaterialButton(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      padding: const EdgeInsets.all(0.0),
-                      child: field is LinkField && field.customCloseIcon != null
-                          ? field.customCloseIcon
-                          : Icon(
-                              Icons.close,
-                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.32),
-                            ),
-                      onPressed: () {
-                        controllers[field.fieldId]!.clear();
-                        _commonOnChanged(CompositeValue(''), field);
-                      },
-                    ),
-                  ),
-                ],
-              )),
-        ),
-        if (controllers[field.fieldId]!.text.isNotEmpty)
-          SizedBox(
-            width: 40,
-            height: 40,
-            child: MaterialButton(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              padding: const EdgeInsets.only(),
-              child: Center(
-                child: field is LinkField && field.customOpenIcon != null
-                    ? field.customOpenIcon
-                    : Icon(
-                        Icons.open_in_new,
-                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.32),
-                      ),
-              ),
-              onPressed: () async {
-                final link = controllers[field.fieldId]!.text;
-                if (!(await canLaunchUrlString(link))) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.t.wrongLinkSnack)));
-                  return;
-                }
+    return LinkView(
+        field: field as LinkField,
+        current: current,
+        next: next,
+        controller: controllers[field.fieldId]!,
+        commonStyle: widget.commonStyle,
+        decoration: widget.decoration,
+        scrollPadding: _pinButton ? 100 : null,
+        onChanged: (value) => _commonOnChanged(value, field),
+        validatorsFunc: _commonTextValidators(field));
+  }
 
-                await launchUrlString(link);
-              },
-            ),
-          )
-      ],
+  Widget _generateLinksListField(
+    BuildContext context,
+    Field field,
+    FocusNode? current,
+    FocusNode? next,
+  ) {
+    return ListLinksFieldView(
+      initialList: (field as LinksListField).initialFields,
+      current: current,
+      next: next,
+      required: field.required,
+      controller: controllers[field.fieldId]!,
+      commonStyle: widget.commonStyle,
+      decoration: widget.decoration,
+      scrollPadding: _pinButton ? 100 : null,
+      onChanged: (value) => _commonOnChanged(value, field),
+      validatorsFunc: _commonTextValidators,
     );
   }
 
@@ -970,8 +931,6 @@ class DynamicFormState extends State<DynamicForm> {
             color: field.readOnly
                 ? Theme.of(context).colorScheme.onSurface.withOpacity(0.44)
                 : Theme.of(context).colorScheme.onSurface);
-
-    final extra = values[field.fieldId]?.extra;
 
     return DynamicTextField(
       decoration: widget.decoration,

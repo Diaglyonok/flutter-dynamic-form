@@ -55,6 +55,7 @@ enum FieldTypes {
   RowField,
   Counter,
   Link,
+  LinksList,
 }
 
 class Field {

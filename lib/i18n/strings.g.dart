@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 538 (269 per locale)
+/// Strings: 542 (271 per locale)
 ///
-/// Built on 2023-11-01 at 12:29 UTC
+/// Built on 2025-01-14 at 06:45 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -24,8 +24,8 @@ const AppLocale _baseLocale = AppLocale.en;
 /// - LocaleSettings.setLocale(AppLocale.en) // set locale
 /// - Locale locale = AppLocale.en.flutterLocale // get flutter locale from enum
 /// - if (LocaleSettings.currentLocale == AppLocale.en) // locale check
-enum AppLocale with BaseAppLocale<AppLocale, _StringsEn> {
-	en(languageCode: 'en', build: _StringsEn.build),
+enum AppLocale with BaseAppLocale<AppLocale, Translations> {
+	en(languageCode: 'en', build: Translations.build),
 	ru(languageCode: 'ru', build: _StringsRu.build);
 
 	const AppLocale({required this.languageCode, this.scriptCode, this.countryCode, required this.build}); // ignore: unused_element
@@ -33,10 +33,10 @@ enum AppLocale with BaseAppLocale<AppLocale, _StringsEn> {
 	@override final String languageCode;
 	@override final String? scriptCode;
 	@override final String? countryCode;
-	@override final TranslationBuilder<AppLocale, _StringsEn> build;
+	@override final TranslationBuilder<AppLocale, Translations> build;
 
 	/// Gets current instance managed by [LocaleSettings].
-	_StringsEn get translations => LocaleSettings.instance.translationMap[this]!;
+	Translations get translations => LocaleSettings.instance.translationMap[this]!;
 }
 
 /// Method A: Simple
@@ -48,7 +48,7 @@ enum AppLocale with BaseAppLocale<AppLocale, _StringsEn> {
 /// Usage:
 /// String a = t.someKey.anotherKey;
 /// String b = t['someKey.anotherKey']; // Only for edge cases!
-_StringsEn get t => LocaleSettings.instance.currentTranslations;
+Translations get t => LocaleSettings.instance.currentTranslations;
 
 /// Method B: Advanced
 ///
@@ -65,17 +65,10 @@ _StringsEn get t => LocaleSettings.instance.currentTranslations;
 /// final t = Translations.of(context); // Get t variable.
 /// String a = t.someKey.anotherKey; // Use t variable.
 /// String b = t['someKey.anotherKey']; // Only for edge cases!
-class Translations {
-	Translations._(); // no constructor
-
-	static _StringsEn of(BuildContext context) => InheritedLocaleData.of<AppLocale, _StringsEn>(context).translations;
-}
-
-/// The provider for method B
-class TranslationProvider extends BaseTranslationProvider<AppLocale, _StringsEn> {
+class TranslationProvider extends BaseTranslationProvider<AppLocale, Translations> {
 	TranslationProvider({required super.child}) : super(settings: LocaleSettings.instance);
 
-	static InheritedLocaleData<AppLocale, _StringsEn> of(BuildContext context) => InheritedLocaleData.of<AppLocale, _StringsEn>(context);
+	static InheritedLocaleData<AppLocale, Translations> of(BuildContext context) => InheritedLocaleData.of<AppLocale, Translations>(context);
 }
 
 /// Method B shorthand via [BuildContext] extension method.
@@ -84,11 +77,11 @@ class TranslationProvider extends BaseTranslationProvider<AppLocale, _StringsEn>
 /// Usage (e.g. in a widget's build method):
 /// context.t.someKey.anotherKey
 extension BuildContextTranslationsExtension on BuildContext {
-	_StringsEn get t => TranslationProvider.of(this).translations;
+	Translations get t => TranslationProvider.of(this).translations;
 }
 
 /// Manages all translation instances and the current locale
-class LocaleSettings extends BaseFlutterLocaleSettings<AppLocale, _StringsEn> {
+class LocaleSettings extends BaseFlutterLocaleSettings<AppLocale, Translations> {
 	LocaleSettings._() : super(utils: AppLocaleUtils.instance);
 
 	static final instance = LocaleSettings._();
@@ -110,7 +103,7 @@ class LocaleSettings extends BaseFlutterLocaleSettings<AppLocale, _StringsEn> {
 }
 
 /// Provides utility functions without any side effects.
-class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, _StringsEn> {
+class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
 	AppLocaleUtils._() : super(baseLocale: _baseLocale, locales: AppLocale.values);
 
 	static final instance = AppLocaleUtils._();
@@ -126,11 +119,16 @@ class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, _StringsEn> {
 // translations
 
 // Path: <root>
-class _StringsEn implements BaseTranslations<AppLocale, _StringsEn> {
+class Translations implements BaseTranslations<AppLocale, Translations> {
+	/// Returns the current translations of the given [context].
+	///
+	/// Usage:
+	/// final t = Translations.of(context);
+	static Translations of(BuildContext context) => InheritedLocaleData.of<AppLocale, Translations>(context).translations;
 
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [AppLocale.build] is preferred.
-	_StringsEn.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
+	Translations.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
 		: assert(overrides == null, 'Set "translation_overrides: true" in order to enable this feature.'),
 		  $meta = TranslationMetadata(
 		    locale: AppLocale.en,
@@ -142,12 +140,12 @@ class _StringsEn implements BaseTranslations<AppLocale, _StringsEn> {
 	}
 
 	/// Metadata for the translations of <en>.
-	@override final TranslationMetadata<AppLocale, _StringsEn> $meta;
+	@override final TranslationMetadata<AppLocale, Translations> $meta;
 
 	/// Access flat map
 	dynamic operator[](String key) => $meta.getTranslation(key);
 
-	late final _StringsEn _root = this; // ignore: unused_field
+	late final Translations _root = this; // ignore: unused_field
 
 	// Translations
 	Map<String, String> get countries => {
@@ -380,7 +378,7 @@ class _StringsEn implements BaseTranslations<AppLocale, _StringsEn> {
 		'ZM': 'Zambia',
 		'ZW': 'Zimbabwe',
 	};
-	String passwordErrorText({required Object MIN, required Object MAX}) => 'Your password must be between ${MIN} and ${MAX} characters and contain at least one number and one letter';
+	String passwordErrorText({required Object MIN}) => 'Your password must be least ${MIN} characters length and contain at least one number and one letter';
 	String useridErrorText({required Object MIN}) => 'Login length should be greater than ${MIN} characters';
 	String get invalidPhoneNumber => 'Phone number is not valid';
 	String get invalidTime => 'Time is not valid';
@@ -425,11 +423,12 @@ class _StringsEn implements BaseTranslations<AppLocale, _StringsEn> {
 	];
 	String get startDate => 'Start Date';
 	String get endDate => 'End Date';
+	String get addLink => 'Add link';
+	String get link => 'Link';
 }
 
 // Path: <root>
-class _StringsRu implements _StringsEn {
-
+class _StringsRu implements Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [AppLocale.build] is preferred.
 	_StringsRu.build({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver})
@@ -444,7 +443,7 @@ class _StringsRu implements _StringsEn {
 	}
 
 	/// Metadata for the translations of <ru>.
-	@override final TranslationMetadata<AppLocale, _StringsEn> $meta;
+	@override final TranslationMetadata<AppLocale, Translations> $meta;
 
 	/// Access flat map
 	@override dynamic operator[](String key) => $meta.getTranslation(key);
@@ -682,7 +681,7 @@ class _StringsRu implements _StringsEn {
 		'ZM': 'Замбия',
 		'ZW': 'Зимбабве',
 	};
-	@override String passwordErrorText({required Object MIN, required Object MAX}) => 'Пароль должен быть в пределах от ${MIN} до ${MAX} символов и содержать как минимум одну букву и одну цифру';
+	@override String passwordErrorText({required Object MIN}) => 'Пароль должен содержать как минимум ${MIN} символов и содержать как минимум одну букву и одну цифру';
 	@override String useridErrorText({required Object MIN}) => 'Логин должен содержать более ${MIN} символов';
 	@override String get invalidPhoneNumber => 'Введите корректный номер телефона';
 	@override String get invalidTime => 'Введите корректное время';
@@ -727,12 +726,14 @@ class _StringsRu implements _StringsEn {
 	];
 	@override String get startDate => 'Дата начала';
 	@override String get endDate => 'Дата окончания';
+	@override String get addLink => 'Добавить ссылку';
+	@override String get link => 'Ссылка';
 }
 
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 
-extension on _StringsEn {
+extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
 			case 'countries.AA': return 'Any number';
@@ -963,7 +964,7 @@ extension on _StringsEn {
 			case 'countries.CD': return 'Zaire';
 			case 'countries.ZM': return 'Zambia';
 			case 'countries.ZW': return 'Zimbabwe';
-			case 'passwordErrorText': return ({required Object MIN, required Object MAX}) => 'Your password must be between ${MIN} and ${MAX} characters and contain at least one number and one letter';
+			case 'passwordErrorText': return ({required Object MIN}) => 'Your password must be least ${MIN} characters length and contain at least one number and one letter';
 			case 'useridErrorText': return ({required Object MIN}) => 'Login length should be greater than ${MIN} characters';
 			case 'invalidPhoneNumber': return 'Phone number is not valid';
 			case 'invalidTime': return 'Time is not valid';
@@ -1004,6 +1005,8 @@ extension on _StringsEn {
 			case 'weeksShort.6': return 'Su';
 			case 'startDate': return 'Start Date';
 			case 'endDate': return 'End Date';
+			case 'addLink': return 'Add link';
+			case 'link': return 'Link';
 			default: return null;
 		}
 	}
@@ -1240,7 +1243,7 @@ extension on _StringsRu {
 			case 'countries.CD': return 'Заир';
 			case 'countries.ZM': return 'Замбия';
 			case 'countries.ZW': return 'Зимбабве';
-			case 'passwordErrorText': return ({required Object MIN, required Object MAX}) => 'Пароль должен быть в пределах от ${MIN} до ${MAX} символов и содержать как минимум одну букву и одну цифру';
+			case 'passwordErrorText': return ({required Object MIN}) => 'Пароль должен содержать как минимум ${MIN} символов и содержать как минимум одну букву и одну цифру';
 			case 'useridErrorText': return ({required Object MIN}) => 'Логин должен содержать более ${MIN} символов';
 			case 'invalidPhoneNumber': return 'Введите корректный номер телефона';
 			case 'invalidTime': return 'Введите корректное время';
@@ -1281,6 +1284,8 @@ extension on _StringsRu {
 			case 'weeksShort.6': return 'Вс';
 			case 'startDate': return 'Дата начала';
 			case 'endDate': return 'Дата окончания';
+			case 'addLink': return 'Добавить ссылку';
+			case 'link': return 'Ссылка';
 			default: return null;
 		}
 	}
