@@ -63,7 +63,7 @@ class _ListLinksFieldViewState extends State<ListLinksFieldView> {
     for (int i = 0; i < widget.initialList.length; i++) {
       fields.add(
         _LinkViewParams(
-          controller: TextEditingController(),
+          controller: TextEditingController(text: widget.initialList[i].value?.value ?? ''),
           field: widget.initialList[i],
           node: i == 0 ? widget.current : FocusNode(),
         ),
