@@ -16,7 +16,7 @@ class ColorField extends Field {
     super.options,
     super.confirmField,
     super.dependsOn,
-    super.isCapitalized,
+    super.capitalizeType,
     super.validationExpression,
     super.validationErrorMessage,
     Color? initColor,

@@ -127,7 +127,7 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
       confirmField: widget.field.confirmField,
       value: widget.field.value,
       dependsOn: widget.field.dependsOn,
-      isCapitalized: widget.field.isCapitalized,
+      capitalizeType: widget.field.capitalizeType,
       validationExpression: widget.field.validationExpression,
       validationErrorMessage: widget.field.validationErrorMessage,
       onUpdated: widget.field.onUpdated,

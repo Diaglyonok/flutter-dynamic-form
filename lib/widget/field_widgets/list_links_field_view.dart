@@ -184,7 +184,7 @@ class LinkView extends StatelessWidget {
               context: context,
               label: field.label,
               field: field,
-              capitalize: false,
+              capitalizeType: TextCapitalization.none,
               style: commonStyle,
               next: next,
               current: current,

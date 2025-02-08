@@ -27,7 +27,7 @@ class PhoneField extends Field {
     super.confirmField,
     CompositeValue? value,
     super.dependsOn,
-    super.isCapitalized,
+    super.capitalizeType,
     super.validationExpression,
     super.validationErrorMessage,
     required this.initialPrefix,

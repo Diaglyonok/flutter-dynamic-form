@@ -78,7 +78,7 @@ class Field {
   final Widget Function(BuildContext context)? suffixIconBuilder;
   final CompositeValue? value;
   final List<DependsOn>? dependsOn;
-  final bool? isCapitalized;
+  final TextCapitalization? capitalizeType;
   final bool multiline;
   final String? validationExpression;
   final String? validationErrorMessage;
@@ -112,7 +112,7 @@ class Field {
     this.maxLength,
     this.inputType,
     this.options,
-    this.isCapitalized,
+    this.capitalizeType,
     this.confirmField,
     this.dependsOn,
     this.value,
@@ -141,7 +141,7 @@ class Field {
       maxLength: maxLength,
       inputType: inputType,
       confirmField: confirmField,
-      isCapitalized: isCapitalized,
+      capitalizeType: capitalizeType,
       fieldType: fieldType,
       options: options,
       dependsOn: dependsOn,
@@ -169,7 +169,7 @@ class Field {
       inputType: inputType,
       confirmField: confirmField,
       fieldType: fieldType,
-      isCapitalized: isCapitalized,
+      capitalizeType: capitalizeType,
       options: options,
       dependsOn: dependsOn,
       value: value,

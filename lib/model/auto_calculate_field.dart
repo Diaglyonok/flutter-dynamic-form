@@ -20,7 +20,7 @@ class AutoCalculateField extends Field {
     super.confirmField,
     super.value,
     super.dependsOn,
-    super.isCapitalized,
+    super.capitalizeType,
     super.validationExpression,
     super.validationErrorMessage,
     super.onUpdated,

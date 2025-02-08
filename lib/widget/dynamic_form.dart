@@ -779,7 +779,7 @@ class DynamicFormState extends State<DynamicForm> {
       context: context,
       label: field.label,
       field: field,
-      capitalize: true,
+      capitalizeType: TextCapitalization.words,
       style: widget.commonStyle,
       next: next,
       current: current,

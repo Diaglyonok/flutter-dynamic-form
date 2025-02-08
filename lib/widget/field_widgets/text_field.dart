@@ -20,7 +20,7 @@ class DynamicTextField extends StatefulWidget {
   final FocusNode? current;
   final FocusNode? next;
   final bool required;
-  final bool capitalize;
+  final TextCapitalization? capitalizeType;
   final TextStyle? style;
   final bool multiline;
   final bool autosize;
@@ -45,7 +45,7 @@ class DynamicTextField extends StatefulWidget {
     this.current,
     this.next,
     this.required = false,
-    this.capitalize = false,
+    this.capitalizeType,
     this.style,
     this.multiline = false,
     this.autosize = false,
@@ -205,9 +205,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
                   ...(widget.formatters ?? []),
                 ],
           cursorColor: Theme.of(context).colorScheme.secondary,
-          textCapitalization: widget.capitalize || (widget.field.isCapitalized ?? false)
-              ? TextCapitalization.words
-              : TextCapitalization.none,
+          textCapitalization: widget.capitalizeType ?? widget.field.capitalizeType ?? TextCapitalization.sentences,
           style: style,
           obscureText: widget.maskText ?? false,
           cursorWidth: 1.0,
