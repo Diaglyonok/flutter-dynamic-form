@@ -11,6 +11,7 @@ class PhoneBottomViewCustomizations {
 class PhoneField extends Field {
   final String initialPrefix;
   final PhoneBottomViewCustomizations customizations;
+  final Future<String>? Function()? onPickPhone;
 
   PhoneField({
     required super.fieldId,
@@ -25,6 +26,7 @@ class PhoneField extends Field {
     super.inputType,
     super.options,
     super.confirmField,
+    this.onPickPhone,
     CompositeValue? value,
     super.dependsOn,
     super.capitalizeType,

@@ -220,10 +220,12 @@ class _MyAppState extends State<MyApp> {
         label: 'Read Only Test',
       ),
       PhoneField(
-        initialPrefix: '+',
-        fieldId: 'phone_example',
-        label: 'Phone Text',
-      ),
+          initialPrefix: '+',
+          fieldId: 'phone_example',
+          label: 'Phone Text',
+          onPickPhone: () async {
+            return '8 (981) 123123123';
+          }),
       Field(
         fieldId: 'simple_num_fueld',
         fieldType: FieldTypes.Number,

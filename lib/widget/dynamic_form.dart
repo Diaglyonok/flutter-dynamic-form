@@ -959,6 +959,45 @@ class DynamicFormState extends State<DynamicForm> {
       },
       controller: controllers[field.fieldId]!,
       maskText: field.maskText,
+      suffixIcon: field is PhoneField && field.onPickPhone != null
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 40,
+                  width: 40,
+                  child: MaterialButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.all(0.0),
+                    child: Icon(
+                      Icons.account_circle_outlined,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                    onPressed: () async {
+                      final phone = await field.onPickPhone!();
+
+                      if (phone == null) {
+                        return;
+                      }
+
+                      final phoneFormatter = PhoneInputFormatter(
+                        onCountrySelected: (c) {},
+                        allowEndlessPhone: true,
+                      );
+                      final plusFormatter = PlusTextFormatter();
+
+                      // Преобразуем строку через форматтеры
+                      TextEditingValue value = TextEditingValue(text: phone);
+                      value = phoneFormatter.formatEditUpdate(value, value);
+                      value = plusFormatter.formatEditUpdate(value, value);
+
+                      controllers[field.fieldId]!.text = value.text;
+                    },
+                  ),
+                ),
+              ],
+            )
+          : null,
     );
   }
 
