@@ -11,7 +11,7 @@ class PhoneBottomViewCustomizations {
 class PhoneField extends Field {
   final String initialPrefix;
   final PhoneBottomViewCustomizations customizations;
-  final Future<String>? Function()? onPickPhone;
+  final Future<String?> Function()? onPickPhone;
 
   PhoneField({
     required super.fieldId,
