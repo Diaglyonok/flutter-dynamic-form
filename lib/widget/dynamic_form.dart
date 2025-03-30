@@ -992,6 +992,8 @@ class DynamicFormState extends State<DynamicForm> {
                       value = plusFormatter.formatEditUpdate(value, value);
 
                       controllers[field.fieldId]!.text = value.text;
+                      final result = values[field.fieldId];
+                      _commonOnChanged(CompositeValue(value.text, extra: result?.extra), field);
                     },
                   ),
                 ),

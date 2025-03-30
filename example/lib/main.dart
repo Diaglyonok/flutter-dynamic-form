@@ -358,7 +358,7 @@ class _MyAppState extends State<MyApp> {
       ),
       AutoCalculateField(
         customValidator: (strValue) {
-          return 'test validation';
+          return null;
         },
         calculate: (values) {
           final start = format.safeStrictParse(values?['date_period']?.value);
@@ -460,7 +460,7 @@ class _MyAppState extends State<MyApp> {
             child: SimpleButton(
               title: 'Validate',
               callback: () {
-                final values = key.currentState?.getValues();
+                final values = key.currentState?.getValues(withValidate: false);
                 log(values.toString());
               },
             ),

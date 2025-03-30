@@ -346,6 +346,7 @@ extension _DateFormatExt on DateFormat {
     }
   }
 
+  // ignore: unused_element
   String? safeFormat(DateTime? dateTime) {
     try {
       return format(dateTime!);

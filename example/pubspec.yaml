@@ -21,7 +21,7 @@ dependencies:
   dglk_flutter_dev_kit:
     git:
       url: https://github.com/Diaglyonok/dglk-flutter-dev-kit.git
-      ref: "3204fcb"
+      ref: "55f4e7d"
   dglk_bottom_sheet_route:
     git:
       url: https://github.com/Diaglyonok/dglk-bottom-sheet-route.git
@@ -29,7 +29,7 @@ dependencies:
   dglk_simple_button:
     git:
       url: https://github.com/Diaglyonok/dglk_simple_button.git
-      ref: 812a711
+      ref: 01540f8
   jiffy: 5.0.1
   flutter_dynamic_form:
     path: ../
