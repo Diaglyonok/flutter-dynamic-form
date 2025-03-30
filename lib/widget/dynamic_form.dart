@@ -994,6 +994,8 @@ class DynamicFormState extends State<DynamicForm> {
                       controllers[field.fieldId]!.text = value.text;
                       final result = values[field.fieldId];
                       _commonOnChanged(CompositeValue(value.text, extra: result?.extra), field);
+
+                      current?.requestFocus();
                     },
                   ),
                 ),
