@@ -219,6 +219,8 @@ abstract class DependsOn {
   });
 
   bool Function(String value, String? extra) get condition;
+
+  bool get checkNullValue => true;
 }
 
 class DependsOnValue extends DependsOn {

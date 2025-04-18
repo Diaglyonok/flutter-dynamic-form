@@ -40,7 +40,9 @@ class DynamicFormUtils {
       final dependsOnValue = field.dependsOn![i];
       final valueField = values[dependsOnValue.fieldId];
 
-      result = result && valueField != null && dependsOnValue.condition(valueField.value, valueField.extra);
+      result = result &&
+          (dependsOnValue.checkNullValue ? valueField != null : true) &&
+          dependsOnValue.condition(valueField?.value ?? '', valueField?.extra);
     }
 
     return result;
