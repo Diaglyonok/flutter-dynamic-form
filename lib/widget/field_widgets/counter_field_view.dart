@@ -1,6 +1,8 @@
 import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dynamic_form/widget/field_widgets/web_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../flutter_dynamic_form.dart';
@@ -34,35 +36,58 @@ class CounterFieldView extends StatelessWidget {
     this.style,
   }) : super(key: key);
 
+  Widget _defaultPicker(BuildContext context,
+      {double itemExtent = 32, int itemCount = 9007199254740991}) {
+    return CupertinoPicker.builder(
+      itemExtent: itemExtent,
+      childCount: itemCount,
+      scrollController:
+          FixedExtentScrollController(initialItem: int.tryParse(controller.text) ?? 0),
+      onSelectedItemChanged: (index) {
+        controller.text = index.toString();
+        onChanged?.call(CompositeValue(index.toString()));
+      },
+      itemBuilder: (context, index) {
+        return Center(
+            child: Text(
+          index.toString(),
+          style: field.customTextStyle ??
+              style?.copyWith(
+                fontSize: 18,
+              ),
+        ));
+      },
+    );
+  }
+
+  Widget _webPicker(BuildContext context,
+      {double itemExtent = 32, int itemCount = 9007199254740991, double pickerHeight = 240}) {
+    return WebPicker(
+      itemExtent: itemExtent,
+      itemCount: itemCount,
+      itemBuilder: (c, i) => Text('$i'),
+      pickerHeight: pickerHeight,
+      initialItem: int.tryParse(controller.text) ?? 0,
+      onSelectedItemChanged: (index) {
+        controller.text = index.toString();
+        onChanged?.call(CompositeValue(index.toString()));
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _onPressed() {
+      const height = 240.0;
       Navigator.of(context, rootNavigator: true).push(
         BottomSheetRoute(
           builder: (context) => SizedBox(
-            height: 240,
+            height: height,
             child: Column(
               children: [
                 Expanded(
-                  child: CupertinoPicker.builder(
-                    itemExtent: 32,
-                    childCount: 9007199254740991,
-                    scrollController: FixedExtentScrollController(initialItem: int.tryParse(controller.text) ?? 0),
-                    onSelectedItemChanged: (index) {
-                      controller.text = index.toString();
-                      onChanged?.call(CompositeValue(index.toString()));
-                    },
-                    itemBuilder: (context, index) {
-                      return Center(
-                          child: Text(
-                        index.toString(),
-                        style: field.customTextStyle ??
-                            style?.copyWith(
-                              fontSize: 18,
-                            ),
-                      ));
-                    },
-                  ),
+                  child:
+                      kIsWeb ? _webPicker(context, pickerHeight: height) : _defaultPicker(context),
                 )
               ],
             ),
