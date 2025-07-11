@@ -6,7 +6,7 @@ import '../field_widgets/bottom_pick_button.dart';
 class MultitypeFieldWrapper extends StatefulWidget {
   final MultitypeField? field;
   final Widget child;
-  final Function(String extra)? onExtraChanged;
+  final Function(String extra, bool fromUser)? onExtraChanged;
   final TextStyle style;
   const MultitypeFieldWrapper({
     Key? key,
@@ -32,6 +32,7 @@ class MultitypeFieldWrapperState extends State<MultitypeFieldWrapper> {
   void updateExtra(String extra) {
     current = extra;
     setState(() {});
+    widget.onExtraChanged?.call(extra, false);
   }
 
   @override
@@ -56,7 +57,7 @@ class MultitypeFieldWrapperState extends State<MultitypeFieldWrapper> {
             onChanged: (code) {
               current = code;
               setState(() {});
-              widget.onExtraChanged?.call(code);
+              widget.onExtraChanged?.call(code, true);
             },
           ),
         ),

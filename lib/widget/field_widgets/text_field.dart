@@ -159,12 +159,14 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
           : widget.field is MultitypeField
               ? (widget.field as MultitypeField)
               : null,
-      onExtraChanged: (extra) {
+      onExtraChanged: (extra, fromUser) {
         currentExtra = extra;
         currentValue = CompositeValue(widget.controller.text, extra: extra);
-        widget.onChanged?.call(
-          currentValue,
-        );
+        if(fromUser) {
+          widget.onChanged?.call(
+            currentValue,
+          );
+        }
       },
       child: InfoWrapper(
         shouldShow: widget.field.shouldShowInfo?.call(currentValue) ?? true,
