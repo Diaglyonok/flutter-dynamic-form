@@ -86,7 +86,9 @@ class MaskedTextController extends TextEditingController {
   @override
   set text(String newText) {
     if (super.text != newText) {
-      super.text = newText;
+      super.value = super.value.copyWith(
+        text: newText
+      );
     }
   }
 
