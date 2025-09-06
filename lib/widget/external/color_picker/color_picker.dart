@@ -86,8 +86,6 @@ class _CircleColorPickerState extends State<CircleColorPicker> with TickerProvid
   late AnimationController _saturationController;
   late AnimationController _hueController;
 
-  final GlobalKey _slidersKey = GlobalKey();
-
   Color get _color {
     return HSLColor.fromAHSL(
       1,
