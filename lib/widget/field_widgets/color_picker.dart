@@ -15,6 +15,7 @@ class ColorPicker extends StatefulWidget {
 
 class _ColorPickerState extends State<ColorPicker> {
   ValueNotifier<Color> color = ValueNotifier(Colors.white);
+  Color? overrideColor;
 
   @override
   void initState() {
@@ -22,6 +23,8 @@ class _ColorPickerState extends State<ColorPicker> {
     if (field is ColorField && field.value != null && int.tryParse(field.value!.value) != null) {
       color.value = Color(int.tryParse(widget.field.value!.value)!);
     }
+
+    overrideColor = field is ColorField ? field.overrideColor : null;
 
     super.initState();
   }
@@ -51,10 +54,10 @@ class _ColorPickerState extends State<ColorPicker> {
                 valueListenable: color,
                 builder: (context, value, child) {
                   return CircleAvatar(
-                    backgroundColor:
-                        widget.field is ColorField && (widget.field as ColorField).modifier != null
+                    backgroundColor: overrideColor ??
+                        (widget.field is ColorField && (widget.field as ColorField).modifier != null
                             ? (widget.field as ColorField).modifier!.call(value)
-                            : value,
+                            : value),
                     radius: 24,
                   );
                 }),
@@ -77,6 +80,8 @@ class _ColorPickerState extends State<ColorPicker> {
                       widget.field is ColorField ? (widget.field as ColorField).lockFeature : null,
                   initialColor: color.value,
                   onChanged: (color) {
+                    overrideColor = null;
+
                     final resultColor =
                         widget.field is ColorField && (widget.field as ColorField).modifier != null
                             ? (widget.field as ColorField).modifier!.call(color)

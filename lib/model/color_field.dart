@@ -19,11 +19,13 @@ class LockFeature {
 class ColorField extends Field {
   final Color Function(Color color)? modifier;
   final LockFeature? lockFeature;
+  final Color? overrideColor;
 
   ColorField({
     required super.fieldId,
     this.modifier,
     this.lockFeature,
+    this.overrideColor,
     Color? initColor,
     required super.label,
     super.maskText,
