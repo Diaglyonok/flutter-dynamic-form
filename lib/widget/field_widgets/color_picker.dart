@@ -7,10 +7,7 @@ import '../../model/color_field.dart';
 class ColorPicker extends StatefulWidget {
   final Field field;
   final Function(Color) onChanged;
-  final double initialLightness;
-  const ColorPicker(
-      {Key? key, required this.field, required this.onChanged, required this.initialLightness})
-      : super(key: key);
+  const ColorPicker({Key? key, required this.field, required this.onChanged}) : super(key: key);
 
   @override
   State<ColorPicker> createState() => _ColorPickerState();
@@ -79,7 +76,6 @@ class _ColorPickerState extends State<ColorPicker> {
                   lockFeature:
                       widget.field is ColorField ? (widget.field as ColorField).lockFeature : null,
                   initialColor: color.value,
-                  initialLightness: widget.initialLightness,
                   onChanged: (color) {
                     final resultColor =
                         widget.field is ColorField && (widget.field as ColorField).modifier != null
@@ -102,13 +98,12 @@ class _ColorPickerState extends State<ColorPicker> {
 
 class CircleColorPickerDialog extends StatefulWidget {
   final Function(Color) onChanged;
-  final double initialLightness;
+
   final Color initialColor;
   final LockFeature? lockFeature;
   const CircleColorPickerDialog({
     super.key,
     required this.onChanged,
-    required this.initialLightness,
     required this.initialColor,
     this.lockFeature,
   });
@@ -119,10 +114,7 @@ class CircleColorPickerDialog extends StatefulWidget {
 
 class _CircleColorPickerDialogState extends State<CircleColorPickerDialog> {
   late final controller = CircleColorPickerController(
-    initialColor: HSLColor.fromColor(widget.initialColor)
-        .withLightness(widget.initialLightness)
-        .withSaturation(1)
-        .toColor(),
+    initialColor: HSLColor.fromColor(widget.initialColor).toColor(),
   );
 
   @override
