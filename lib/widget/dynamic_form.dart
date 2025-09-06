@@ -1107,7 +1107,7 @@ class DynamicFormState extends State<DynamicForm> {
       initialLightness: color == null ? 0.5 : HSLColor.fromColor(color).lightness,
       field: field,
       onChanged: (color) {
-        _commonOnChanged(CompositeValue(color.toString()), field);
+        _commonOnChanged(CompositeValue(color.toARGB32().toString()), field);
       },
     );
   }
