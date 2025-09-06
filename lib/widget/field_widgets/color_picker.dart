@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dynamic_form/model/dynamic_form_models.dart';
-import 'package:flutter_dynamic_form/widget/external/color_picker/src/palette.dart';
+import 'package:flutter_dynamic_form/widget/external/color_picker/color_picker.dart';
 
 import '../../model/color_field.dart';
 
 class ColorPicker extends StatefulWidget {
   final Field field;
-  final Function(int) onChanged;
-  const ColorPicker({Key? key, required this.field, required this.onChanged}) : super(key: key);
+  final Function(Color) onChanged;
+  final double initialLightness;
+  const ColorPicker(
+      {Key? key, required this.field, required this.onChanged, required this.initialLightness})
+      : super(key: key);
 
   @override
   State<ColorPicker> createState() => _ColorPickerState();
 }
 
 class _ColorPickerState extends State<ColorPicker> {
-  Color color = Colors.white;
+  ValueNotifier<Color> color = ValueNotifier(Colors.white);
 
   @override
   void initState() {
     final field = widget.field;
     if (field is ColorField && field.value != null && int.tryParse(field.value!.value) != null) {
-      color = Color(int.tryParse(widget.field.value!.value)!);
+      color.value = Color(int.tryParse(widget.field.value!.value)!);
     }
 
     super.initState();
@@ -47,12 +50,17 @@ class _ColorPickerState extends State<ColorPicker> {
             const SizedBox(
               width: 24,
             ),
-            CircleAvatar(
-              backgroundColor: widget.field is ColorField && (widget.field as ColorField).modifier != null
-                  ? (widget.field as ColorField).modifier!.call(color)
-                  : color,
-              radius: 24,
-            ),
+            ValueListenableBuilder<Color>(
+                valueListenable: color,
+                builder: (context, value, child) {
+                  return CircleAvatar(
+                    backgroundColor:
+                        widget.field is ColorField && (widget.field as ColorField).modifier != null
+                            ? (widget.field as ColorField).modifier!.call(value)
+                            : value,
+                    radius: 24,
+                  );
+                }),
             const SizedBox(
               width: 12,
             )
@@ -61,16 +69,29 @@ class _ColorPickerState extends State<ColorPicker> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => HueCustomRingPicker(
-              pickerColor: color,
-              portraitOnly: true,
-              onColorChanged: (color) {
-                setState(() {
-                  this.color = color;
-                });
+            builder: (context) => Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 400,
+                  maxHeight: 400,
+                ),
+                child: CircleColorPickerDialog(
+                  lockFeature:
+                      widget.field is ColorField ? (widget.field as ColorField).lockFeature : null,
+                  initialColor: color.value,
+                  initialLightness: widget.initialLightness,
+                  onChanged: (color) {
+                    final resultColor =
+                        widget.field is ColorField && (widget.field as ColorField).modifier != null
+                            ? (widget.field as ColorField).modifier!.call(color)
+                            : color;
 
-                widget.onChanged(color.value);
-              },
+                    this.color.value = resultColor;
+
+                    widget.onChanged(resultColor);
+                  },
+                ),
+              ),
             ),
           );
         },
@@ -79,83 +100,70 @@ class _ColorPickerState extends State<ColorPicker> {
   }
 }
 
-class HueCustomRingPicker extends StatefulWidget {
-  const HueCustomRingPicker({
-    Key? key,
-    required this.pickerColor,
-    required this.onColorChanged,
-    this.portraitOnly = false,
-    this.colorPickerHeight = 250.0,
-    this.hueRingStrokeWidth = 20.0,
-    this.enableAlpha = false,
-    this.displayThumbColor = true,
-    this.pickerAreaBorderRadius = const BorderRadius.all(Radius.zero),
-  }) : super(key: key);
-
-  final Color pickerColor;
-  final ValueChanged<Color> onColorChanged;
-  final bool portraitOnly;
-  final double colorPickerHeight;
-  final double hueRingStrokeWidth;
-  final bool enableAlpha;
-  final bool displayThumbColor;
-  final BorderRadius pickerAreaBorderRadius;
+class CircleColorPickerDialog extends StatefulWidget {
+  final Function(Color) onChanged;
+  final double initialLightness;
+  final Color initialColor;
+  final LockFeature? lockFeature;
+  const CircleColorPickerDialog({
+    super.key,
+    required this.onChanged,
+    required this.initialLightness,
+    required this.initialColor,
+    this.lockFeature,
+  });
 
   @override
-  _HueCustomRingPickerState createState() => _HueCustomRingPickerState();
+  State<CircleColorPickerDialog> createState() => _CircleColorPickerDialogState();
 }
 
-class _HueCustomRingPickerState extends State<HueCustomRingPicker> {
-  HSVColor currentHsvColor = const HSVColor.fromAHSV(0.0, 0.0, 0.0, 0.0);
-
-  @override
-  void initState() {
-    currentHsvColor = HSVColor.fromColor(widget.pickerColor);
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(HueCustomRingPicker oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    currentHsvColor = HSVColor.fromColor(widget.pickerColor);
-  }
-
-  void onColorChanging(HSVColor color) {
-    setState(() => currentHsvColor = HSVColor.fromAHSV(1.0, color.hue, 1.0, 1.0));
-    widget.onColorChanged(currentHsvColor.toColor());
-  }
+class _CircleColorPickerDialogState extends State<CircleColorPickerDialog> {
+  late final controller = CircleColorPickerController(
+    initialColor: HSLColor.fromColor(widget.initialColor)
+        .withLightness(widget.initialLightness)
+        .withSaturation(1)
+        .toColor(),
+  );
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        ClipOval(
-          //borderRadius: widget.pickerAreaBorderRadius,
-          child: Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Stack(
-                alignment: AlignmentDirectional.center,
-                children: <Widget>[
-                  SizedBox(
-                    width: widget.colorPickerHeight,
-                    height: widget.colorPickerHeight,
-                    child: ColorPickerHueRing(
-                      currentHsvColor,
-                      onColorChanging,
-                      displayThumbColor: widget.displayThumbColor,
-                      strokeWidth: 28,
-                    ),
-                  ),
-                  ColorIndicator(currentHsvColor),
-                ],
+    return Center(
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              shape: BoxShape.circle,
+            ),
+            child: CircleColorPicker(
+              lockFeature: widget.lockFeature,
+              controller: controller,
+              onChanged: widget.onChanged,
+              strokeWidth: 16,
+              thumbSize: 36,
+            ),
+          ),
+          Positioned(
+            top: 4,
+            right: 4,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  shape: BoxShape.circle,
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.close),
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

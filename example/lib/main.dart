@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
 import 'package:dglk_simple_button/dglk_simple_button.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   List<Field>? fields;
   final key = GlobalKey<DynamicFormState>();
+  ValueNotifier<bool> colorProLocked = ValueNotifier(true);
 
   final Map<String, String> priceTypeTranslations = {
     'night': 'Night',
@@ -132,17 +134,51 @@ class _MyAppState extends State<MyApp> {
       ),
       ColorField(
         fieldId: 'color_example',
-        initColor: Colors.red,
+        initColor: HSLColor.fromColor(Colors.red).withLightness(0.88).toColor(),
         label: 'Color Example',
-        modifier: (color) {
-          return Color.alphaBlend(Colors.white.withOpacity(0.7), color);
-        },
+        lockFeature: LockFeature(
+          isLockedWrapperBuilder: (context, childBuilder) => ValueListenableBuilder<bool>(
+            valueListenable: colorProLocked,
+            builder: (context, isLocked, _) {
+              return childBuilder(context, isLocked);
+            },
+          ),
+          lockBuilder: (context, child) => Stack(
+            children: [
+              child,
+              Positioned.fill(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 60.0,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                      child: Container(
+                        color: Colors.white.withOpacity(0.4),
+                        child: const Center(
+                          child: Text('Locked'),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          onUnlock: () async {
+            await Future.delayed(const Duration(seconds: 2));
+            colorProLocked.value = false;
+          },
+        ),
       ),
       PasswordField(
         onUpdated: (value) {
           if (value?.value == 'autoFill') {
             //key.currentState?.updateField(value: CompositeValue('top kek, its working'), id: 'text_example');
-            key.currentState?.updateField(value: CompositeValue('100', extra: 'night'), id: 'price');
+            key.currentState
+                ?.updateField(value: CompositeValue('100', extra: 'night'), id: 'price');
           }
         },
         fieldId: 'password_example',
@@ -292,7 +328,9 @@ class _MyAppState extends State<MyApp> {
                             top: 4,
                             right: isStart ? 0 : null,
                             left: isEnd ? 0 : null,
-                            child: RotatedBox(quarterTurns: isStart ? 0 : 2, child: const Icon(Icons.fork_right)));
+                            child: RotatedBox(
+                                quarterTurns: isStart ? 0 : 2,
+                                child: const Icon(Icons.fork_right)));
                       },
                     ),
                     locale: format.locale,

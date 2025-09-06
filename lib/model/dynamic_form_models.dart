@@ -6,7 +6,8 @@ import 'package:flutter/services.dart';
 class DynamicFormsConstants {
   static String defaultSpecSymbols = '~!@#\$%^&*()';
   static String loginUserInputRegex = '[\\[\\]0-9a-zA-Z`"\'/!?@^_#%&\$*+-.,:;(){}|<>=~]';
-  static String passwordRegexpWithSpecialSymbols = '^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z!~@#\$%^&*()]{8,32}';
+  static String passwordRegexpWithSpecialSymbols =
+      '^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z!~@#\$%^&*()]{8,32}';
 
   static ValidationOptions defaultPasswordVO =
       ValidationOptions(minLength: 8, maxLength: 32, regexp: r'^(?=.*[a-zA-Z])(?=.*\d).{8,}$');
@@ -124,7 +125,8 @@ class Field {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is Field && fieldId == other.fieldId && value?.value == other.value?.value;
+      identical(this, other) ||
+      other is Field && fieldId == other.fieldId && value?.value == other.value?.value;
 
   Field withValue(CompositeValue value) {
     return Field(

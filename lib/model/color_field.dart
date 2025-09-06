@@ -1,13 +1,30 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../model/dynamic_form_models.dart';
 
+class LockFeature {
+  final Widget Function(
+          BuildContext context, Widget Function(BuildContext context, bool isLocked) childBuilder)
+      isLockedWrapperBuilder;
+  final Widget Function(BuildContext context, Widget child) lockBuilder;
+  final VoidCallback? onUnlock;
+
+  LockFeature({
+    required this.isLockedWrapperBuilder,
+    required this.lockBuilder,
+    this.onUnlock,
+  });
+}
+
 class ColorField extends Field {
   final Color Function(Color color)? modifier;
+  final LockFeature? lockFeature;
 
   ColorField({
     required super.fieldId,
     this.modifier,
+    this.lockFeature,
+    Color? initColor,
     required super.label,
     super.maskText,
     super.minLines,
@@ -19,7 +36,6 @@ class ColorField extends Field {
     super.capitalizeType,
     super.validationExpression,
     super.validationErrorMessage,
-    Color? initColor,
     super.onUpdated,
     super.infoCallback,
     super.shouldShowInfo,
@@ -32,4 +48,11 @@ class ColorField extends Field {
           fieldType: FieldTypes.Color,
           value: initColor == null ? null : CompositeValue(initColor.value.toString()),
         );
+
+  Color? get color {
+    final intColor = int.tryParse(value?.value ?? '');
+    final flatColor = intColor == null ? null : Color(intColor);
+
+    return flatColor;
+  }
 }

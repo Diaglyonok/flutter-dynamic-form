@@ -57,13 +57,16 @@ class DynamicTextField extends StatefulWidget {
   }) : super(key: key);
 
   static InputDecoration defaultDecoration(BuildContext context) => InputDecoration(
-        disabledBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onSurface, width: 0.4)),
-        focusedBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1)),
-        enabledBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.onSurface, width: 0.4)),
-        labelStyle: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.onSurface),
+        disabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.onSurface, width: 0.4)),
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 1)),
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).colorScheme.onSurface, width: 0.4)),
+        labelStyle: Theme.of(context)
+            .textTheme
+            .bodySmall!
+            .copyWith(color: Theme.of(context).colorScheme.onSurface),
         hintStyle: Theme.of(context)
             .textTheme
             .bodySmall!
@@ -124,8 +127,10 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
       inputType = TextInputType.text;
     }
     final style = widget.field.customTextStyle ??
-        widget.style
-            ?.copyWith(color: widget.field.readOnly ? widget.style?.color?.withOpacity(0.44) : widget.style?.color) ??
+        widget.style?.copyWith(
+            color: widget.field.readOnly
+                ? widget.style?.color?.withOpacity(0.44)
+                : widget.style?.color) ??
         Theme.of(context).textTheme.titleLarge!.copyWith(
             height: 1.1,
             color: widget.field.readOnly
@@ -190,8 +195,9 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
                   currentValue = CompositeValue(value, extra: currentExtra);
                   widget.onChanged?.call(currentValue);
                 },
-          scrollPadding:
-              widget.scrollPadding != null ? EdgeInsets.only(bottom: widget.scrollPadding!) : const EdgeInsets.all(20),
+          scrollPadding: widget.scrollPadding != null
+              ? EdgeInsets.only(bottom: widget.scrollPadding!)
+              : const EdgeInsets.all(20),
           onFieldSubmitted: (widget.field.readOnly)
               ? null
               : (term) {
@@ -205,7 +211,8 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
                   ...(widget.formatters ?? []),
                 ],
           cursorColor: Theme.of(context).colorScheme.secondary,
-          textCapitalization: widget.capitalizeType ?? widget.field.capitalizeType ?? TextCapitalization.sentences,
+          textCapitalization:
+              widget.capitalizeType ?? widget.field.capitalizeType ?? TextCapitalization.sentences,
           style: style,
           obscureText: widget.maskText ?? false,
           cursorWidth: 1.0,
@@ -214,7 +221,8 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
           maxLength: widget.field.maxLength,
           decoration: decoration.copyWith(
             suffixIcon: widget.current == null ||
-                    !widget.current!.hasFocus && widget.field.fieldType != FieldTypes.ScreenResult ||
+                    !widget.current!.hasFocus &&
+                        widget.field.fieldType != FieldTypes.ScreenResult ||
                     suffixIcon == null
                 ? null
                 : suffixIcon,
