@@ -86,6 +86,8 @@ class _CircleColorPickerState extends State<CircleColorPicker> with TickerProvid
   late AnimationController _saturationController;
   late AnimationController _hueController;
 
+  final GlobalKey _slidersKey = GlobalKey();
+
   Color get _color {
     return HSLColor.fromAHSL(
       1,
@@ -144,6 +146,7 @@ class _CircleColorPickerState extends State<CircleColorPicker> with TickerProvid
                               const SizedBox(height: 12),
                               Builder(builder: (context) {
                                 final child = Column(
+                                  key: _slidersKey,
                                   children: [
                                     _LightnessSlider(
                                       width: min(MediaQuery.of(context).size.width / 2 - 20, 300),
