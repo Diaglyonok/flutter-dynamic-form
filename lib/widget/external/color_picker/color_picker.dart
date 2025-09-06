@@ -144,48 +144,55 @@ class _CircleColorPickerState extends State<CircleColorPicker> with TickerProvid
                                 ),
                               ),
                               const SizedBox(height: 12),
-                              widget.lockFeature!.isLockedWrapperBuilder(
-                                context,
-                                (_, isLocked) {
-                                  final child = Column(
-                                    key: _slidersKey,
-                                    children: [
-                                      _LightnessSlider(
-                                        width: min(MediaQuery.of(context).size.width / 2 - 20, 300),
-                                        thumbSize: widget.thumbSize,
-                                        hue: _hueController.value,
-                                        saturation: _saturationController.value,
-                                        lightness: _lightnessController.value,
-                                        lineHeight: widget.strokeWidth,
-                                        onEnded: _onEnded,
-                                        onChanged: (lightness) {
-                                          _lightnessController.value = lightness;
-                                        },
-                                      ),
-                                      const SizedBox(height: 4),
-                                      _SaturationSlider(
-                                        lineHeight: widget.strokeWidth,
-                                        width: min(MediaQuery.of(context).size.width / 2 - 20, 300),
-                                        thumbSize: widget.thumbSize,
-                                        hue: _hueController.value,
-                                        saturation: _saturationController.value,
-                                        onEnded: _onEnded,
-                                        onChanged: (saturation) {
-                                          _saturationController.value = saturation;
-                                        },
-                                      ),
-                                    ],
+                              Builder(builder: (context) {
+                                final child = Column(
+                                  children: [
+                                    _LightnessSlider(
+                                      width: min(MediaQuery.of(context).size.width / 2 - 20, 300),
+                                      thumbSize: widget.thumbSize,
+                                      hue: _hueController.value,
+                                      saturation: _saturationController.value,
+                                      lightness: _lightnessController.value,
+                                      lineHeight: widget.strokeWidth,
+                                      onEnded: _onEnded,
+                                      onChanged: (lightness) {
+                                        _lightnessController.value = lightness;
+                                      },
+                                    ),
+                                    const SizedBox(height: 4),
+                                    _SaturationSlider(
+                                      lineHeight: widget.strokeWidth,
+                                      width: min(MediaQuery.of(context).size.width / 2 - 20, 300),
+                                      thumbSize: widget.thumbSize,
+                                      hue: _hueController.value,
+                                      saturation: _saturationController.value,
+                                      onEnded: _onEnded,
+                                      onChanged: (saturation) {
+                                        _saturationController.value = saturation;
+                                      },
+                                    ),
+                                  ],
+                                );
+
+                                if (widget.lockFeature != null) {
+                                  return widget.lockFeature!.isLockedWrapperBuilder(
+                                    context,
+                                    (_, isLocked) {
+                                      return isLocked
+                                          ? GestureDetector(
+                                              onTap: widget.lockFeature!.onUnlock,
+                                              child: AbsorbPointer(
+                                                child:
+                                                    widget.lockFeature!.lockBuilder(context, child),
+                                              ),
+                                            )
+                                          : child;
+                                    },
                                   );
-                                  return isLocked
-                                      ? GestureDetector(
-                                          onTap: widget.lockFeature!.onUnlock,
-                                          child: AbsorbPointer(
-                                            child: widget.lockFeature!.lockBuilder(context, child),
-                                          ),
-                                        )
-                                      : child;
-                                },
-                              ),
+                                }
+
+                                return child;
+                              }),
                             ],
                           ),
                         );
