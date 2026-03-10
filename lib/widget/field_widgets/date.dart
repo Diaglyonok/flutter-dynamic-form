@@ -127,6 +127,12 @@ class DateFieldView extends StatelessWidget {
                   ),
                 ),
                 Expanded(
+                    child: CupertinoTheme(
+                  data: CupertinoTheme.of(context).copyWith(
+                    textTheme: CupertinoTextThemeData(
+                      dateTimePickerTextStyle: field.customTextStyle ?? style,
+                    ),
+                  ),
                   child: type == CupertinoDatePickerMode.date ||
                           type == CupertinoDatePickerMode.dateAndTime
                       ? CupertinoDatePicker(
@@ -146,7 +152,7 @@ class DateFieldView extends StatelessWidget {
                           onDateTimeChanged: onDateTimeChanged,
                           initialDateTime: _getCurrentTime(),
                         ),
-                )
+                ))
               ],
             ),
           ),

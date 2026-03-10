@@ -156,9 +156,9 @@ class _CircleColorPickerDialogState extends State<CircleColorPickerDialog> {
                   color: Theme.of(context).colorScheme.surface,
                   shape: BoxShape.circle,
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(Icons.close),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(Icons.close, color: Theme.of(context).colorScheme.onSurface),
                 ),
               ),
             ),
