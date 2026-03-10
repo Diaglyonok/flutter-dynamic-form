@@ -44,6 +44,7 @@ class ColorField extends Field {
     super.multiline,
     super.withBottomPadding = true,
     super.wrapper,
+    super.customTextStyle,
   }) : super(
           required: false,
           readOnly: false,

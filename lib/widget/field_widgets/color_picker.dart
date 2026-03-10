@@ -46,7 +46,11 @@ class _ColorPickerState extends State<ColorPicker> {
                         color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
-                    child: Center(child: Text(widget.field.label)))),
+                    child: Center(
+                        child: Text(
+                      widget.field.label,
+                      style: widget.field.customTextStyle,
+                    )))),
             const SizedBox(
               width: 24,
             ),

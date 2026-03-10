@@ -55,7 +55,9 @@ class DateFieldView extends StatelessWidget {
     var minimumDate = startDate ?? DateTime(1700, 1, 1);
     DateTime? maximumDate = endDate;
 
-    switch (field is! DateField ? CompareDate.AllDates : (field as DateField).compareDate ?? CompareDate.AllDates) {
+    switch (field is! DateField
+        ? CompareDate.AllDates
+        : (field as DateField).compareDate ?? CompareDate.AllDates) {
       case CompareDate.AllDates:
         break;
       case CompareDate.FutureOnly:
@@ -81,7 +83,8 @@ class DateFieldView extends StatelessWidget {
     DateTime _getCurrentDate() {
       DateTime? result;
       try {
-        result = (format ?? DateFormat(DynamicFormValidators.datePattern)).parseStrict(controller.text);
+        result =
+            (format ?? DateFormat(DynamicFormValidators.datePattern)).parseStrict(controller.text);
       } catch (e) {
         if (format != null) {
           return format!.parseStrict(format!.format(DateTime.now()));
@@ -96,7 +99,8 @@ class DateFieldView extends StatelessWidget {
 
     DateTime _getCurrentTime() {
       try {
-        return (format ?? DateFormat(DynamicFormValidators.timePattern)).parseStrict(controller.text);
+        return (format ?? DateFormat(DynamicFormValidators.timePattern))
+            .parseStrict(controller.text);
       } catch (e) {
         return DateTime.now();
       }
@@ -110,8 +114,10 @@ class DateFieldView extends StatelessWidget {
             child: Column(
               children: [
                 Material(
+                  color: Colors.transparent,
                   child: Text(
-                    type == CupertinoDatePickerMode.date || type == CupertinoDatePickerMode.dateAndTime
+                    type == CupertinoDatePickerMode.date ||
+                            type == CupertinoDatePickerMode.dateAndTime
                         ? context.t.selectDate
                         : context.t.selectTime,
                     textAlign: TextAlign.center,
@@ -121,7 +127,8 @@ class DateFieldView extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: type == CupertinoDatePickerMode.date || type == CupertinoDatePickerMode.dateAndTime
+                  child: type == CupertinoDatePickerMode.date ||
+                          type == CupertinoDatePickerMode.dateAndTime
                       ? CupertinoDatePicker(
                           mode: type,
                           minimumDate: minimumDate,
@@ -178,8 +185,10 @@ class DateFieldView extends StatelessWidget {
               : IconButton(
                   padding: const EdgeInsets.all(0.0),
                   icon: Icon(
-                    type == CupertinoDatePickerMode.date ? Icons.calendar_month : Icons.access_time_rounded,
-                    color: Colors.black.withOpacity(0.32),
+                    type == CupertinoDatePickerMode.date
+                        ? Icons.calendar_month
+                        : Icons.access_time_rounded,
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.32),
                   ),
                   onPressed: _onPressed,
                 ),
