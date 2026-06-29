@@ -31,7 +31,7 @@ class ColorField extends Field {
     super.maskText,
     super.minLines,
     super.maxLength,
-    super.inputType,
+    super.customInputType,
     super.options,
     super.confirmField,
     super.dependsOn,

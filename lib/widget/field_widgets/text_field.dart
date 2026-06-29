@@ -167,7 +167,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
       onExtraChanged: (extra, fromUser) {
         currentExtra = extra;
         currentValue = CompositeValue(widget.controller.text, extra: extra);
-        if(fromUser) {
+        if (fromUser) {
           widget.onChanged?.call(
             currentValue,
           );
@@ -184,7 +184,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
           enabled: !widget.field.readOnly,
           autocorrect: false,
           controller: widget.controller,
-          keyboardType: inputType ?? widget.inputType,
+          keyboardType: widget.field.customInputType ?? inputType ?? widget.inputType,
           textInputAction: widget.multiline
               ? TextInputAction.newline
               : widget.next == null

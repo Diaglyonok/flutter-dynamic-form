@@ -5,7 +5,8 @@ import '../model/dynamic_form_models.dart';
 class ScreenResultCompositeValue extends CompositeValue {
   final Map<String, dynamic>? jsonData;
 
-  ScreenResultCompositeValue(String value, {this.jsonData, String? extra}) : super(value, extra: extra);
+  ScreenResultCompositeValue(String value, {this.jsonData, String? extra})
+      : super(value, extra: extra);
 }
 
 class ScreenResultExtra {
@@ -34,7 +35,6 @@ class ScreenResultField extends Field {
     super.customValidator,
     super.maskText,
     super.maxLength,
-    super.inputType,
     super.options,
     super.confirmField,
     super.value,

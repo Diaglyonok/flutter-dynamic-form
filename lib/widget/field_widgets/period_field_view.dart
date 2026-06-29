@@ -79,7 +79,8 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
         this.end = end;
       }
 
-      daysCount = widget.field.withDaysNum && this.start != null && this.end != null ? newDaysCount : null;
+      daysCount =
+          widget.field.withDaysNum && this.start != null && this.end != null ? newDaysCount : null;
     }
 
     middleNode = FocusNode(debugLabel: widget.field.label);
@@ -109,10 +110,12 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
           final startValue = start == null ? null : format.format(start!);
           final endValue = end == null ? null : format.format(end!);
 
-          return ScreenResultCompositeValue(startValue == null ? '' : '$startValue - ${endValue ?? ''}', jsonData: {
-            'start': startValue,
-            'end': endValue,
-          });
+          return ScreenResultCompositeValue(
+              startValue == null ? '' : '$startValue - ${endValue ?? ''}',
+              jsonData: {
+                'start': startValue,
+                'end': endValue,
+              });
         },
       ),
       //extraPrefix: ,
@@ -122,7 +125,6 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
       customValidator: widget.field.customValidator,
       maskText: widget.field.maskText,
       maxLength: widget.field.maxLength,
-      inputType: widget.field.inputType,
       options: widget.field.options,
       confirmField: widget.field.confirmField,
       value: widget.field.value,
@@ -199,7 +201,8 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                                       childCount: widget.field.maxDate != null && start != null
                                           ? start!.difference(widget.field.maxDate!).inDays.abs()
                                           : 364,
-                                      scrollController: FixedExtentScrollController(initialItem: daysCount! - 1),
+                                      scrollController:
+                                          FixedExtentScrollController(initialItem: daysCount! - 1),
                                       onSelectedItemChanged: (index) {
                                         daysCount = index + 1;
                                         setState(() {});
@@ -208,7 +211,8 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
                                           return;
                                         }
 
-                                        final format = extra.format ?? DateFormat(DynamicFormValidators.datePattern);
+                                        final format = extra.format ??
+                                            DateFormat(DynamicFormValidators.datePattern);
 
                                         //final startDate = format.safeStrictParse(widget.startController.text);
 
@@ -220,7 +224,8 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
 
                                         String value;
                                         try {
-                                          value = (extra.format ?? DateFormat(DynamicFormValidators.datePattern))
+                                          value = (extra.format ??
+                                                  DateFormat(DynamicFormValidators.datePattern))
                                               .format(endDate);
                                         } catch (e) {
                                           return;
@@ -228,7 +233,8 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
 
                                         end = endDate;
 
-                                        updateValue(widget.controller, '${format.format(start!)} - $value');
+                                        updateValue(
+                                            widget.controller, '${format.format(start!)} - $value');
 
                                         widget.onChanged(CompositeValue(
                                           format.format(start!),
@@ -311,7 +317,8 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
     }
 
     if (extra.customPickerFunction != null) {
-      await extra.customPickerFunction!(context, onChanged: _onChanged, initStart: start, initEnd: end);
+      await extra.customPickerFunction!(context,
+          onChanged: _onChanged, initStart: start, initEnd: end);
     } else {
       await Navigator.of(context).push(
         BottomSheetRoute(
@@ -322,8 +329,8 @@ class _PeriodFieldViewState extends State<PeriodFieldView> {
               minDate: widget.field.minDate,
               maxDate: widget.field.maxDate,
               locale: (extra.format ??
-                      DateFormat(
-                          DynamicFormValidators.datePattern, TranslationProvider.of(context).flutterLocale.toString()))
+                      DateFormat(DynamicFormValidators.datePattern,
+                          TranslationProvider.of(context).flutterLocale.toString()))
                   .locale,
               customization: extra.customization,
               onDatesChanged: _onChanged,
@@ -438,7 +445,8 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final startDateValue = startDate == null ? null : DateFormat.yMMMd(widget.locale).format(startDate!);
+    final startDateValue =
+        startDate == null ? null : DateFormat.yMMMd(widget.locale).format(startDate!);
     final endDateValue = endDate == null ? null : DateFormat.yMMMd(widget.locale).format(endDate!);
 
     final clearDisabled = startDate == null && endDate == null;
@@ -466,7 +474,10 @@ class _CalendarPageState extends State<CalendarPage> {
                   textAlign: TextAlign.left,
                   style: custom.clearButtonStyle ??
                       Theme.of(context).textTheme.labelLarge!.copyWith(
-                            color: Theme.of(context).colorScheme.error.withOpacity(clearDisabled ? 0.4 : 1.0),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .error
+                                .withOpacity(clearDisabled ? 0.4 : 1.0),
                           ),
                 ),
               ),
@@ -518,7 +529,8 @@ class _CalendarPageState extends State<CalendarPage> {
                     name: custom.startDateText ?? context.t.startDate,
                     value: startDateValue,
                     isSelected: selectedManually == _Selectable.first ||
-                        selectedManually == null && (startDateValue == null || endDateValue != null),
+                        selectedManually == null &&
+                            (startDateValue == null || endDateValue != null),
                   ),
                 ),
                 const SizedBox(width: 20),
@@ -531,7 +543,8 @@ class _CalendarPageState extends State<CalendarPage> {
                     name: custom.endDateText ?? context.t.endDate,
                     value: endDateValue,
                     isSelected: selectedManually == _Selectable.second ||
-                        selectedManually == null && (startDateValue != null && endDateValue == null),
+                        selectedManually == null &&
+                            (startDateValue != null && endDateValue == null),
                   ),
                 ),
               ],
@@ -557,7 +570,9 @@ class _CalendarPageState extends State<CalendarPage> {
                       children: [
                         Expanded(
                           child: Text(
-                            DateFormat.MMMM(widget.locale).format(DateTime(year, month)).capitalize(),
+                            DateFormat.MMMM(widget.locale)
+                                .format(DateTime(year, month))
+                                .capitalize(),
                             style: custom.monthStyle ?? Theme.of(context).textTheme.titleLarge,
                           ),
                         ),
@@ -595,8 +610,8 @@ class _CalendarPageState extends State<CalendarPage> {
                   date.isAfter(startDate!) &&
                   !date.isSameDay(endDate!) &&
                   !date.isSameDay(startDate!);
-              final isTile =
-                  startDate != null && date.isSameDay(startDate!) || endDate != null && date.isSameDay(endDate!);
+              final isTile = startDate != null && date.isSameDay(startDate!) ||
+                  endDate != null && date.isSameDay(endDate!);
 
               final isDisabled = widget.minDate != null && date.isBefore(widget.minDate!) ||
                   widget.maxDate != null && date.isAfter(widget.maxDate!);
@@ -644,7 +659,8 @@ class _CalendarPageState extends State<CalendarPage> {
                       );
                     }
 
-                    if (isPeriodsRangeStart && !isPeriodsRangeEnd || isPeriodsRangeEnd && !isPeriodsRangeStart) {
+                    if (isPeriodsRangeStart && !isPeriodsRangeEnd ||
+                        isPeriodsRangeEnd && !isPeriodsRangeStart) {
                       continue;
                     }
 
@@ -655,7 +671,8 @@ class _CalendarPageState extends State<CalendarPage> {
 
               _dayColor() {
                 if (isInRange) {
-                  return custom.transparentAccentColor ?? theme.colorScheme.secondary.withOpacity(0.1);
+                  return custom.transparentAccentColor ??
+                      theme.colorScheme.secondary.withOpacity(0.1);
                 }
 
                 if (isTile) {
@@ -698,7 +715,8 @@ class _CalendarPageState extends State<CalendarPage> {
                     child: Center(child: Text(date.day.toString(), style: textTheme)),
                   ),
                   if (periodColor != null)
-                    custom.busyPeriodIconBuilder?.call(periodColor, isPeriodsRangeStart, isPeriodsRangeEnd) ??
+                    custom.busyPeriodIconBuilder
+                            ?.call(periodColor, isPeriodsRangeStart, isPeriodsRangeEnd) ??
                         Positioned(
                           right: 8,
                           top: 8,
@@ -747,7 +765,8 @@ class _CalendarPageState extends State<CalendarPage> {
                       return;
                     }
 
-                    if (isPeriodsRangeStart && !isPeriodsRangeEnd || isPeriodsRangeEnd && !isPeriodsRangeStart) {
+                    if (isPeriodsRangeStart && !isPeriodsRangeEnd ||
+                        isPeriodsRangeEnd && !isPeriodsRangeStart) {
                       continue;
                     }
                   }
@@ -812,7 +831,8 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
             const SizedBox(height: 2),
             if (value != null)
-              Text(value, style: custom.selectedDateValueStyle ?? Theme.of(context).textTheme.titleMedium),
+              Text(value,
+                  style: custom.selectedDateValueStyle ?? Theme.of(context).textTheme.titleMedium),
             const SizedBox(
               height: 8,
             )

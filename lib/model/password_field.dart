@@ -17,7 +17,7 @@ class PasswordField extends Field {
     super.maskText,
     super.maxLength,
     super.minLines,
-    super.inputType,
+    super.customInputType,
     super.options,
     super.confirmField,
     super.value,

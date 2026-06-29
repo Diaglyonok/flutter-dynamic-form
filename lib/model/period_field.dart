@@ -104,7 +104,7 @@ class PeriodField extends Field {
     super.customValidator,
     super.maskText,
     super.maxLength,
-    super.inputType,
+    super.customInputType,
     super.options,
     super.confirmField,
     super.value,

@@ -23,7 +23,7 @@ class PhoneField extends Field {
     super.minLines,
     super.maskText,
     super.maxLength,
-    super.inputType,
+    super.customInputType,
     super.options,
     super.confirmField,
     this.onPickPhone,

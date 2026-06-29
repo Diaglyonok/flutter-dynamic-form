@@ -71,7 +71,7 @@ class Field {
 
   final bool? maskText;
   final int? maxLength;
-  final String? inputType; // can be 'Text', 'Number' or 'Date'
+  final TextInputType? customInputType;
   final List<Option>? options;
   final String? confirmField;
 
@@ -111,7 +111,7 @@ class Field {
     this.customValidator,
     this.maskText,
     this.maxLength,
-    this.inputType,
+    this.customInputType,
     this.options,
     this.capitalizeType,
     this.confirmField,
@@ -141,7 +141,7 @@ class Field {
       infoCallback: infoCallback,
       shouldShowInfo: shouldShowInfo,
       maxLength: maxLength,
-      inputType: inputType,
+      customInputType: customInputType,
       confirmField: confirmField,
       capitalizeType: capitalizeType,
       fieldType: fieldType,
@@ -168,7 +168,7 @@ class Field {
       suffixIconBuilder: suffixIconBuilder,
       shouldShowInfo: shouldShowInfo,
       maxLength: maxLength,
-      inputType: inputType,
+      customInputType: customInputType,
       confirmField: confirmField,
       fieldType: fieldType,
       capitalizeType: capitalizeType,
