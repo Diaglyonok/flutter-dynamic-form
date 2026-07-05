@@ -96,12 +96,21 @@ class DynamicFormState extends State<DynamicForm> {
   void initState() {
     super.initState();
 
-    validators = DynamicFormValidators(
-      widget.validationOptions,
-      allowFullZip: _allowFullZip,
-    );
     _allowFullZip = widget.allowFullZip ?? false;
     _initFieldData(widget.fields);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Recreated here (not in initState) so the validators capture a context
+    // that can resolve the optional DynamicFormLocalizationsWrapper.
+    validators = DynamicFormValidators(
+      widget.validationOptions,
+      context,
+      allowFullZip: _allowFullZip,
+    );
   }
 
   @override
@@ -650,7 +659,7 @@ class DynamicFormState extends State<DynamicForm> {
       validators: _commonTextValidators(
         field,
         additionals: [
-          (String? value) => validators?.datePeriodValidator(value, context,
+          (String? value) => validators?.datePeriodValidator(value,
               pattern: extra.format?.pattern ?? DynamicFormValidators.datePattern),
         ],
       ),
@@ -771,7 +780,8 @@ class DynamicFormState extends State<DynamicForm> {
           controller: controllers[field.fieldId]!,
           validators: _commonTextValidators(field, additionals: [
             if (field is! PasswordField || /*field is PasswordField && */ !field.disableValidation)
-              (String? value) => validators?.passwordValidator(CompositeValue(value ?? '')),
+              (String? value) =>
+                  validators?.passwordValidator(CompositeValue(value ?? '')),
           ]),
         ),
         if (field is PasswordField && field.forgotPasswordBuilder != null)

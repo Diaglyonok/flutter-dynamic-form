@@ -1,7 +1,6 @@
 import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dynamic_form/i18n/strings.g.dart';
 import 'package:intl/intl.dart';
 
 import '../../flutter_dynamic_form.dart';
@@ -118,8 +117,8 @@ class DateFieldView extends StatelessWidget {
                   child: Text(
                     type == CupertinoDatePickerMode.date ||
                             type == CupertinoDatePickerMode.dateAndTime
-                        ? context.t.selectDate
-                        : context.t.selectTime,
+                        ? context.dfl.selectDate
+                        : context.dfl.selectTime,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Theme.of(context).colorScheme.secondary,

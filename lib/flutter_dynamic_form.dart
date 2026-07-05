@@ -9,3 +9,4 @@ export 'model/period_field.dart';
 export 'model/phone_field.dart';
 export 'model/screen_result_field.dart';
 export 'widget/dynamic_form.dart';
+export 'widget/dynamic_form_localizations_wrapper.dart';

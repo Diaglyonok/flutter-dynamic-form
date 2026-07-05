@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dynamic_form/i18n/strings.g.dart';
+import 'package:flutter_dynamic_form/widget/dynamic_form_localizations_wrapper.dart';
 import 'package:flutter_dynamic_form/model/dynamic_form_models.dart';
 import 'package:flutter_dynamic_form/model/link_field.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/text_field.dart';
@@ -112,7 +112,7 @@ class _ListLinksFieldViewState extends State<ListLinksFieldView> {
                           field: LinkField(
                             required: widget.required,
                             fieldId: 'internal_$nextIndex',
-                            label: '${context.t.link} $nextIndex',
+                            label: '${context.dfl.link} $nextIndex',
                             customTextStyle: widget.commonStyle,
                           ),
                           node: FocusNode(),
@@ -132,7 +132,7 @@ class _ListLinksFieldViewState extends State<ListLinksFieldView> {
                           ),
                         ),
                         child: Center(
-                          child: Text(context.t.addLink),
+                          child: Text(context.dfl.addLink),
                         ),
                       ),
                     ),
@@ -239,7 +239,7 @@ class LinkView extends StatelessWidget {
                 }
 
                 if (!(await canLaunchUrlString(link))) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.t.wrongLinkSnack)));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.dfl.wrongLinkSnack)));
                   return;
                 }
 

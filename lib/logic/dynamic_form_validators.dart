@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dynamic_form/i18n/strings.g.dart';
+import 'package:flutter_dynamic_form/widget/dynamic_form_localizations_wrapper.dart';
 import 'package:intl/intl.dart';
 
 import '../model/dynamic_form_models.dart';
 
 class DynamicFormValidators {
-  DynamicFormValidators(this.validationOptions, {this.allowFullZip = true});
+  DynamicFormValidators(this.validationOptions, this.context, {this.allowFullZip = true});
 
   final Map<String, ValidationOptions>? validationOptions;
   final bool allowFullZip;
+
+  /// Context of the form, used to resolve localization via [BuildContext.dfl].
+  /// Provided by [DynamicForm] from `didChangeDependencies`.
+  final BuildContext context;
 
   static String datePattern = 'MM/dd/yyyy';
   static String timePattern = 'HH:mm';
@@ -22,7 +26,7 @@ class DynamicFormValidators {
         email.endsWith('.') ||
         email.endsWith('@') ||
         email.startsWith('@')) {
-      return t.emailIsNotValidErrorText;
+      return context.dfl.emailIsNotValidErrorText;
     }
 
     return null;
@@ -37,7 +41,7 @@ class DynamicFormValidators {
       DateFormat(timePattern).parseStrict(input);
       return null;
     } catch (e) {
-      return t.invalidTime;
+      return context.dfl.invalidTime;
     }
   }
 
@@ -74,7 +78,7 @@ class DynamicFormValidators {
           break;
       }
     } catch (e) {
-      return t.dateIsNotValidErrorText(format: pattern ?? datePattern);
+      return context.dfl.dateIsNotValidErrorText(format: pattern ?? datePattern);
     }
 
     return null;
@@ -82,7 +86,7 @@ class DynamicFormValidators {
 
   String? requiredValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return t.fieldIsRequiredErrorText;
+      return context.dfl.fieldIsRequiredErrorText;
     } else {
       return null;
     }
@@ -90,7 +94,7 @@ class DynamicFormValidators {
 
   String? requiredOptionsValidator(CompositeValue value) {
     if (value.value.isEmpty) {
-      return t.fieldIsRequiredErrorText;
+      return context.dfl.fieldIsRequiredErrorText;
     } else {
       return null;
     }
@@ -116,7 +120,7 @@ class DynamicFormValidators {
     }
 
     if (double.tryParse(value) == null) {
-      return t.wrongFormatText;
+      return context.dfl.wrongFormatText;
     }
 
     return null;
@@ -133,15 +137,15 @@ class DynamicFormValidators {
     final regExp = options.regexp == null ? null : RegExp(options.regexp!);
 
     if (value.length < options.minLength) {
-      return t.passwordErrorText(
+      return context.dfl.passwordErrorText(
         MIN: options.minLength.toString(),
       );
     } else if (options.maxLength > options.minLength && options.maxLength > 0 && value.length > options.maxLength) {
-      return t.passwordErrorText(
+      return context.dfl.passwordErrorText(
         MIN: options.minLength.toString(),
       );
     } else if (regExp != null && !(regExp.hasMatch(value))) {
-      return t.passwordErrorText(
+      return context.dfl.passwordErrorText(
         MIN: options.minLength.toString(),
       );
     } else {
@@ -152,7 +156,7 @@ class DynamicFormValidators {
   String? confirmValidator(String? value, String? confirmField, Map<String, CompositeValue> currentValues) {
     final confirmingValue = currentValues[confirmField ?? '']?.value;
     if (confirmingValue != null && confirmingValue != value) {
-      return t.fieldDoesNotMatch;
+      return context.dfl.fieldDoesNotMatch;
     } else {
       return null;
     }
@@ -163,7 +167,7 @@ class DynamicFormValidators {
       return null;
     }
 
-    final message = errorMessage.isNotEmpty ? t.wrongFormatText : errorMessage;
+    final message = errorMessage.isNotEmpty ? context.dfl.wrongFormatText : errorMessage;
 
     if (value == null || value.value.isNotEmpty) {
       return (isRequired) ? message : null;
@@ -176,7 +180,7 @@ class DynamicFormValidators {
     return null;
   }
 
-  String? returnDateValidator(String departureValue, String returnValue, BuildContext context) {
+  String? returnDateValidator(String departureValue, String returnValue) {
     if (departureValue.isNotEmpty || returnValue.isNotEmpty) {
       return null;
     }
@@ -185,10 +189,10 @@ class DynamicFormValidators {
     if (departureDate.isBefore(returnDate) || departureDate == returnDate) {
       return null;
     }
-    return context.t.returnDateWarning;
+    return context.dfl.returnDateWarning;
   }
 
-  String? datePeriodValidator(String? value, BuildContext context, {String? pattern}) {
+  String? datePeriodValidator(String? value, {String? pattern}) {
     if (value == null || value.isEmpty) {
       return null;
     }
@@ -196,7 +200,7 @@ class DynamicFormValidators {
     final splitted = value.split(' - ');
 
     if (splitted.length != 2) {
-      return context.t.periodDateWarning;
+      return context.dfl.periodDateWarning;
     }
 
     try {
@@ -204,7 +208,7 @@ class DynamicFormValidators {
       DateFormat(pattern ?? datePattern).parseStrict(splitted[1]);
       return null;
     } catch (e) {
-      return context.t.periodDateWarning;
+      return context.dfl.periodDateWarning;
     }
   }
 }

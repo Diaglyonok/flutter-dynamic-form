@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dglk_simple_button/dglk_simple_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dynamic_form/i18n/strings.g.dart';
 import 'package:flutter_dynamic_form/utils/colored_cupertino_handles.dart';
 
 import '../../flutter_dynamic_form.dart';
@@ -364,7 +363,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                           cursorColor: Theme.of(context).colorScheme.secondary,
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: context.t.chooseCountryCode,
+                            hintText: context.dfl.chooseCountryCode,
                             hintStyle: widget.custom.hintStyle,
                           ),
                           onChanged: (text) {
@@ -416,7 +415,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                   widget.onChanged(snapshot.data!);
                                   Navigator.of(context).pop();
                                 },
-                                title: context.t.useInputtedCode,
+                                title: context.dfl.useInputtedCode,
                               ),
                               const SizedBox(
                                 height: 8,
@@ -436,14 +435,14 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                       if (snapshot.data != null &&
                           countryPhoneCodes.keys
                               .where((key) =>
-                                  context.t.countries[key] != null &&
-                                  context.t.countries[key]!.toLowerCase().contains(snapshot.data!.toLowerCase()))
+                                  context.dfl.countries[key] != null &&
+                                  context.dfl.countries[key]!.toLowerCase().contains(snapshot.data!.toLowerCase()))
                               .isEmpty) {
                         return Center(
                           child: Padding(
                             padding: const EdgeInsets.all(40.0),
                             child: Text(
-                              context.t.nothingFoundCountryCode,
+                              context.dfl.nothingFoundCountryCode,
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     color: Theme.of(context).colorScheme.onSurface,
@@ -458,9 +457,9 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                         children: [
                           for (var key in countryPhoneCodes.keys)
                             if (countryPhoneCodes[key] != null &&
-                                context.t.countries[key] != null &&
+                                context.dfl.countries[key] != null &&
                                 (snapshot.data == null ||
-                                    context.t.countries[key]!.toLowerCase().contains(snapshot.data!.toLowerCase())))
+                                    context.dfl.countries[key]!.toLowerCase().contains(snapshot.data!.toLowerCase())))
                               Column(
                                 children: [
                                   Row(
@@ -488,7 +487,7 @@ class _SearchCountryBottomViewState extends State<SearchCountryBottomView> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    context.t.countries[key]!,
+                                                    context.dfl.countries[key]!,
                                                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                                           color: Theme.of(context).colorScheme.onSurface,
                                                         ),

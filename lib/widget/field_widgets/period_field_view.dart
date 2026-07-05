@@ -470,7 +470,7 @@ class _CalendarPageState extends State<CalendarPage> {
                         setState(() {});
                       },
                 child: Text(
-                  custom.clearButtonText ?? context.t.clear,
+                  custom.clearButtonText ?? context.dfl.clear,
                   textAlign: TextAlign.left,
                   style: custom.clearButtonStyle ??
                       Theme.of(context).textTheme.labelLarge!.copyWith(
@@ -496,7 +496,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       }
                     : null,
                 child: Text(
-                  custom.okButtonText ?? context.t.done,
+                  custom.okButtonText ?? context.dfl.done,
                   textAlign: TextAlign.right,
                   style: (custom.okButtonStyle ??
                           Theme.of(context)
@@ -526,7 +526,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       selectedManually = _Selectable.first;
                       setState(() {});
                     },
-                    name: custom.startDateText ?? context.t.startDate,
+                    name: custom.startDateText ?? context.dfl.startDate,
                     value: startDateValue,
                     isSelected: selectedManually == _Selectable.first ||
                         selectedManually == null &&
@@ -540,7 +540,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       selectedManually = _Selectable.second;
                       setState(() {});
                     },
-                    name: custom.endDateText ?? context.t.endDate,
+                    name: custom.endDateText ?? context.dfl.endDate,
                     value: endDateValue,
                     isSelected: selectedManually == _Selectable.second ||
                         selectedManually == null &&
@@ -594,8 +594,8 @@ class _CalendarPageState extends State<CalendarPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: List.generate(
-                        context.t.weeksShort.length,
-                        (index) => weekText(context.t.weeksShort[index]),
+                        context.dfl.weeksShort.length,
+                        (index) => weekText(context.dfl.weeksShort[index]),
                       ),
                     ),
                   ),
