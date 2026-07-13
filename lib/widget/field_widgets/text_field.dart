@@ -124,7 +124,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
   Widget build(BuildContext context) {
     TextInputType? inputType;
     if (widget.inputType == null || (widget.field.readOnly)) {
-      inputType = TextInputType.text;
+      inputType = widget.multiline ? TextInputType.multiline : TextInputType.text;
     }
     final style = widget.field.customTextStyle ??
         widget.style?.copyWith(
