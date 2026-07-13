@@ -31,6 +31,7 @@ class ScreenResultField extends Field {
     super.required = false,
     super.suffixIconBuilder,
     super.readOnly = false,
+    super.skipFocus = false,
     super.minLines,
     super.customValidator,
     super.maskText,

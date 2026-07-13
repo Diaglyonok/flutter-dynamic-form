@@ -161,28 +161,10 @@ class DynamicFormState extends State<DynamicForm> {
                       DynamicFormUtils.checkShouldShow(field: field, values: values)) {
                     current = nodes[index - shift];
 
-                    if (index < (nodes.length + shift - 1)) {
-                      var k = 1;
-                      Field? nextField = widget.fields[(index - shift + k).toInt()];
-                      while (nextField != null &&
-                          (nextField.fieldType == FieldTypes.Label ||
-                              !DynamicFormUtils.checkShouldShow(
-                                  field: nextField, values: values))) {
-                        k++;
-                        if (index + k < (nodes.length + shift - 1)) {
-                          nextField = widget.fields[index - shift + k];
-                          if (NOT_TEXT_TYPES.contains(nextField.fieldType)) {
-                            nextField = null;
-                          }
-                        } else {
-                          nextField = null;
-                          break;
-                        }
-                      }
-
-                      if (nextField != null) {
-                        next = nodes[index - shift + k];
-                        //print("next for ${field.label} is ${index - shift + k}, f = ${widget.fields[index - shift + k].label}");
+                    for (var k = index - shift + 1; k < nodes.length; k++) {
+                      if (_canTakeFocus(widget.fields[k])) {
+                        next = nodes[k];
+                        break;
                       }
                     }
                   }
@@ -438,6 +420,15 @@ class DynamicFormState extends State<DynamicForm> {
       }
     }
   }
+
+  /// Whether [field] may receive the caret, i.e. whether it can be a target of
+  /// the Enter/next focus chain. Fields that are hidden, non-textual, read-only
+  /// or explicitly marked with [Field.skipFocus] are jumped over.
+  bool _canTakeFocus(Field field) =>
+      !field.skipFocus &&
+      !field.readOnly &&
+      !NOT_TEXT_TYPES.contains(field.fieldType) &&
+      DynamicFormUtils.checkShouldShow(field: field, values: values);
 
   Widget? _generateField(
     Field field,

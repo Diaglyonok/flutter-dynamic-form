@@ -63,6 +63,11 @@ class Field {
   final String fieldId;
   final bool required;
   final bool readOnly;
+
+  /// Field never takes the caret: it is excluded from the Enter/next focus
+  /// chain and cannot be focused by tap or traversal. For picker-like fields
+  /// (ScreenResult, Link) whose value is chosen on another screen.
+  final bool skipFocus;
   final int? minLines;
   final void Function()? onEdittingComplete;
 
@@ -105,6 +110,7 @@ class Field {
     this.onUpdated,
     this.required = false,
     this.readOnly = false,
+    this.skipFocus = false,
     this.multiline = false,
     this.wrapper,
     this.suffixIconBuilder,
@@ -134,6 +140,7 @@ class Field {
       fieldId: fieldId,
       required: required,
       readOnly: readOnly,
+      skipFocus: skipFocus,
       minLines: minLines,
       label: label,
       suffixIconBuilder: suffixIconBuilder,
@@ -163,6 +170,7 @@ class Field {
       required: required,
       infoCallback: infoCallback,
       readOnly: readOnly,
+      skipFocus: skipFocus,
       label: newLabel ?? label,
       maskText: maskText,
       suffixIconBuilder: suffixIconBuilder,

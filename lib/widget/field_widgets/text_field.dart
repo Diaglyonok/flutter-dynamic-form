@@ -182,6 +182,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
           focusNode: widget.current,
           key: ValueKey<String>(widget.field.fieldId),
           enabled: !widget.field.readOnly,
+          canRequestFocus: !widget.field.skipFocus,
           autocorrect: false,
           controller: widget.controller,
           keyboardType: widget.field.customInputType ?? inputType ?? widget.inputType,
