@@ -32,6 +32,8 @@ class _RadioButtonState extends State<RadioButton> {
 
   @override
   Widget build(BuildContext context) {
+    final infoCallback = widget.field.infoCallback;
+    final showInfo = infoCallback != null && (widget.field.shouldShowInfo?.call(value) ?? true);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -40,8 +42,30 @@ class _RadioButtonState extends State<RadioButton> {
             height: 8,
           ),
         if (widget.title.isNotEmpty)
-          Text(widget.title,
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.onSurface)),
+          Row(
+            children: [
+              Expanded(
+                child: Text(widget.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(color: Theme.of(context).colorScheme.onSurface)),
+              ),
+              if (showInfo)
+                InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: infoCallback,
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Icon(
+                      Icons.info_outline,
+                      size: 18,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+            ],
+          ),
         const SizedBox(
           height: 8,
         ),
@@ -156,7 +180,8 @@ class ToggleButton extends StatelessWidget {
                             textAlign: TextAlign.center,
                             semanticsLabel: textSelected,
                             textScaleFactor: 1.0,
-                            style: textStyle.copyWith(color: Theme.of(context).colorScheme.onSecondary),
+                            style: textStyle.copyWith(
+                                color: Theme.of(context).colorScheme.onSecondary),
                           ),
                         ),
                     ],
@@ -171,7 +196,9 @@ class ToggleButton extends StatelessWidget {
     Widget notSelectedWidget = AnimatedContainer(
       duration: const Duration(milliseconds: 400),
       decoration: BoxDecoration(
-        color: unselectedOutline ? Colors.transparent : Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+        color: unselectedOutline
+            ? Colors.transparent
+            : Theme.of(context).colorScheme.secondary.withOpacity(0.1),
         border: unselectedOutline
             ? Border.all(
                 color: Theme.of(context).colorScheme.secondary,
@@ -211,7 +238,8 @@ class ToggleButton extends StatelessWidget {
                             textAlign: TextAlign.center,
                             textScaleFactor: 1.0,
                             semanticsLabel: textUnselected ?? textSelected,
-                            style: textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
+                            style:
+                                textStyle.copyWith(color: Theme.of(context).colorScheme.secondary),
                           ),
                         ),
                     ],
@@ -224,7 +252,8 @@ class ToggleButton extends StatelessWidget {
       ),
     );
 
-    return ToggleWidget(notSelectedWidet: notSelectedWidget, selectedWidget: selectedWidget, selected: selected);
+    return ToggleWidget(
+        notSelectedWidet: notSelectedWidget, selectedWidget: selectedWidget, selected: selected);
   }
 }
 

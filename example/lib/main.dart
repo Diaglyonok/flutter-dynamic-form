@@ -371,8 +371,9 @@ class _MyAppState extends State<MyApp> {
       Field(
         fieldId: 'radio_example',
         multiline: false,
+        infoCallback: () {},
         fieldType: FieldTypes.RadioOptions,
-        label: '',
+        label: 'test',
         options: [
           Option(id: 'type0', value: 'Едино-\nразовая'),
           Option(id: 'type1', value: 'Еже-\nнедельная'),
