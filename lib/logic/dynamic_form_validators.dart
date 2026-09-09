@@ -45,12 +45,13 @@ class DynamicFormValidators {
     }
   }
 
-  String? dateValidator(String? inputDate, CompareDate? compare, String? pattern) {
+  String? dateValidator(String? inputDate, CompareDate? compare, String? pattern,
+      {DateFormat? format}) {
     if (inputDate == null || inputDate.isEmpty) {
       return null;
     }
     try {
-      final date = DateFormat(pattern ?? datePattern).parseLoose(inputDate);
+      final date = (format ?? DateFormat(pattern ?? datePattern)).parseLoose(inputDate);
       var compareDate = DateTime.now();
       compareDate = DateTime(compareDate.year, compareDate.month, compareDate.day);
       switch (compare ?? CompareDate.AllDates) {
@@ -78,7 +79,8 @@ class DynamicFormValidators {
           break;
       }
     } catch (e) {
-      return context.dfl.dateIsNotValidErrorText(format: pattern ?? datePattern);
+      return context.dfl
+          .dateIsNotValidErrorText(format: format?.pattern ?? pattern ?? datePattern);
     }
 
     return null;
@@ -192,7 +194,7 @@ class DynamicFormValidators {
     return context.dfl.returnDateWarning;
   }
 
-  String? datePeriodValidator(String? value, {String? pattern}) {
+  String? datePeriodValidator(String? value, {String? pattern, DateFormat? format}) {
     if (value == null || value.isEmpty) {
       return null;
     }
@@ -204,8 +206,9 @@ class DynamicFormValidators {
     }
 
     try {
-      DateFormat(pattern ?? datePattern).parseStrict(splitted[0]);
-      DateFormat(pattern ?? datePattern).parseStrict(splitted[1]);
+      final dateFormat = format ?? DateFormat(pattern ?? datePattern);
+      dateFormat.parseStrict(splitted[0]);
+      dateFormat.parseStrict(splitted[1]);
       return null;
     } catch (e) {
       return context.dfl.periodDateWarning;

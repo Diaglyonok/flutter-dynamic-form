@@ -651,7 +651,8 @@ class DynamicFormState extends State<DynamicForm> {
         field,
         additionals: [
           (String? value) => validators?.datePeriodValidator(value,
-              pattern: extra.format?.pattern ?? DynamicFormValidators.datePattern),
+              pattern: extra.format?.pattern ?? DynamicFormValidators.datePattern,
+              format: extra.format),
         ],
       ),
       onChanged: (value) => _commonOnChanged(value, field),
@@ -742,7 +743,8 @@ class DynamicFormState extends State<DynamicForm> {
             (field is DateField && field.format != null
                     ? field.format!
                     : DateFormat(DynamicFormValidators.datePattern))
-                .pattern),
+                .pattern,
+            format: field is DateField ? field.format : null),
       ]),
       controller: controller!,
     );
