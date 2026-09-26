@@ -377,6 +377,9 @@ class CalendarPage extends StatefulWidget {
 
   final void Function(DateTime? initStart, DateTime? initEnd, {bool clear})? onDatesChanged;
 
+  /// Called by the underlying paged calendar each time a month is loaded.
+  final void Function(int year, int month)? onMonthLoaded;
+
   const CalendarPage({
     super.key,
     required this.initStart,
@@ -387,6 +390,7 @@ class CalendarPage extends StatefulWidget {
     required this.locale,
     this.minDate,
     this.maxDate,
+    this.onMonthLoaded,
   });
 
   @override
@@ -559,6 +563,7 @@ class _CalendarPageState extends State<CalendarPage> {
             listPadding: const EdgeInsets.all(8.0),
             addAutomaticKeepAlives: true,
             invisibleMonthsThreshold: 3,
+            onMonthLoaded: widget.onMonthLoaded,
             monthBuilder: (context, month, year) {
               return Column(
                 key: ValueKey(month.toString() + year.toString()),
