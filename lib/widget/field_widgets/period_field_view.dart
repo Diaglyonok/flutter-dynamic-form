@@ -380,6 +380,12 @@ class CalendarPage extends StatefulWidget {
   /// Called by the underlying paged calendar each time a month is loaded.
   final void Function(int year, int month)? onMonthLoaded;
 
+  /// Pins the end of the range. When set, the end date is preselected to this
+  /// day and can't be changed: taps only move the start, days after it are
+  /// disabled, the done button enables as soon as a start is picked and
+  /// [onDatesChanged] receives `(start, fixedEnd)`. `initEnd` is ignored.
+  final DateTime? fixedEnd;
+
   const CalendarPage({
     super.key,
     required this.initStart,
@@ -391,6 +397,7 @@ class CalendarPage extends StatefulWidget {
     this.minDate,
     this.maxDate,
     this.onMonthLoaded,
+    this.fixedEnd,
   });
 
   @override
@@ -418,10 +425,40 @@ class _CalendarPageState extends State<CalendarPage> {
     startDate = widget.initStart;
     endDate = widget.initEnd;
 
+    final fixedEnd = widget.fixedEnd;
+    if (fixedEnd != null) {
+      endDate = fixedEnd;
+      if (startDate != null && startDate!.removeTime().isAfter(fixedEnd.removeTime())) {
+        startDate = null;
+      }
+    }
+
     super.initState();
   }
 
+  /// The last selectable day: [CalendarPage.maxDate], capped at the day of
+  /// [CalendarPage.fixedEnd] when that is set.
+  DateTime? get _maxDate {
+    final fixedEnd = widget.fixedEnd?.removeTime();
+    final max = widget.maxDate;
+    if (fixedEnd == null) return max;
+    if (max != null && max.isBefore(fixedEnd)) return max;
+    return fixedEnd;
+  }
+
+  bool get _okAvailable {
+    if (widget.fixedEnd != null) {
+      return startDate != null && isButtonAvailable(startDate, endDate);
+    }
+
+    return isButtonAvailable(startDate, endDate);
+  }
+
   _getInitialDate() {
+    if (widget.fixedEnd != null) {
+      return _maxDate;
+    }
+
     final min = widget.minDate;
     final max = widget.maxDate;
     if (min == null && max == null) {
@@ -453,7 +490,8 @@ class _CalendarPageState extends State<CalendarPage> {
         startDate == null ? null : DateFormat.yMMMd(widget.locale).format(startDate!);
     final endDateValue = endDate == null ? null : DateFormat.yMMMd(widget.locale).format(endDate!);
 
-    final clearDisabled = startDate == null && endDate == null;
+    final clearDisabled =
+        widget.fixedEnd != null ? startDate == null : startDate == null && endDate == null;
     return Column(
       children: [
         SizedBox(
@@ -470,7 +508,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     : () {
                         selectedManually = null;
                         startDate = null;
-                        endDate = null;
+                        endDate = widget.fixedEnd;
                         setState(() {});
                       },
                 child: Text(
@@ -487,7 +525,7 @@ class _CalendarPageState extends State<CalendarPage> {
               ),
               const Spacer(),
               MaterialButton(
-                onPressed: isButtonAvailable(startDate, endDate)
+                onPressed: _okAvailable
                     ? () {
                         final a = startDate != null;
                         final b = endDate != null;
@@ -509,7 +547,7 @@ class _CalendarPageState extends State<CalendarPage> {
                               .copyWith(color: Theme.of(context).colorScheme.secondary))
                       .copyWith(
                     color: (custom.okButtonStyle?.color ?? Theme.of(context).colorScheme.secondary)
-                        .withOpacity(isButtonAvailable(startDate, endDate) ? 1.0 : 0.5),
+                        .withOpacity(_okAvailable ? 1.0 : 0.5),
                   ),
                 ),
               ),
@@ -540,10 +578,12 @@ class _CalendarPageState extends State<CalendarPage> {
                 const SizedBox(width: 20),
                 Expanded(
                   child: _buildDate(
-                    onTap: () {
-                      selectedManually = _Selectable.second;
-                      setState(() {});
-                    },
+                    onTap: widget.fixedEnd != null
+                        ? null
+                        : () {
+                            selectedManually = _Selectable.second;
+                            setState(() {});
+                          },
                     name: custom.endDateText ?? context.dfl.endDate,
                     value: endDateValue,
                     isSelected: selectedManually == _Selectable.second ||
@@ -558,7 +598,7 @@ class _CalendarPageState extends State<CalendarPage> {
         Expanded(
           child: PagedVerticalCalendar(
             minDate: widget.minDate?.subtract(const Duration(days: 1)),
-            maxDate: widget.maxDate?.add(const Duration(days: 1)),
+            maxDate: _maxDate?.add(const Duration(days: 1)),
             initialDate: _getInitialDate(),
             listPadding: const EdgeInsets.all(8.0),
             addAutomaticKeepAlives: true,
@@ -619,7 +659,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   endDate != null && date.isSameDay(endDate!);
 
               final isDisabled = widget.minDate != null && date.isBefore(widget.minDate!) ||
-                  widget.maxDate != null && date.isAfter(widget.maxDate!);
+                  _maxDate != null && date.isAfter(_maxDate!);
 
               textTheme = textTheme?.copyWith(
                 color: isDisabled
@@ -735,7 +775,7 @@ class _CalendarPageState extends State<CalendarPage> {
             },
             onDayPressed: (date) {
               final isDisabled = widget.minDate != null && date.isBefore(widget.minDate!) ||
-                  widget.maxDate != null && date.isAfter(widget.maxDate!);
+                  _maxDate != null && date.isAfter(_maxDate!);
 
               if (isDisabled) {
                 return;
@@ -776,6 +816,16 @@ class _CalendarPageState extends State<CalendarPage> {
                     }
                   }
                 }
+              }
+
+              if (widget.fixedEnd != null) {
+                // Only the start moves; the end stays pinned.
+                startDate = date;
+                endDate = widget.fixedEnd;
+                selectedManually = null;
+
+                setState(() {});
+                return;
               }
 
               if (selectedManually == _Selectable.second &&
