@@ -71,6 +71,11 @@ class Field {
   final int? minLines;
   final void Function()? onEdittingComplete;
 
+  /// Tap outside a text field while it is focused. Unlike a TapRegion around
+  /// the field, taps on the field's cut/copy/paste toolbar don't count. Null —
+  /// the platform default.
+  final void Function(PointerDownEvent event)? onTapOutside;
+
   final FieldTypes fieldType;
   final String label;
 
@@ -127,6 +132,7 @@ class Field {
     this.validationErrorMessage,
     this.withBottomPadding = true,
     this.onEdittingComplete,
+    this.onTapOutside,
   });
 
   @override
@@ -160,6 +166,7 @@ class Field {
       getFormatters: getFormatters,
       wrapper: wrapper,
       multiline: multiline,
+      onTapOutside: onTapOutside,
     );
   }
 

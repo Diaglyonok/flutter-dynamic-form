@@ -179,6 +179,7 @@ class _DynamicTextFieldState extends State<DynamicTextField> {
         child: TextFormField(
           selectionControls: getControls(context),
           onEditingComplete: widget.field.onEdittingComplete,
+          onTapOutside: widget.field.onTapOutside,
           focusNode: widget.current,
           key: ValueKey<String>(widget.field.fieldId),
           enabled: !widget.field.readOnly,
