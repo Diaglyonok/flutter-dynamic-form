@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:dglk_bottom_sheet_route/dglk_bottom_sheet_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dynamic_form/i18n/strings.g.dart';
+import 'package:flutter_dynamic_form/utils/calendar_grid.dart';
 import 'package:flutter_dynamic_form/utils/string_ext.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/bottom_pick_button.dart';
 import 'package:flutter_dynamic_form/widget/field_widgets/string_result_field.dart';
@@ -386,6 +389,11 @@ class CalendarPage extends StatefulWidget {
   /// [onDatesChanged] receives `(start, fixedEnd)`. `initEnd` is ignored.
   final DateTime? fixedEnd;
 
+  /// Locks the days before [minDate] instead of only greying them out: they
+  /// are blurred, one fully locked month is shown above the [minDate] month
+  /// and this widget is centered over its days (the only part taking taps).
+  final Widget? beforeMinDateOverlay;
+
   const CalendarPage({
     super.key,
     required this.initStart,
@@ -398,6 +406,7 @@ class CalendarPage extends StatefulWidget {
     this.maxDate,
     this.onMonthLoaded,
     this.fixedEnd,
+    this.beforeMinDateOverlay,
   });
 
   @override
@@ -444,6 +453,70 @@ class _CalendarPageState extends State<CalendarPage> {
     if (fixedEnd == null) return max;
     if (max != null && max.isBefore(fixedEnd)) return max;
     return fixedEnd;
+  }
+
+  /// The first day the calendar scrolls to: the day before
+  /// [CalendarPage.minDate], or the start of the month before it when the days
+  /// before it are locked under [CalendarPage.beforeMinDateOverlay].
+  DateTime? get _firstShownDate {
+    final min = widget.minDate;
+    if (min == null) return null;
+    if (widget.beforeMinDateOverlay != null) return DateTime(min.year, min.month - 1);
+    return min.subtract(const Duration(days: 1));
+  }
+
+  /// The layer over the days grid of [month] of [year] when the days before
+  /// [CalendarPage.minDate] are locked: a blur over those days, and over the
+  /// whole earlier month the blur with [CalendarPage.beforeMinDateOverlay].
+  Widget? _lockedDaysLayer(int month, int year) {
+    final min = widget.minDate;
+    final overlay = widget.beforeMinDateOverlay;
+    if (min == null || overlay == null) return null;
+
+    final first = DateTime(year, month);
+    final minMonth = DateTime(min.year, min.month);
+    if (first.isAfter(minMonth)) return null;
+    if (first.isBefore(minMonth)) {
+      return Stack(
+        fit: StackFit.expand,
+        children: [_lockBlur(), Center(child: overlay)],
+      );
+    }
+
+    // The grid starts with blanks up to the 1st (weeks start on Monday).
+    final blanks = first.weekday - DateTime.monday;
+    final spans = gridSpans(blanks, blanks + min.day - 1);
+    if (spans.isEmpty) return null;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cell = constraints.maxWidth / DateTime.daysPerWeek;
+        return Stack(
+          children: [
+            for (final span in spans)
+              PositionedDirectional(
+                start: span.from * cell,
+                top: span.row * cell,
+                width: (span.to - span.from) * cell,
+                height: span.rows * cell,
+                child: _lockBlur(),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _lockBlur() {
+    return IgnorePointer(
+      child: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+          child: ColoredBox(
+            color: Theme.of(context).colorScheme.surface.withOpacity(0.35),
+          ),
+        ),
+      ),
+    );
   }
 
   bool get _okAvailable {
@@ -597,13 +670,14 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
         Expanded(
           child: PagedVerticalCalendar(
-            minDate: widget.minDate?.subtract(const Duration(days: 1)),
+            minDate: _firstShownDate,
             maxDate: _maxDate?.add(const Duration(days: 1)),
             initialDate: _getInitialDate(),
             listPadding: const EdgeInsets.all(8.0),
             addAutomaticKeepAlives: true,
             invisibleMonthsThreshold: 3,
             onMonthLoaded: widget.onMonthLoaded,
+            monthOverlayBuilder: (context, month, year) => _lockedDaysLayer(month, year),
             monthBuilder: (context, month, year) {
               return Column(
                 key: ValueKey(month.toString() + year.toString()),
